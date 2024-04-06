@@ -13,3 +13,7 @@ final kLableTextStyleMediumGreen = GoogleFonts.montserrat(
 final kLableTextStyleLogoScreen = GoogleFonts.montserrat(
     textStyle: const TextStyle(
         color: AppColors.green, fontWeight: FontWeight.bold, fontSize: 30.0));
+
+final kLableTextStyleLogoWhite = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+        color: AppColors.white, fontWeight: FontWeight.bold, fontSize: 30.0));
