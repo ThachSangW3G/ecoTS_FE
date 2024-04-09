@@ -17,3 +17,12 @@ final kLableTextStyleLogoScreen = GoogleFonts.montserrat(
 final kLableTextStyleLogoWhite = GoogleFonts.montserrat(
     textStyle: const TextStyle(
         color: AppColors.white, fontWeight: FontWeight.bold, fontSize: 30.0));
+
+final kLableTextBlackBig = GoogleFonts.montserrat(
+    textStyle: const TextStyle(fontWeight: FontWeight.w800, fontSize: 30));
+
+final kLableTextBlackMinium = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.w400,
+));
