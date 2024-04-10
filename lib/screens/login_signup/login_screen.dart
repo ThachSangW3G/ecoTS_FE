@@ -3,7 +3,9 @@ import 'package:ecots_frontend/components/login_signup/button_icon.dart';
 import 'package:ecots_frontend/constants/app_border.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/screens/bottom_nav/bottom_nav.dart';
 import 'package:ecots_frontend/screens/login_signup/forgot_password_screen.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 
@@ -129,8 +131,16 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 5,
               ),
-              const ButtonGreen(
-                title: 'Login',
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const BottomNavigation()));
+                },
+                child: const ButtonGreen(
+                  title: 'Login',
+                ),
               ),
               const SizedBox(
                 height: 20,

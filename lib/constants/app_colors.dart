@@ -7,4 +7,5 @@ class AppColors {
   static const Color gray = Color(0xffd9d9d9);
   static const Color slamon = Color(0xffff8682);
   static const Color stack = Color(0xff889088);
+  static const Color shamrock = Color(0xff2DCC70);
 }

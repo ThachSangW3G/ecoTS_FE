@@ -26,3 +26,25 @@ final kLableTextBlackMinium = GoogleFonts.montserrat(
   fontSize: 18,
   fontWeight: FontWeight.w400,
 ));
+
+final kLableTextStyleTilteGreen = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+        color: AppColors.green, fontWeight: FontWeight.w700, fontSize: 18.0));
+
+final kLableTextStyleMiniumGrey = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+        color: AppColors.stack, fontWeight: FontWeight.w500, fontSize: 15.0));
+
+final kLableBoldWhite = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+  color: Colors.white,
+  fontSize: 18,
+  fontWeight: FontWeight.w900,
+));
+
+final kLableW800White = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+  color: Colors.white,
+  fontSize: 15,
+  fontWeight: FontWeight.w800,
+));
