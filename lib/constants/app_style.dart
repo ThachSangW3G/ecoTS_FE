@@ -48,3 +48,48 @@ final kLableW800White = GoogleFonts.montserrat(
   fontSize: 15,
   fontWeight: FontWeight.w800,
 ));
+
+final kLableTextBlackW600 = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+  fontSize: 20,
+  fontWeight: FontWeight.w600,
+));
+
+final kLableTextBlackSize16 = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.w400,
+));
+
+final kLableTextGreyItalic = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+        fontSize: 14,
+        color: AppColors.stack,
+        fontWeight: FontWeight.w400,
+        fontStyle: FontStyle.italic));
+
+final kLableTextBlackW600Size16 = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.w600,
+));
+
+final kLableTextBlackW300Size14 = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+  fontSize: 14,
+  fontWeight: FontWeight.w300,
+));
+
+final kLableChiDuong = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+  fontSize: 14,
+  color: Color(0xFF9DD549),
+  fontWeight: FontWeight.w700,
+));
+
+final kLableButtonDunation = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+  fontSize: 14,
+  color: AppColors.white,
+  fontWeight: FontWeight.w700,
+));
