@@ -1,7 +1,10 @@
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:ecots_frontend/screens/login_signup/login_screen.dart';
+import 'package:ecots_frontend/screens/login_signup/signup_screen.dart';
+
 import 'package:flutter/material.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 class Welcome extends StatefulWidget {
@@ -71,44 +74,61 @@ class _WelcomeState extends State<Welcome> {
                     ),
                     Column(
                       children: [
-                        Container(
-                          width: 300,
-                          height: 50,
-                          decoration: const BoxDecoration(
-                              color: AppColors.green,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30))),
-                          child: Center(
-                            child: Text(
-                              'Sign in',
-                              style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      color: AppColors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700)),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginScreen()));
+                          },
+                          child: Container(
+                            width: 300,
+                            height: 50,
+                            decoration: const BoxDecoration(
+                                color: AppColors.green,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30))),
+                            child: Center(
+                              child: Text(
+                                'Sign in',
+                                style: GoogleFonts.montserrat(
+                                    textStyle: const TextStyle(
+                                        color: AppColors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w700)),
+                              ),
                             ),
                           ),
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        Container(
-                          width: 300,
-                          height: 50,
-                          decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: AppColors.green, width: 2),
-                              color: AppColors.white,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(30))),
-                          child: Center(
-                            child: Text(
-                              'Sign up',
-                              style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      color: AppColors.green,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700)),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const SignupScreen()));
+                          },
+                          child: Container(
+                            width: 300,
+                            height: 50,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: AppColors.green, width: 2),
+                                color: AppColors.white,
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(30))),
+                            child: Center(
+                              child: Text(
+                                'Sign up',
+                                style: GoogleFonts.montserrat(
+                                    textStyle: const TextStyle(
+                                        color: AppColors.green,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w700)),
+                              ),
                             ),
                           ),
                         ),
