@@ -22,9 +22,11 @@ class SignInController {
         final String tokenRefresh = responseData['tokenRefresh'];
         final int expiresIn = responseData['expiresIn'];
         final int expiresRefreshIn = responseData['expiresRefreshIn'];
+        final String username = responseData['username'];
         final String role = responseData['role'];
 
-        // Lưu trữ token và thông tin khác nếu cần thiết
+        // Lưu trữ token và thông tin khác\
+        await _storage.write(key: "username", value: username)
         await _storage.write(key: "tokenAccess", value: tokenAccess);
         await _storage.write(key: "tokenRefresh", value: tokenRefresh);
         await _storage.write(key: "expiresIn", value: expiresIn.toString());
