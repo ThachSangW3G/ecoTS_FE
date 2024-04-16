@@ -1,0 +1,31 @@
+import 'package:http/http.dart' as http;
+import 'package:convert/convert.dart' as convert;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // Secure storage
+
+class SignInController {
+  final String _baseURL = 'https://ecots-be.onrender.com'; // Replace with your actual URL
+  final _storage = FlutterSecureStorage(); // Secure storage instance
+
+  Future<bool> login(String email, String password) async {
+    final uri = Uri.parse('$_baseURL/auth/login');
+    final requestBody = {'username': username, 'password': password};
+    final headers = {'Content-Type': 'application/json'};
+
+    try {
+      final response = await http.post(uri, body: convert.jsonEncode(requestBody), headers: headers);
+      if (response.statusCode == 200) {
+        final responseData = convert.jsonDecode(response.body);
+        final token = responseData['token']; // Assuming 'token' is the key
+
+        await _storage.write(key: "authToken", value: token); // Securely store the token
+        return true;
+      } else {
+        print('Login failed with status code: ${response.statusCode}');
+        return false;
+      }
+    } catch (e) {
+      print('An error occurred: $e');
+      return false;
+    }
+  }
+}

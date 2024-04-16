@@ -6,13 +6,14 @@ import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:ecots_frontend/screens/bottom_nav/bottom_nav.dart';
 import 'package:ecots_frontend/screens/login_signup/forgot_password_screen.dart';
 import 'package:flutter/cupertino.dart';
-
+import 'package:ecots_frontend/controllers/sign_in_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+  static const String routeName = 'login_page';
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -21,6 +22,39 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _isObscured = true;
   bool _isChecked = false;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _loginController = SignInController();
+
+  Future<void> _login() async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
+
+    final success = await _loginController.login(email, password);
+    if (success) {
+      // Đăng nhập thành công, điều hướng đến màn hình tiếp theo
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => BottomNavigation()),
+      );
+    } else {
+      // Đăng nhập thất bại, hiển thị thông báo cho người dùng
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Login Failed'),
+          content: Text('Invalid username or password.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,9 +87,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 20,
               ),
               TextFormField(
+                controller: _emailController,
                 decoration: InputDecoration(
                     contentPadding: borderRadiusTextField,
-                    labelText: 'Email',
+                    labelText: 'Username',
                     labelStyle: kLableTextBlackMinium,
                     focusedBorder: borderTextFieldFocus,
                     border: borderTextField),
@@ -66,6 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextFormField(
                 style: kLableTextBlackMinium,
                 obscureText: _isObscured,
+                controller: _passwordController,
                 decoration: InputDecoration(
                     contentPadding: borderRadiusTextField,
                     suffixIcon: IconButton(
