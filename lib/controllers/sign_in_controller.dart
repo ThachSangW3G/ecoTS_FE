@@ -26,7 +26,7 @@ class SignInController {
         final String role = responseData['role'];
 
         // Lưu trữ token và thông tin khác\
-        await _storage.write(key: "username", value: username)
+        await _storage.write(key: "username", value: username);
         await _storage.write(key: "tokenAccess", value: tokenAccess);
         await _storage.write(key: "tokenRefresh", value: tokenRefresh);
         await _storage.write(key: "expiresIn", value: expiresIn.toString());
