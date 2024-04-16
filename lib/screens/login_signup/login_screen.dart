@@ -25,18 +25,14 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _loginController = SignInController();
-
   Future<void> _login() async {
     final email = _emailController.text;
     final password = _passwordController.text;
 
     final success = await _loginController.login(email, password);
     if (success) {
-      // Đăng nhập thành công, điều hướng đến màn hình tiếp theo
       Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => BottomNavigation()),
-      );
+          context, MaterialPageRoute(builder: (_) => const BottomNavigation()));
     } else {
       // Đăng nhập thất bại, hiển thị thông báo cho người dùng
       showDialog(
@@ -168,12 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 5,
               ),
               GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => const BottomNavigation()));
-                },
+                onTap: _login,
                 child: const ButtonGreen(
                   title: 'Login',
                 ),
