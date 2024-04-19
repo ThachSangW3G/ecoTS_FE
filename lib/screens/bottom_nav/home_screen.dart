@@ -4,7 +4,9 @@ import 'package:ecots_frontend/components/home/material_item.dart';
 import 'package:ecots_frontend/components/home/nearby_item.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/screens/donation/donation_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -163,9 +165,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text('Donation', style: kLableTextBlackW600),
-                  Text(
-                    'See all',
-                    style: kLableTextGreyItalic,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => DonationScreen()));
+                    },
+                    child: Text(
+                      'See all',
+                      style: kLableTextGreyItalic,
+                    ),
                   )
                 ],
               ),
