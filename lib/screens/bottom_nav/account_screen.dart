@@ -1,6 +1,7 @@
 import 'package:ecots_frontend/components/home/tile.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/screens/accounts/about_me.dart';
 import 'package:ecots_frontend/screens/accounts/notification_setting.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -112,7 +113,9 @@ class _AccountScreenState extends State<AccountScreen> {
                   height: 20,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(const AboutMe());
+                  },
                   child: const Tile(
                       icon: 'assets/icons/aboutme.svg',
                       haveArrowRight: true,
