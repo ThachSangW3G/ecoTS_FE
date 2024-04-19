@@ -1,9 +1,12 @@
+import 'package:ecots_frontend/components/home/tile.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/screens/accounts/notification_setting.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 import '../../components/home/achivement.dart';
 
@@ -18,6 +21,7 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.whisper,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -26,7 +30,7 @@ class _AccountScreenState extends State<AccountScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Stack(
@@ -34,7 +38,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     Container(
                       height: 120,
                       width: 120,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           shape: BoxShape.circle, color: AppColors.slamon),
                     ),
                     Positioned(
@@ -43,7 +47,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       child: Container(
                         height: 30,
                         width: 30,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             shape: BoxShape.circle, color: AppColors.green),
                         child: Center(
                           child: SvgPicture.asset(
@@ -56,21 +60,21 @@ class _AccountScreenState extends State<AccountScreen> {
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(
                   'Thạch Sang',
                   style: kLableTextBlackW600,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Text(
                   'thachsang2202@gmail.com',
                   style: kLableTextStyleMiniumGrey,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Container(
@@ -102,6 +106,65 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                       const Achivement(title: 'RECYCLED', value: '23'),
                     ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: const Tile(
+                      icon: 'assets/icons/aboutme.svg',
+                      haveArrowRight: true,
+                      title: 'About me'),
+                ),
+                const Tile(
+                    icon: 'assets/icons/myhistory.svg',
+                    haveArrowRight: true,
+                    title: 'My history'),
+                InkWell(
+                  onTap: () {
+                    Get.to(const NotificationSetting());
+                  },
+                  child: const Tile(
+                      icon: 'assets/icons/notification.svg',
+                      haveArrowRight: true,
+                      title: 'Notifications'),
+                ),
+                const Tile(
+                    icon: 'assets/icons/notification.svg',
+                    haveArrowRight: true,
+                    title: 'Change password'),
+                const Tile(
+                    icon: 'assets/icons/notification.svg',
+                    haveArrowRight: true,
+                    title: 'Policy'),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Other',
+                      style: kLableTextStyle18Grey,
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Tile(
+                    icon: 'assets/icons/version.svg',
+                    haveArrowRight: false,
+                    title: 'Version',
+                    rightContent: '1.1.0'),
+                InkWell(
+                  onTap: () {},
+                  child: const Tile(
+                    icon: 'assets/icons/signout.svg',
+                    haveArrowRight: false,
+                    title: 'Sign out',
                   ),
                 ),
               ],

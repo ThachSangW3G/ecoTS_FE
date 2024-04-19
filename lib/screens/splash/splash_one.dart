@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -82,13 +83,16 @@ class _SplashOneState extends State<SplashOne> {
                         'Menjual sampah, sampahmu pada tempat tertentu dan dapatkan hadiahe',
                         textAlign: TextAlign.center,
                         style: kLableTextStyleMediumGreen),
-                    GestureDetector(
+                    InkWell(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                child: const SplashTwo(),
-                                type: PageTransitionType.rightToLeft));
+                        // Navigator.push(
+                        //     context,
+                        //     PageTransition(
+                        //         child: const SplashTwo(),
+                        //         type: PageTransitionType.rightToLeft));
+
+                        Get.to(const SplashTwo(),
+                            transition: Transition.rightToLeft);
                       },
                       child: Container(
                         width: 200,

@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -85,9 +86,9 @@ class _SplashTwoState extends State<SplashTwo> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        GestureDetector(
+                        InkWell(
                           onTap: () {
-                            Navigator.pop(context);
+                            Get.back();
                           },
                           child: Container(
                             width: 140,
@@ -114,13 +115,16 @@ class _SplashTwoState extends State<SplashTwo> {
                             ),
                           ),
                         ),
-                        GestureDetector(
+                        InkWell(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                PageTransition(
-                                    child: const SplashThree(),
-                                    type: PageTransitionType.rightToLeft));
+                            // Navigator.push(
+                            //     context,
+                            //     PageTransition(
+                            //         child: const SplashThree(),
+                            //         type: PageTransitionType.rightToLeft));
+
+                            Get.to(const SplashThree(),
+                                transition: Transition.rightToLeft);
                           },
                           child: Container(
                             width: 140,

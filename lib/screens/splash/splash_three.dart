@@ -4,6 +4,7 @@ import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:ecots_frontend/screens/splash/welcome.dart';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
@@ -84,9 +85,9 @@ class _SplashThreeState extends State<SplashThree> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        GestureDetector(
+                        InkWell(
                           onTap: () {
-                            Navigator.pop(context);
+                            Get.back();
                           },
                           child: Container(
                             width: 140,
@@ -113,13 +114,16 @@ class _SplashThreeState extends State<SplashThree> {
                             ),
                           ),
                         ),
-                        GestureDetector(
+                        InkWell(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                PageTransition(
-                                    child: const Welcome(),
-                                    type: PageTransitionType.rightToLeft));
+                            // Navigator.push(
+                            //     context,
+                            //     PageTransition(
+                            //         child: const Welcome(),
+                            //         type: PageTransitionType.rightToLeft));
+
+                            Get.to(const Welcome(),
+                                transition: Transition.rightToLeft);
                           },
                           child: Container(
                             width: 140,
