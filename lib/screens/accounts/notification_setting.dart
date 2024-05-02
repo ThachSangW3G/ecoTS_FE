@@ -3,8 +3,10 @@ import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../components/accounts/title_switch.dart';
+import '../../components/login_signup/button_green.dart';
 
 class NotificationSetting extends StatefulWidget {
   const NotificationSetting({super.key});
@@ -57,36 +59,64 @@ class _NotificationSettingState extends State<NotificationSetting> {
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(20.0),
-          child: Column(
+          child: Stack(
+            alignment: AlignmentDirectional.topCenter,
             children: [
-              TitleSwitch(
-                title: 'Allow Notifcations',
-                content:
-                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumym',
-                value: allowNotify,
-                onChanged: onChangedAllowNotify,
+              SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
               ),
-              TitleSwitch(
-                title: 'Email Notifcations',
-                content:
-                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumym',
-                value: emailNotify,
-                onChanged: onChangedEmailNotify,
+              Column(
+                children: [
+                  TitleSwitch(
+                    title: 'Allow Notifcations',
+                    content:
+                        'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumym',
+                    value: allowNotify,
+                    onChanged: onChangedAllowNotify,
+                  ),
+                  TitleSwitch(
+                    title: 'Email Notifcations',
+                    content:
+                        'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumym',
+                    value: emailNotify,
+                    onChanged: onChangedEmailNotify,
+                  ),
+                  TitleSwitch(
+                    title: 'Order Notifcations',
+                    content:
+                        'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumym',
+                    value: orderNotify,
+                    onChanged: onChangedOrderNotify,
+                  ),
+                  TitleSwitch(
+                    title: 'General Notifcations',
+                    content:
+                        'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumym',
+                    value: generalNotify,
+                    onChanged: onChangedGeneralNotify,
+                  ),
+                ],
               ),
-              TitleSwitch(
-                title: 'Order Notifcations',
-                content:
-                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumym',
-                value: orderNotify,
-                onChanged: onChangedOrderNotify,
-              ),
-              TitleSwitch(
-                title: 'General Notifcations',
-                content:
-                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumym',
-                value: generalNotify,
-                onChanged: onChangedGeneralNotify,
-              ),
+              Positioned(
+                  bottom: 140,
+                  child: Container(
+                    height: 50,
+                    width: 350,
+                    decoration: const BoxDecoration(
+                        color: AppColors.green,
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                    child: Center(
+                      child: Text(
+                        'Save settings',
+                        style: GoogleFonts.montserrat(
+                            textStyle: const TextStyle(
+                                color: AppColors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600)),
+                      ),
+                    ),
+                  ))
             ],
           ),
         ),

@@ -3,10 +3,12 @@ import 'package:ecots_frontend/components/login_signup/button_icon.dart';
 import 'package:ecots_frontend/constants/app_border.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/controllers/auth_controller.dart';
 import 'package:ecots_frontend/screens/login_signup/verify_code_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -17,6 +19,55 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  TextEditingController emailController = TextEditingController();
+  AuthController authController = Get.put(AuthController());
+
+  bool _isLoading = false;
+
+  Future<void> forgotPassword() async {
+    final email = emailController.text;
+    if (email.isEmpty) {
+      final snackdemo = SnackBar(
+        content: Text(
+          'Vui lòng điền đầu đủ thông tin!',
+          style: kLableW800White,
+        ),
+        backgroundColor: Colors.red,
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(5),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final success = await authController.forgotPassword(email);
+
+    if (success) {
+      Get.to(() => const VerifyCodeScreen());
+    } else {
+      final snackdemo = SnackBar(
+        content: Text(
+          'Tài khoản không tồn tại!',
+          style: kLableW800White,
+        ),
+        backgroundColor: Colors.red,
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(5),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,6 +100,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         height: 20,
                       ),
                       TextFormField(
+                        controller: emailController,
                         decoration: InputDecoration(
                             contentPadding: borderRadiusTextField,
                             labelText: 'Email',
@@ -60,14 +112,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         height: 30,
                       ),
                       GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const VerifyCodeScreen()));
-                        },
-                        child: const ButtonGreen(
+                        onTap: forgotPassword,
+                        child: ButtonGreen(
+                          isLoading: _isLoading,
                           title: 'Submit',
                         ),
                       ),

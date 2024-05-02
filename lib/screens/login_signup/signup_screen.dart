@@ -3,10 +3,15 @@ import 'package:ecots_frontend/components/login_signup/button_green.dart';
 import 'package:ecots_frontend/constants/app_border.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/controllers/auth_controller.dart';
+import 'package:ecots_frontend/screens/login_signup/login_screen.dart';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -18,6 +23,97 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   bool _isObscured = true;
   bool _isChecked = false;
+
+  TextEditingController fullnameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController dayOfBirthController = TextEditingController();
+  DateTime dayOfBirth = DateTime.now();
+
+  AuthController authController = Get.put(AuthController());
+
+  bool _isLoading = false;
+
+  String formatDate(DateTime dateTime) {
+    return DateFormat('dd/MM/yyyy').format(dateTime);
+  }
+
+  Future<void> signup() async {
+    final fullname = fullnameController.text;
+    final email = emailController.text;
+    final username = usernameController.text;
+    final password = passwordController.text;
+    final confirmPassword = confirmPasswordController.text;
+
+    print(dayOfBirth.toIso8601String());
+
+    if (fullname.isEmpty ||
+        email.isEmpty ||
+        username.isEmpty ||
+        password.isEmpty ||
+        confirmPassword.isEmpty ||
+        !_isChecked) {
+      final snackdemo = SnackBar(
+        content: Text(
+          'Vui lòng điền đầu đủ thông tin!',
+          style: kLableW800White,
+        ),
+        backgroundColor: Colors.red,
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(5),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+
+      return;
+    }
+
+    if (password != confirmPassword) {
+      final snackdemo = SnackBar(
+        content: Text(
+          'Xác nhận mật khẩu không chính xác!',
+          style: kLableW800White,
+        ),
+        backgroundColor: Colors.red,
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(5),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final success = await authController.signup(
+        email, username, fullname, password, dayOfBirth.toIso8601String());
+
+    if (success) {
+      Get.to(() => const LoginScreen());
+    } else {
+      final snackdemo = SnackBar(
+        content: Text(
+          'Đăng ký không thành công!',
+          style: kLableW800White,
+        ),
+        backgroundColor: Colors.red,
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(5),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +146,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 20,
               ),
               TextFormField(
+                controller: fullnameController,
                 decoration: InputDecoration(
                     contentPadding: borderRadiusTextField,
                     labelText: 'Full name',
@@ -61,6 +158,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 15,
               ),
               TextFormField(
+                controller: emailController,
                 decoration: InputDecoration(
                     contentPadding: borderRadiusTextField,
                     labelText: 'Email',
@@ -72,9 +170,10 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 15,
               ),
               TextFormField(
+                controller: usernameController,
                 decoration: InputDecoration(
                     contentPadding: borderRadiusTextField,
-                    labelText: 'Phone number',
+                    labelText: 'Username',
                     labelStyle: kLableTextBlackMinium,
                     focusedBorder: borderTextFieldFocus,
                     border: borderTextField),
@@ -83,7 +182,24 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 15,
               ),
               TextFormField(
+                controller: dayOfBirthController,
+                readOnly: true,
                 decoration: InputDecoration(
+                    suffixIcon: InkWell(
+                        onTap: () {
+                          showDatePicker(
+                                  context: context,
+                                  firstDate: DateTime(1990),
+                                  lastDate: DateTime(2026))
+                              .then((value) {
+                            setState(() {
+                              dayOfBirth = value!;
+                              dayOfBirthController.text =
+                                  formatDate(dayOfBirth);
+                            });
+                          });
+                        },
+                        child: const Icon(Icons.calendar_month)),
                     contentPadding: borderRadiusTextField,
                     labelText: 'Day of birth',
                     labelStyle: kLableTextBlackMinium,
@@ -94,6 +210,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 15,
               ),
               TextFormField(
+                controller: passwordController,
                 style: kLableTextBlackMinium,
                 obscureText: _isObscured,
                 decoration: InputDecoration(
@@ -117,6 +234,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 15,
               ),
               TextFormField(
+                controller: confirmPasswordController,
                 style: kLableTextBlackMinium,
                 obscureText: _isObscured,
                 decoration: InputDecoration(
@@ -175,8 +293,12 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(
                 height: 15,
               ),
-              const ButtonGreen(
-                title: 'Sign up',
+              InkWell(
+                onTap: signup,
+                child: ButtonGreen(
+                  isLoading: _isLoading,
+                  title: 'Sign up',
+                ),
               ),
               const SizedBox(
                 height: 20,

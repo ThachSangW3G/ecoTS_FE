@@ -2,8 +2,12 @@ import 'package:ecots_frontend/components/login_signup/button_green.dart';
 import 'package:ecots_frontend/constants/app_border.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/controllers/auth_controller.dart';
 import 'package:ecots_frontend/screens/login_signup/successful_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SetPasswordScreen extends StatefulWidget {
@@ -14,6 +18,59 @@ class SetPasswordScreen extends StatefulWidget {
 }
 
 class _SetPasswordScreenState extends State<SetPasswordScreen> {
+  TextEditingController newPasswordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  AuthController authController = Get.put(AuthController());
+
+  bool _isLoading = false;
+
+  Future<void> resetPassword() async {
+    final newPassword = newPasswordController.text;
+    final confirmPassword = confirmPasswordController.text;
+
+    if (newPassword.isEmpty || confirmPassword.isEmpty) {
+      final snackdemo = SnackBar(
+        content: Text(
+          'Vui lòng điền đầy đủ thông tin!',
+          style: kLableW800White,
+        ),
+        backgroundColor: Colors.red,
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(5),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final success =
+        await authController.resetPassword(newPassword, confirmPassword);
+
+    if (success) {
+      Get.to(() => const SuccessfulScreen());
+    } else {
+      final snackdemo = SnackBar(
+        content: Text(
+          'Đổi mật khẩu không thành công!',
+          style: kLableW800White,
+        ),
+        backgroundColor: Colors.red,
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(5),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   bool _isObscured = true;
   @override
   Widget build(BuildContext context) {
@@ -47,6 +104,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                         height: 20,
                       ),
                       TextFormField(
+                        controller: newPasswordController,
                         style: kLableTextBlackMinium,
                         obscureText: _isObscured,
                         decoration: InputDecoration(
@@ -70,6 +128,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                         height: 20,
                       ),
                       TextFormField(
+                        controller: confirmPasswordController,
                         style: kLableTextBlackMinium,
                         obscureText: _isObscured,
                         decoration: InputDecoration(
@@ -93,14 +152,9 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                         height: 30,
                       ),
                       GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const SuccessfulScreen()));
-                        },
-                        child: const ButtonGreen(
+                        onTap: resetPassword,
+                        child: ButtonGreen(
+                          isLoading: _isLoading,
                           title: 'Set new password',
                         ),
                       ),
