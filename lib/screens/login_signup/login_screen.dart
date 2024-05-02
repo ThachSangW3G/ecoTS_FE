@@ -6,8 +6,9 @@ import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:ecots_frontend/screens/bottom_nav/bottom_nav.dart';
 import 'package:ecots_frontend/screens/login_signup/forgot_password_screen.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:ecots_frontend/controllers/sign_in_controller.dart';
+import 'package:ecots_frontend/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -24,31 +25,41 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isChecked = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _loginController = SignInController();
+  final _loginController = AuthController();
+
+  bool _isLoading = false;
+
   Future<void> _login() async {
     final email = _emailController.text;
     final password = _passwordController.text;
 
+    setState(() {
+      _isLoading = true;
+    });
+
     final success = await _loginController.login(email, password);
     if (success) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (_) => const BottomNavigation()));
+      Get.to(() => const BottomNavigation());
     } else {
       // Đăng nhập thất bại, hiển thị thông báo cho người dùng
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Login Failed'),
-          content: Text('Invalid username or password.'),
+          title: const Text('Login Failed'),
+          content: const Text('Invalid username or password.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         ),
       );
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -165,7 +176,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               GestureDetector(
                 onTap: _login,
-                child: const ButtonGreen(
+                child: ButtonGreen(
+                  isLoading: _isLoading,
                   title: 'Login',
                 ),
               ),

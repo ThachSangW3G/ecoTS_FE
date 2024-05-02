@@ -31,7 +31,7 @@ class _SplashOneState extends State<SplashOne> {
             top: 0,
             child: Container(
               height: 590,
-              width: 400,
+              width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                   image: DecorationImage(
                       fit: BoxFit.fill,
@@ -42,7 +42,7 @@ class _SplashOneState extends State<SplashOne> {
             bottom: 0,
             child: Container(
               height: 400,
-              width: 400,
+              width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                   image: DecorationImage(
                       fit: BoxFit.fill,

@@ -3,11 +3,10 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-
-  rive_common
-
+  cloud_firestore
+  firebase_core
   flutter_secure_storage_windows
-
+  rive_common
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

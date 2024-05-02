@@ -2,9 +2,11 @@ import 'package:ecots_frontend/components/login_signup/button_green.dart';
 
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/controllers/auth_controller.dart';
 import 'package:ecots_frontend/screens/login_signup/set_password_screen.dart';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -19,6 +21,60 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
   List<TextEditingController> controllers =
       List.generate(6, (index) => TextEditingController());
   List<FocusNode> focusNodes = List.generate(6, (index) => FocusNode());
+
+  AuthController authController = Get.put(AuthController());
+
+  bool _isLoading = false;
+
+  Future<void> verifyCode() async {
+    String code = '';
+    controllers.forEach((element) {
+      if (element.text.isEmpty) {
+        final snackdemo = SnackBar(
+          content: Text(
+            'Vui lòng điền đầy đủ mã OPT!',
+            style: kLableW800White,
+          ),
+          backgroundColor: Colors.red,
+          elevation: 10,
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.all(5),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+        return;
+      }
+
+      code += element.text;
+    });
+
+    int otp = int.parse(code);
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final success = await authController.verifyCode(otp);
+
+    if (success) {
+      Get.to(() => const SetPasswordScreen());
+    } else {
+      final snackdemo = SnackBar(
+        content: Text(
+          'Mã OPT không đúng!',
+          style: kLableW800White,
+        ),
+        backgroundColor: Colors.red,
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(5),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,14 +178,9 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                         height: 20,
                       ),
                       GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const SetPasswordScreen()));
-                        },
-                        child: const ButtonGreen(
+                        onTap: verifyCode,
+                        child: ButtonGreen(
+                          isLoading: _isLoading,
                           title: 'Verify',
                         ),
                       ),
