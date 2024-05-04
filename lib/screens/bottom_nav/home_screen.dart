@@ -4,10 +4,13 @@ import 'package:ecots_frontend/components/home/material_item.dart';
 import 'package:ecots_frontend/components/home/nearby_item.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/controllers/user_controller.dart';
 import 'package:ecots_frontend/screens/donation/donation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,6 +22,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  UserController userController = Get.put(UserController());
 
   String fullName = '';
 
@@ -52,12 +57,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     Container(
                       width: 60,
                       height: 60,
-                      decoration: ShapeDecoration(
-                        color: const Color(0xFFD9D9D9),
-                        shape: RoundedRectangleBorder(
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: NetworkImage(
+                                  userController.currentUser.value!.avatarUrl!),
+                              fit: BoxFit.cover),
+                          color: const Color(0xFFD9D9D9),
                           borderRadius: BorderRadius.circular(18),
-                        ),
-                      ),
+                          border: Border.all(width: 1, color: AppColors.gray)),
+
+                      // child: ClipOval(
+                      //   child: Image.network(
+                      //     userController.currentUser.value!.avatarUrl!,
+                      //     fit: BoxFit.cover,
+                      //   ),
+                      // ),
                     ),
                     const SizedBox(width: 10),
                     Container(
@@ -68,7 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Hi, ${fullName}',
+                          Text(
+                              'Hi, ${userController.currentUser.value!.fullName}',
                               style: kLableTextStyleTilteGreen),
                           Text('Welcome back !',
                               style: kLableTextStyleMiniumGrey),

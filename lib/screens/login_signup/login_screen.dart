@@ -3,6 +3,7 @@ import 'package:ecots_frontend/components/login_signup/button_icon.dart';
 import 'package:ecots_frontend/constants/app_border.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/controllers/user_controller.dart';
 import 'package:ecots_frontend/screens/bottom_nav/bottom_nav.dart';
 import 'package:ecots_frontend/screens/login_signup/forgot_password_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,7 +27,10 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isChecked = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _loginController = AuthController();
+
+  AuthController authController = Get.put(AuthController());
+  UserController userController = Get.put(UserController());
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   bool _isLoading = false;
 
@@ -37,24 +42,27 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = true;
     });
 
-    final success = await _loginController.login(email, password);
+    final success = await authController.login(email, password);
     if (success) {
+      final prefs = await _prefs;
+
+      final accessToken = prefs.getString('tokenAccess');
+
+      await userController.getUserByToken(accessToken!);
       Get.to(() => const BottomNavigation());
     } else {
-      // Đăng nhập thất bại, hiển thị thông báo cho người dùng
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Login Failed'),
-          content: const Text('Invalid username or password.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
+      // Đăng nhập thất bại, hiển thị thông báo cho người dùn
+      final snackdemo = SnackBar(
+        content: Text(
+          'Đăng nhập không thành công!',
+          style: kLableW800White,
         ),
+        backgroundColor: Colors.red,
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(5),
       );
+      ScaffoldMessenger.of(context).showSnackBar(snackdemo);
     }
 
     setState(() {
@@ -94,6 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 20,
               ),
               TextFormField(
+                style: kLableTextBlackMinium,
                 controller: _emailController,
                 decoration: InputDecoration(
                     contentPadding: borderRadiusTextField,

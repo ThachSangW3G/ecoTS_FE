@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:ecots_frontend/components/home/tile.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/controllers/user_controller.dart';
+import 'package:ecots_frontend/models/user.dart';
 import 'package:ecots_frontend/screens/accounts/about_me.dart';
 import 'package:ecots_frontend/screens/accounts/notification_setting.dart';
 import 'package:ecots_frontend/screens/login_signup/login_screen.dart';
@@ -10,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/home/achivement.dart';
@@ -23,6 +28,51 @@ class AccountScreen extends StatefulWidget {
 
 class _AccountScreenState extends State<AccountScreen> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  UserController userController = Get.put(UserController());
+
+  Future<void> _pickImageFromGalleary() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (returnedImage != null) {
+      final success = await userController.uploadNewAvatar(returnedImage.path);
+
+      if (!success) {
+        final snackdemo = SnackBar(
+          content: Text(
+            'Cập nhật avatar không thành công!',
+            style: kLableW800White,
+          ),
+          backgroundColor: Colors.red,
+          elevation: 10,
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.all(5),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+      } else {
+        await userController
+            .getUserByToken((await _prefs).getString('tokenAccess')!);
+        final snackdemo = SnackBar(
+          content: Text(
+            'Cập nhật avatar thành công!',
+            style: kLableW800White,
+          ),
+          backgroundColor: Colors.green,
+          elevation: 10,
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.all(5),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,24 +93,36 @@ class _AccountScreenState extends State<AccountScreen> {
                   Stack(
                     children: [
                       Container(
-                        height: 120,
-                        width: 120,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: AppColors.slamon),
-                      ),
+                          height: 120,
+                          width: 120,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.slamon,
+                          ),
+                          child: Obx(
+                            () => ClipOval(
+                              child: Image.network(
+                                userController.currentUser.value!.avatarUrl!,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          )),
                       Positioned(
                         bottom: 0,
                         right: 10,
-                        child: Container(
-                          height: 30,
-                          width: 30,
-                          decoration: const BoxDecoration(
-                              shape: BoxShape.circle, color: AppColors.green),
-                          child: Center(
-                            child: SvgPicture.asset(
-                              'assets/icons/camera.svg',
-                              height: 15,
-                              width: 15,
+                        child: InkWell(
+                          onTap: _pickImageFromGalleary,
+                          child: Container(
+                            height: 30,
+                            width: 30,
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle, color: AppColors.green),
+                            child: Center(
+                              child: SvgPicture.asset(
+                                'assets/icons/camera.svg',
+                                height: 15,
+                                width: 15,
+                              ),
                             ),
                           ),
                         ),
@@ -71,14 +133,14 @@ class _AccountScreenState extends State<AccountScreen> {
                     height: 10,
                   ),
                   Text(
-                    'Thạch Sang',
+                    userController.currentUser.value!.fullName!,
                     style: kLableTextBlackW600,
                   ),
                   const SizedBox(
                     height: 5,
                   ),
                   Text(
-                    'thachsang2202@gmail.com',
+                    userController.currentUser.value!.email!,
                     style: kLableTextStyleMiniumGrey,
                   ),
                   const SizedBox(

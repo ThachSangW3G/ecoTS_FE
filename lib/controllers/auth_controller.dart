@@ -1,9 +1,8 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import 'package:shared_preferences/shared_preferences.dart'; // Secure storage
 
 class AuthController extends GetxController {
@@ -65,7 +64,7 @@ class AuthController extends GetxController {
       'email': email,
       'username': username,
       'password': password,
-      'fullname': fullname,
+      'fullName': fullname,
       'dayOfBirth': dayOfBirth
     };
     final headers = {'Content-Type': 'application/json'};
