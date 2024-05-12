@@ -9,12 +9,14 @@ class DonationItemDetail extends StatefulWidget {
   final String title;
   final String logo;
   final String brand;
+  final Function()? onTap;
   const DonationItemDetail(
       {super.key,
       required this.image,
       required this.title,
       required this.logo,
-      required this.brand});
+      required this.brand,
+      this.onTap});
 
   @override
   State<DonationItemDetail> createState() => _DonationItemDetailState();
@@ -24,7 +26,7 @@ class _DonationItemDetailState extends State<DonationItemDetail> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 250,
+      margin: EdgeInsets.symmetric(vertical: 10.0),
       decoration: const BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.all(Radius.circular(15))),
@@ -36,7 +38,7 @@ class _DonationItemDetailState extends State<DonationItemDetail> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(15)),
                 image: DecorationImage(
-                    fit: BoxFit.cover, image: AssetImage(widget.image))),
+                    fit: BoxFit.cover, image: NetworkImage(widget.image))),
           ),
           const SizedBox(
             height: 10,
@@ -70,12 +72,7 @@ class _DonationItemDetailState extends State<DonationItemDetail> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => const DetailDonate()));
-                          },
+                          onTap: widget.onTap,
                           child: Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 3),
@@ -93,7 +90,10 @@ class _DonationItemDetailState extends State<DonationItemDetail> {
                     ),
                   ),
                 ],
-              ))
+              )),
+          SizedBox(
+            height: 15,
+          )
         ],
       ),
     );

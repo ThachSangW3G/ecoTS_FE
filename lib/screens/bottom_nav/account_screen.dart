@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:ecots_frontend/components/home/tile.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/controllers/point_controller.dart';
+import 'package:ecots_frontend/controllers/user_controller.dart';
+import 'package:ecots_frontend/models/user.dart';
 import 'package:ecots_frontend/screens/accounts/about_me.dart';
+import 'package:ecots_frontend/screens/accounts/change_password.dart';
 import 'package:ecots_frontend/screens/accounts/notification_setting.dart';
 import 'package:ecots_frontend/screens/login_signup/login_screen.dart';
 import 'package:ecots_frontend/screens/splash/welcome.dart';
@@ -10,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/home/achivement.dart';
@@ -23,6 +30,52 @@ class AccountScreen extends StatefulWidget {
 
 class _AccountScreenState extends State<AccountScreen> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  UserController userController = Get.put(UserController());
+  PointController pointController = Get.put(PointController());
+
+  Future<void> _pickImageFromGalleary() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (returnedImage != null) {
+      final success = await userController.uploadNewAvatar(returnedImage.path);
+
+      if (!success) {
+        final snackdemo = SnackBar(
+          content: Text(
+            'Cập nhật avatar không thành công!',
+            style: kLableW800White,
+          ),
+          backgroundColor: Colors.red,
+          elevation: 10,
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.all(5),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+      } else {
+        await userController
+            .getUserByToken((await _prefs).getString('tokenAccess')!);
+        final snackdemo = SnackBar(
+          content: Text(
+            'Cập nhật avatar thành công!',
+            style: kLableW800White,
+          ),
+          backgroundColor: Colors.green,
+          elevation: 10,
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.all(5),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,24 +96,43 @@ class _AccountScreenState extends State<AccountScreen> {
                   Stack(
                     children: [
                       Container(
-                        height: 120,
-                        width: 120,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: AppColors.slamon),
-                      ),
+                          height: 120,
+                          width: 120,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.slamon,
+                          ),
+                          child: Obx(
+                            () => ClipOval(
+                              child:
+                                  userController.currentUser.value!.avatarUrl !=
+                                          null
+                                      ? Image.network(
+                                          userController
+                                              .currentUser.value!.avatarUrl!,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Image.asset(
+                                          'assets/images/default_avatar.jpg',
+                                          fit: BoxFit.cover),
+                            ),
+                          )),
                       Positioned(
                         bottom: 0,
                         right: 10,
-                        child: Container(
-                          height: 30,
-                          width: 30,
-                          decoration: const BoxDecoration(
-                              shape: BoxShape.circle, color: AppColors.green),
-                          child: Center(
-                            child: SvgPicture.asset(
-                              'assets/icons/camera.svg',
-                              height: 15,
-                              width: 15,
+                        child: InkWell(
+                          onTap: _pickImageFromGalleary,
+                          child: Container(
+                            height: 30,
+                            width: 30,
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle, color: AppColors.green),
+                            child: Center(
+                              child: SvgPicture.asset(
+                                'assets/icons/camera.svg',
+                                height: 15,
+                                width: 15,
+                              ),
                             ),
                           ),
                         ),
@@ -71,50 +143,57 @@ class _AccountScreenState extends State<AccountScreen> {
                     height: 10,
                   ),
                   Text(
-                    'Thạch Sang',
+                    userController.currentUser.value!.fullName!,
                     style: kLableTextBlackW600,
                   ),
                   const SizedBox(
                     height: 5,
                   ),
                   Text(
-                    'thachsang2202@gmail.com',
+                    userController.currentUser.value!.email!,
                     style: kLableTextStyleMiniumGrey,
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   Container(
-                    height: 150,
-                    decoration: const BoxDecoration(
-                        color: AppColors.shamrock,
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        const Achivement(title: 'POINTS', value: '7070'),
-                        Container(
-                          height: 100,
-                          width: 4,
-                          decoration: const BoxDecoration(
-                              color: AppColors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
+                      height: 150,
+                      decoration: const BoxDecoration(
+                          color: AppColors.shamrock,
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      child: Obx(
+                        () => Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Achivement(
+                                title: 'POINTS',
+                                value: pointController.currentPoint.value!.point
+                                    .toString()),
+                            Container(
+                              height: 100,
+                              width: 4,
+                              decoration: const BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                            ),
+                            Achivement(
+                                title: 'SAVE O2',
+                                value:
+                                    '${pointController.currentPoint.value!.saveCo2}KG'),
+                            Container(
+                              height: 100,
+                              width: 4,
+                              decoration: const BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                            ),
+                            const Achivement(title: 'RECYCLED', value: '23'),
+                          ],
                         ),
-                        const Achivement(title: 'SAVE O2', value: '5KG'),
-                        Container(
-                          height: 100,
-                          width: 4,
-                          decoration: const BoxDecoration(
-                              color: AppColors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                        ),
-                        const Achivement(title: 'RECYCLED', value: '23'),
-                      ],
-                    ),
-                  ),
+                      )),
                   const SizedBox(
                     height: 20,
                   ),
@@ -127,10 +206,15 @@ class _AccountScreenState extends State<AccountScreen> {
                         haveArrowRight: true,
                         title: 'About me'),
                   ),
-                  const Tile(
-                      icon: 'assets/icons/myhistory.svg',
-                      haveArrowRight: true,
-                      title: 'My history'),
+                  InkWell(
+                    onTap: () {
+                      Get.to(const ChangePassword());
+                    },
+                    child: const Tile(
+                        icon: 'assets/icons/myhistory.svg',
+                        haveArrowRight: true,
+                        title: 'My history'),
+                  ),
                   InkWell(
                     onTap: () {
                       Get.to(const NotificationSetting());
@@ -140,10 +224,15 @@ class _AccountScreenState extends State<AccountScreen> {
                         haveArrowRight: true,
                         title: 'Notifications'),
                   ),
-                  const Tile(
-                      icon: 'assets/icons/notification.svg',
-                      haveArrowRight: true,
-                      title: 'Change password'),
+                  InkWell(
+                    onTap: () {
+                      Get.to(const ChangePassword());
+                    },
+                    child: const Tile(
+                        icon: 'assets/icons/notification.svg',
+                        haveArrowRight: true,
+                        title: 'Change password'),
+                  ),
                   const Tile(
                       icon: 'assets/icons/notification.svg',
                       haveArrowRight: true,
