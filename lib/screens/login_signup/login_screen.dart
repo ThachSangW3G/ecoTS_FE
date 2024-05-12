@@ -3,9 +3,13 @@ import 'package:ecots_frontend/components/login_signup/button_icon.dart';
 import 'package:ecots_frontend/constants/app_border.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/controllers/donation_controller.dart';
+import 'package:ecots_frontend/controllers/generate_barcode_controller.dart';
+import 'package:ecots_frontend/controllers/point_controller.dart';
 import 'package:ecots_frontend/controllers/user_controller.dart';
 import 'package:ecots_frontend/screens/bottom_nav/bottom_nav.dart';
 import 'package:ecots_frontend/screens/login_signup/forgot_password_screen.dart';
+import 'package:ecots_frontend/screens/login_signup/signup_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ecots_frontend/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +34,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   AuthController authController = Get.put(AuthController());
   UserController userController = Get.put(UserController());
+  DonationController donationController = Get.put(DonationController());
+  GenerateBarcodeController generateBarcodeController =
+      Get.put(GenerateBarcodeController());
+  PointController pointController = Get.put(PointController());
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   bool _isLoading = false;
@@ -49,6 +57,11 @@ class _LoginScreenState extends State<LoginScreen> {
       final accessToken = prefs.getString('tokenAccess');
 
       await userController.getUserByToken(accessToken!);
+      await generateBarcodeController.genenerateBarcode();
+      await donationController.getAllDonations();
+
+      await pointController.getPointByToken();
+
       Get.to(() => const BottomNavigation());
     } else {
       // Đăng nhập thất bại, hiển thị thông báo cho người dùn
@@ -205,13 +218,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     width: 5,
                   ),
-                  Text(
-                    'Sign up',
-                    style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
-                            color: AppColors.slamon,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16)),
+                  InkWell(
+                    onTap: () {
+                      Get.off(() => const SignupScreen());
+                    },
+                    child: Text(
+                      'Sign up',
+                      style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                              color: AppColors.slamon,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16)),
+                    ),
                   )
                 ],
               ),

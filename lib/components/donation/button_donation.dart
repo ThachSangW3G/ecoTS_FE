@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 class ButtonDonation extends StatefulWidget {
   final String title;
   final VoidCallback onClick;
-  const ButtonDonation({super.key, required this.title, required this.onClick});
+  final bool? isLoading;
+  const ButtonDonation(
+      {super.key, required this.title, required this.onClick, this.isLoading});
 
   @override
   State<ButtonDonation> createState() => _ButtonDonationState();
@@ -23,10 +25,18 @@ class _ButtonDonationState extends State<ButtonDonation> {
             color: AppColors.green,
             borderRadius: BorderRadius.all(Radius.circular(15))),
         child: Center(
-          child: Text(
-            widget.title,
-            style: kLableBoldWhite,
-          ),
+          child: widget.isLoading != null && widget.isLoading == true
+              ? const SizedBox(
+                  height: 30,
+                  width: 30,
+                  child: CircularProgressIndicator(
+                    color: AppColors.white,
+                  ),
+                )
+              : Text(
+                  widget.title,
+                  style: kLableBoldWhite,
+                ),
         ),
       ),
     );

@@ -126,4 +126,34 @@ class UserController extends GetxController {
       return false;
     }
   }
+
+  Future<bool> changePassword(String oldPassword, String newPassword) async {
+    final prefs = await _prefs;
+    final token = prefs.getString('tokenAccess');
+
+    final uri = Uri.parse('$_baseURL/user/change-password');
+
+    final requestBody = {
+      'token': token,
+      'oldPassword': oldPassword,
+      'newPassword': newPassword
+    };
+
+    final headers = {'Content-Type': 'application/json'};
+
+    try {
+      final response =
+          await http.post(uri, body: jsonEncode(requestBody), headers: headers);
+
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 }

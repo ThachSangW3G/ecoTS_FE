@@ -4,8 +4,12 @@ import 'package:ecots_frontend/components/home/material_item.dart';
 import 'package:ecots_frontend/components/home/nearby_item.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/controllers/donation_controller.dart';
+import 'package:ecots_frontend/controllers/point_controller.dart';
 import 'package:ecots_frontend/controllers/user_controller.dart';
+import 'package:ecots_frontend/screens/donation/detail_donate.dart';
 import 'package:ecots_frontend/screens/donation/donation_screen.dart';
+import 'package:ecots_frontend/screens/get_points/scanbarcode_srceen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
@@ -24,6 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   UserController userController = Get.put(UserController());
+  DonationController donationController = Get.put(DonationController());
+  PointController pointController = Get.put(PointController());
 
   String fullName = '';
 
@@ -59,8 +65,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 60,
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: NetworkImage(
-                                  userController.currentUser.value!.avatarUrl!),
+                              image: userController
+                                          .currentUser.value!.avatarUrl !=
+                                      null
+                                  ? NetworkImage(userController
+                                      .currentUser.value!.avatarUrl!)
+                                  : const AssetImage(
+                                          'assets/images/default_avatar.jpg')
+                                      as ImageProvider,
                               fit: BoxFit.cover),
                           color: const Color(0xFFD9D9D9),
                           borderRadius: BorderRadius.circular(18),
@@ -94,7 +106,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        SvgPicture.asset('assets/icons/bell.svg'),
+                        InkWell(
+                            onTap: () async {
+                              // final token =
+                              //     (await _prefs).getString('tokenAccess');
+                              // print(token);
+
+                              //await donationController.getAllDonations();
+
+                              await pointController.getPointByToken();
+                            },
+                            child: SvgPicture.asset('assets/icons/bell.svg')),
                       ],
                     ))
                   ],
@@ -103,36 +125,43 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 30,
                 ),
                 Container(
-                  height: 150,
-                  decoration: const BoxDecoration(
-                      color: AppColors.shamrock,
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      const Achivement(title: 'POINTS', value: '7070'),
-                      Container(
-                        height: 100,
-                        width: 4,
-                        decoration: const BoxDecoration(
-                            color: AppColors.white,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
+                    height: 150,
+                    decoration: const BoxDecoration(
+                        color: AppColors.shamrock,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: Obx(
+                      () => Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Achivement(
+                              title: 'POINTS',
+                              value: pointController.currentPoint.value!.point
+                                  .toString()),
+                          Container(
+                            height: 100,
+                            width: 4,
+                            decoration: const BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          ),
+                          Achivement(
+                              title: 'SAVE O2',
+                              value:
+                                  '${pointController.currentPoint.value!.saveCo2}KG'),
+                          Container(
+                            height: 100,
+                            width: 4,
+                            decoration: const BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          ),
+                          const Achivement(title: 'RECYCLED', value: '23'),
+                        ],
                       ),
-                      const Achivement(title: 'SAVE O2', value: '5KG'),
-                      Container(
-                        height: 100,
-                        width: 4,
-                        decoration: const BoxDecoration(
-                            color: AppColors.white,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                      ),
-                      const Achivement(title: 'RECYCLED', value: '23'),
-                    ],
-                  ),
-                ),
+                    )),
                 const SizedBox(
                   height: 20,
                 ),
@@ -145,12 +174,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    MaterialItem(
-                        icon: 'assets/icons/plus-circle.svg',
-                        title: 'Nhận điểm'),
+                    InkWell(
+                      onTap: () {
+                        Get.to(() => const ScanBarcodeScreen());
+                      },
+                      child: MaterialItem(
+                          icon: 'assets/icons/plus-circle.svg',
+                          title: 'Nhận điểm'),
+                    ),
                     MaterialItem(
                         icon: 'assets/icons/verified.svg', title: 'Tích điểm'),
                     MaterialItem(
@@ -222,30 +256,59 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                const DonationItem(
-                    image: 'assets/images/image1.png',
-                    title: 'Use public transportation shi shi shi shi shi',
-                    content:
-                        'Leave your car behind and take a greener route, walking, biking or '),
-                const SizedBox(
-                  height: 10,
-                ),
-                const DonationItem(
-                    image: 'assets/images/image1.png',
-                    title: 'Use public transportation shi shi shi shi shi',
-                    content:
-                        'Leave your car behind and take a greener route, walking, biking or '),
-                const SizedBox(
-                  height: 10,
-                ),
-                const DonationItem(
-                    image: 'assets/images/image1.png',
-                    title: 'Use public transportation shi shi shi shi shi',
-                    content:
-                        'Leave your car behind and take a greener route, walking, biking or '),
-                const SizedBox(
-                  height: 10,
-                ),
+                Obx(
+                  () => donationController.donationList.value != null &&
+                          donationController.donationList.value!.isNotEmpty
+                      ? SizedBox(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount:
+                                donationController.donationList.value!.length,
+                            itemBuilder: (context, index) {
+                              final donation =
+                                  donationController.donationList.value![index];
+                              print(donation.coverImageUrl[0]);
+
+                              return DonationItem(
+                                image: donation.coverImageUrl.first,
+                                title: donation.title,
+                                content: donation.description,
+                                onTap: () {
+                                  Get.to(() =>
+                                      DetailDonate(donationId: donation.id));
+                                },
+                              );
+                            },
+                          ),
+                        )
+                      : const SizedBox(),
+                )
+
+                // const DonationItem(
+                //     image: 'assets/images/image1.png',
+                //     title: 'Use public transportation shi shi shi shi shi',
+                //     content:
+                //         'Leave your car behind and take a greener route, walking, biking or '),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // const DonationItem(
+                //     image: 'assets/images/image1.png',
+                //     title: 'Use public transportation shi shi shi shi shi',
+                //     content:
+                //         'Leave your car behind and take a greener route, walking, biking or '),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // const DonationItem(
+                //     image: 'assets/images/image1.png',
+                //     title: 'Use public transportation shi shi shi shi shi',
+                //     content:
+                //         'Leave your car behind and take a greener route, walking, biking or '),
+                // const SizedBox(
+                //   height: 10,
+                // ),
               ],
             ),
           ),

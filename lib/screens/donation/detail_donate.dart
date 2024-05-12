@@ -1,14 +1,21 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:ecots_frontend/components/donation/button_donation.dart';
+import 'package:ecots_frontend/components/home/skelton.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/controllers/donation_controller.dart';
+import 'package:ecots_frontend/controllers/point_controller.dart';
+import 'package:ecots_frontend/models/donations/donation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DetailDonate extends StatefulWidget {
-  const DetailDonate({super.key});
+  const DetailDonate({super.key, required this.donationId});
+
+  final int donationId;
 
   @override
   State<DetailDonate> createState() => _DetailDonateState();
@@ -17,39 +24,87 @@ class DetailDonate extends StatefulWidget {
 class _DetailDonateState extends State<DetailDonate> {
   int? selectPoint;
 
-  void _showSuccessDialog(BuildContext context) {
-    showGeneralDialog(
-        context: context,
-        pageBuilder: (context, animation1, animation3) {
-          return Container();
-        },
-        transitionBuilder: (context, a1, a2, widget) {
-          return Center(
-            child: AlertDialog(
-              content: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Donation Success', style: kLableTextStyleSize26Green)
-                ],
-              ),
-            ),
-          );
-        });
+  DonationController donationController = Get.put(DonationController());
+
+  PointController pointController = Get.put(PointController());
+
+  bool _isLoading = false;
+
+  Donation? donation;
+
+  Future<void> getDonation() async {
+    print(widget.donationId);
+    donation = await donationController.getDonationById(widget.donationId);
+    setState(() {
+      print(donation);
+    });
   }
 
-  void _handleTextChanged(String value) {
-    if (value.isEmpty) {
-      try {
-        int number = int.parse(value);
+  @override
+  void initState() {
+    super.initState();
+    getDonation();
+  }
 
-        setState(() {
-          selectPoint = number;
-        });
-      } catch (e) {
-        print('Lỗi chuyển đổi: $e');
-      }
+  Future<void> donatePoint() async {
+    if (selectPoint == null) {
+      final snackdemo = SnackBar(
+        content: Text(
+          'Vui lòng cung cấp số điểm!',
+          style: kLableW800White,
+        ),
+        backgroundColor: Colors.red,
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(5),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+      return;
     }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final success =
+        await donationController.donatePoint(selectPoint!, widget.donationId);
+
+    if (success) {
+      _showSuccessDialog(context);
+      await donationController.getAllDonations();
+      getDonation();
+      await pointController.getPointByToken();
+    } else {
+      final snackdemo = SnackBar(
+        content: Text(
+          'Quyên góp điểm không thành công!',
+          style: kLableW800White,
+        ),
+        backgroundColor: Colors.red,
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(5),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
+
+  void _showSuccessDialog(BuildContext context) {
+    AwesomeDialog(
+            context: context,
+            dialogType: DialogType.success,
+            title: 'Donation success',
+            titleTextStyle: kLableTextStyleSize26Green,
+            desc: "Thank you for your donation",
+            descTextStyle: kLableTextStyleTilteGreen)
+        .show();
+  }
+
+  TextEditingController pointTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -66,34 +121,30 @@ class _DetailDonateState extends State<DetailDonate> {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                height: 350,
-                width: 350,
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage(
-                          'assets/images/image3.png',
-                        )),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(30),
-                    )),
-              ),
+              donation == null
+                  ? const Skelton(height: 350, widget: 350)
+                  : Container(
+                      height: 350,
+                      width: 350,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                donation!.coverImageUrl[0],
+                              )),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(30),
+                          )),
+                    ),
               const SizedBox(
                 height: 10,
               ),
-              Text('Xây dựng trường cho trẻ em vùng cao',
-                  maxLines: 2, style: kLableTextStyleSize26Green),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                'Bộ tộc Mixi Gaming',
-                textAlign: TextAlign.start,
-                style: kLableTextBlackW600Size16,
-              ),
+              donation == null
+                  ? const Skelton()
+                  : Text(donation!.title,
+                      maxLines: 2, style: kLableTextStyleSize26Green),
               const SizedBox(
                 height: 30,
               ),
@@ -162,20 +213,22 @@ class _DetailDonateState extends State<DetailDonate> {
                       )
                     ],
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Total Donation',
-                        style: kLableTextStyleTilteGreen,
-                      ),
-                      Text(
-                        '2.000.000 POINTS',
-                        style: kLableTextBlackW600,
-                      )
-                    ],
-                  )
+                  donation == null
+                      ? const Skelton()
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Total Donation',
+                              style: kLableTextStyleTilteGreen,
+                            ),
+                            Text(
+                              '${donation!.totalDonations} POINTS',
+                              style: kLableTextBlackW600,
+                            )
+                          ],
+                        )
                 ],
               ),
               const SizedBox(
@@ -311,8 +364,15 @@ class _DetailDonateState extends State<DetailDonate> {
                     color: Color.fromARGB(255, 235, 233, 233)),
                 child: Center(
                   child: TextFormField(
-                    onChanged: _handleTextChanged,
+                    controller: pointTextController,
                     style: kLableTilteBlack,
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      setState(() {
+                        selectPoint = int.parse(pointTextController.text);
+                        print(selectPoint);
+                      });
+                    },
                     cursorColor: AppColors.green,
                     decoration: InputDecoration(
                         border: InputBorder.none,
@@ -326,17 +386,9 @@ class _DetailDonateState extends State<DetailDonate> {
                 height: 30,
               ),
               ButtonDonation(
+                isLoading: _isLoading,
                 title: 'Donante now',
-                onClick: () {
-                  AwesomeDialog(
-                      context: context,
-                      dialogType: DialogType.success,
-                      title: 'Donation success',
-                      titleTextStyle: kLableTextStyleSize26Green,
-                      desc: "Thank you for your donation",
-                      descTextStyle: kLableTextStyleTilteGreen)
-                    ..show();
-                },
+                onClick: donatePoint,
               ),
               const SizedBox(
                 height: 30,
@@ -362,10 +414,12 @@ class _DetailDonateState extends State<DetailDonate> {
               const SizedBox(
                 height: 10,
               ),
-              Text(
-                'Dự án này là góp gạch xây trường này, 2018 ánnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn',
-                style: kLableTextStyleMiniumGrey,
-              )
+              donation == null
+                  ? const Skelton()
+                  : Text(
+                      donation!.description,
+                      style: kLableTextStyleMiniumGrey,
+                    )
             ],
           ),
         ),

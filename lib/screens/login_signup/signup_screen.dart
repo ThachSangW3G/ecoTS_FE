@@ -146,6 +146,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 20,
               ),
               TextFormField(
+                style: kLableTextBlackMinium,
                 controller: fullnameController,
                 decoration: InputDecoration(
                     contentPadding: borderRadiusTextField,
@@ -158,6 +159,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 15,
               ),
               TextFormField(
+                style: kLableTextBlackMinium,
                 controller: emailController,
                 decoration: InputDecoration(
                     contentPadding: borderRadiusTextField,
@@ -170,6 +172,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 15,
               ),
               TextFormField(
+                style: kLableTextBlackMinium,
                 controller: usernameController,
                 decoration: InputDecoration(
                     contentPadding: borderRadiusTextField,
@@ -182,6 +185,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 15,
               ),
               TextFormField(
+                style: kLableTextBlackMinium,
                 controller: dayOfBirthController,
                 readOnly: true,
                 decoration: InputDecoration(
@@ -315,13 +319,16 @@ class _SignupScreenState extends State<SignupScreen> {
                   const SizedBox(
                     width: 5,
                   ),
-                  Text(
-                    'Login',
-                    style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
-                            color: AppColors.slamon,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16)),
+                  InkWell(
+                    onTap: () => {Get.off(() => const LoginScreen())},
+                    child: Text(
+                      'Login',
+                      style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                              color: AppColors.slamon,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16)),
+                    ),
                   )
                 ],
               ),
