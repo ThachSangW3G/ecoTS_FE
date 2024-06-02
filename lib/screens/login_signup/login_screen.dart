@@ -5,6 +5,8 @@ import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:ecots_frontend/controllers/donation_controller.dart';
 import 'package:ecots_frontend/controllers/generate_barcode_controller.dart';
+import 'package:ecots_frontend/controllers/location_controller.dart';
+import 'package:ecots_frontend/controllers/waste_controller.dart';
 import 'package:ecots_frontend/controllers/point_controller.dart';
 import 'package:ecots_frontend/controllers/user_controller.dart';
 import 'package:ecots_frontend/screens/bottom_nav/bottom_nav.dart';
@@ -37,7 +39,12 @@ class _LoginScreenState extends State<LoginScreen> {
   DonationController donationController = Get.put(DonationController());
   GenerateBarcodeController generateBarcodeController =
       Get.put(GenerateBarcodeController());
+
+  WasteController wasteController = Get.put(WasteController());
+
+  LocationController locationController = Get.put(LocationController());
   PointController pointController = Get.put(PointController());
+
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   bool _isLoading = false;
@@ -59,8 +66,10 @@ class _LoginScreenState extends State<LoginScreen> {
       await userController.getUserByToken(accessToken!);
       await generateBarcodeController.genenerateBarcode();
       await donationController.getAllDonations();
+      await locationController.getAllLocations();
 
       await pointController.getPointByToken();
+      await wasteController.getAllMaterials();
 
       Get.to(() => const BottomNavigation());
     } else {

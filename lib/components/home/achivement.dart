@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 class Achivement extends StatefulWidget {
   final String title;
   final String value;
-  const Achivement({super.key, required this.title, required this.value});
+  final String image;
+  const Achivement(
+      {super.key,
+      required this.title,
+      required this.value,
+      required this.image});
 
   @override
   State<Achivement> createState() => _AchivementState();
@@ -24,6 +29,12 @@ class _AchivementState extends State<Achivement> {
             decoration: const ShapeDecoration(
               color: Colors.white,
               shape: OvalBorder(),
+            ),
+            child: Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                  image: DecorationImage(image: AssetImage(widget.image))),
             ),
           ),
           Text(widget.value, style: kLableBoldWhite),

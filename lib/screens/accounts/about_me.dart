@@ -126,6 +126,8 @@ class _AboutMeState extends State<AboutMe> {
 
     currentUser = userController.currentUser.value;
 
+    print(currentUser!.dayOfBirth);
+
     setState(() {
       if (currentUser != null) {
         if (currentUser!.fullName != null) {

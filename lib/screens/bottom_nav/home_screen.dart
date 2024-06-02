@@ -5,17 +5,20 @@ import 'package:ecots_frontend/components/home/nearby_item.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:ecots_frontend/controllers/donation_controller.dart';
+import 'package:ecots_frontend/controllers/location_controller.dart';
 import 'package:ecots_frontend/controllers/point_controller.dart';
 import 'package:ecots_frontend/controllers/user_controller.dart';
 import 'package:ecots_frontend/screens/donation/detail_donate.dart';
 import 'package:ecots_frontend/screens/donation/donation_screen.dart';
 import 'package:ecots_frontend/screens/get_points/scanbarcode_srceen.dart';
+import 'package:ecots_frontend/screens/maps/map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:latlong2/latlong.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   UserController userController = Get.put(UserController());
   DonationController donationController = Get.put(DonationController());
   PointController pointController = Get.put(PointController());
+  LocationController locationController = Get.put(LocationController());
 
   String fullName = '';
 
@@ -135,6 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Achivement(
+                              image: 'assets/images/giftbox.png',
                               title: 'POINTS',
                               value: pointController.currentPoint.value!.point
                                   .toString()),
@@ -147,6 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     BorderRadius.all(Radius.circular(10))),
                           ),
                           Achivement(
+                              image: 'assets/images/O2.png',
                               title: 'SAVE O2',
                               value:
                                   '${pointController.currentPoint.value!.saveCo2}KG'),
@@ -158,7 +164,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10))),
                           ),
-                          const Achivement(title: 'RECYCLED', value: '23'),
+                          const Achivement(
+                              image: 'assets/images/recycle.png',
+                              title: 'RECYCLED',
+                              value: '23'),
                         ],
                       ),
                     )),
@@ -181,15 +190,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         Get.to(() => const ScanBarcodeScreen());
                       },
-                      child: MaterialItem(
+                      child: const MaterialItem(
                           icon: 'assets/icons/plus-circle.svg',
                           title: 'Nhận điểm'),
                     ),
-                    MaterialItem(
+                    const MaterialItem(
                         icon: 'assets/icons/verified.svg', title: 'Tích điểm'),
-                    MaterialItem(
+                    const MaterialItem(
                         icon: 'assets/icons/gamepad.svg', title: 'Học & chơi'),
-                    MaterialItem(
+                    const MaterialItem(
                         icon: 'assets/icons/history.svg', title: 'Lịch sử'),
                   ],
                 ),
@@ -201,36 +210,70 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text('Nearby bin station', style: kLableTextBlackW600),
-                    Text(
-                      'See all',
-                      style: kLableTextGreyItalic,
+                    InkWell(
+                      onTap: () {
+                        Get.to(() => const MapScreen());
+                      },
+                      child: Text(
+                        'See all',
+                        style: kLableTextGreyItalic,
+                      ),
                     )
                   ],
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                const NearbyItem(
-                    image: 'assets/images/image2.png',
-                    address:
-                        'Trường THCS Bạch Đằng, Long Sơn, Bà Rịa - Vũng Tàu',
-                    time: 'T2 - T6 9:00 - 17:00'),
-                const SizedBox(
-                  height: 10,
-                ),
-                const NearbyItem(
-                    image: 'assets/images/image2.png',
-                    address:
-                        'Trường THCS Bạch Đằng, Long Sơn, Bà Rịa - Vũng Tàu',
-                    time: 'T2 - T6 9:00 - 17:00'),
-                const SizedBox(
-                  height: 10,
-                ),
-                const NearbyItem(
-                    image: 'assets/images/image2.png',
-                    address:
-                        'Trường THCS Bạch Đằng, Long Sơn, Bà Rịa - Vũng Tàu',
-                    time: 'T2 - T6 9:00 - 17:00'),
+                // const NearbyItem(
+                //     image: 'assets/images/image2.png',
+                //     address:
+                //         'Trường THCS Bạch Đằng, Long Sơn, Bà Rịa - Vũng Tàu',
+                //     time: 'T2 - T6 9:00 - 17:00'),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // const NearbyItem(
+                //     image: 'assets/images/image2.png',
+                //     address:
+                //         'Trường THCS Bạch Đằng, Long Sơn, Bà Rịa - Vũng Tàu',
+                //     time: 'T2 - T6 9:00 - 17:00'),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // const NearbyItem(
+                //     image: 'assets/images/image2.png',
+                //     address:
+                //         'Trường THCS Bạch Đằng, Long Sơn, Bà Rịa - Vũng Tàu',
+                //     time: 'T2 - T6 9:00 - 17:00'),
+
+                Obx(() => locationController.locationList.value != null &&
+                        locationController.locationList.value!.isNotEmpty
+                    ? SizedBox(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount:
+                              locationController.locationList.value!.length,
+                          itemBuilder: (context, index) {
+                            final location =
+                                locationController.locationList.value![index];
+                            return InkWell(
+                              onTap: () {
+                                Get.to(() => MapScreen(
+                                      choosePoint: LatLng(location.latitude,
+                                          location.longitude),
+                                    ));
+                              },
+                              child: NearbyItem(
+                                  image: 'assets/images/image2.png',
+                                  address: location.locationName,
+                                  time: location.description),
+                            );
+                          },
+                        ),
+                      )
+                    : const SizedBox()),
+
                 const SizedBox(
                   height: 20,
                 ),
@@ -244,7 +287,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (_) => DonationScreen()));
+                                builder: (_) => const DonationScreen()));
                       },
                       child: Text(
                         'See all',
@@ -256,6 +299,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 20,
                 ),
+
                 Obx(
                   () => donationController.donationList.value != null &&
                           donationController.donationList.value!.isNotEmpty

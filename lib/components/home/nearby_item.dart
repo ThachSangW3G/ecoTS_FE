@@ -1,6 +1,8 @@
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class NearbyItem extends StatefulWidget {
   final String image;
@@ -21,6 +23,7 @@ class _NearbyItemState extends State<NearbyItem> {
   Widget build(BuildContext context) {
     return Container(
       height: 130,
+      margin: const EdgeInsets.symmetric(vertical: 5),
       padding: const EdgeInsets.all(10),
       decoration: const BoxDecoration(
           color: AppColors.concrete,
@@ -39,18 +42,31 @@ class _NearbyItemState extends State<NearbyItem> {
           ),
           Expanded(
               child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
-                widget.address,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: kLableTextBlackW600Size16,
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      widget.address,
+                      maxLines: 2,
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.ellipsis,
+                      style: kLableTextBlackW600Size16,
+                    ),
+                  ),
+                ],
               ),
-              Text('Thời gian hoạt động: ${widget.time}',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: kLableTextBlackW300Size14),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text('${widget.time}',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: kLableTextBlackW300Size14),
+                  ),
+                ],
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
