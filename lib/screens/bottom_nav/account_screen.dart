@@ -167,6 +167,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Achivement(
+                                image: 'assets/images/giftbox.png',
                                 title: 'POINTS',
                                 value: pointController.currentPoint.value!.point
                                     .toString()),
@@ -179,6 +180,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                       BorderRadius.all(Radius.circular(10))),
                             ),
                             Achivement(
+                                image: 'assets/images/O2.png',
                                 title: 'SAVE O2',
                                 value:
                                     '${pointController.currentPoint.value!.saveCo2}KG'),
@@ -190,7 +192,10 @@ class _AccountScreenState extends State<AccountScreen> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10))),
                             ),
-                            const Achivement(title: 'RECYCLED', value: '23'),
+                            const Achivement(
+                                image: 'assets/images/recycle.png',
+                                title: 'RECYCLED',
+                                value: '23'),
                           ],
                         ),
                       )),
@@ -199,7 +204,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      Get.to(const AboutMe());
+                      Get.to(() => const AboutMe());
                     },
                     child: const Tile(
                         icon: 'assets/icons/aboutme.svg',

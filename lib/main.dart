@@ -1,8 +1,19 @@
+import 'package:ecots_frontend/controllers/camera_controller.dart';
 import 'package:ecots_frontend/screens/splash/load_logo.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:camera/camera.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final cameraController = Get.put(CameraControl());
+
+  final cameras = await availableCameras();
+
+  cameraController.cameras.value = cameras;
+
   runApp(const MyApp());
 }
 
