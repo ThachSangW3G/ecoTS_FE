@@ -24,7 +24,7 @@ class UserController extends GetxController {
       final response = await http.get(uri, headers: headers);
 
       if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
+        final responseData = jsonDecode(utf8.decode(response.bodyBytes));
         print(responseData['id']);
         final int id = responseData['id'];
 

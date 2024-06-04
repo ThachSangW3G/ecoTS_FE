@@ -19,7 +19,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../components/home/achivement.dart';
+import '../../components/home/achivement_item.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -166,7 +166,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Achivement(
+                            AchivementItem(
                                 image: 'assets/images/giftbox.png',
                                 title: 'POINTS',
                                 value: pointController.currentPoint.value!.point
@@ -179,7 +179,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10))),
                             ),
-                            Achivement(
+                            AchivementItem(
                                 image: 'assets/images/O2.png',
                                 title: 'SAVE O2',
                                 value:
@@ -192,7 +192,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10))),
                             ),
-                            const Achivement(
+                            const AchivementItem(
                                 image: 'assets/images/recycle.png',
                                 title: 'RECYCLED',
                                 value: '23'),

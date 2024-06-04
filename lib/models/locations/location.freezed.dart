@@ -27,6 +27,8 @@ mixin _$Location {
   double get latitude => throw _privateConstructorUsedError;
   double get longitude => throw _privateConstructorUsedError;
   String? get review => throw _privateConstructorUsedError;
+  String get backGroundImgUrl => throw _privateConstructorUsedError;
+  List<String> get imgDetailsUrl => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -46,7 +48,9 @@ abstract class $LocationCopyWith<$Res> {
       String typeOfLocation,
       double latitude,
       double longitude,
-      String? review});
+      String? review,
+      String backGroundImgUrl,
+      List<String> imgDetailsUrl});
 }
 
 /// @nodoc
@@ -69,6 +73,8 @@ class _$LocationCopyWithImpl<$Res, $Val extends Location>
     Object? latitude = null,
     Object? longitude = null,
     Object? review = freezed,
+    Object? backGroundImgUrl = null,
+    Object? imgDetailsUrl = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -99,6 +105,14 @@ class _$LocationCopyWithImpl<$Res, $Val extends Location>
           ? _value.review
           : review // ignore: cast_nullable_to_non_nullable
               as String?,
+      backGroundImgUrl: null == backGroundImgUrl
+          ? _value.backGroundImgUrl
+          : backGroundImgUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      imgDetailsUrl: null == imgDetailsUrl
+          ? _value.imgDetailsUrl
+          : imgDetailsUrl // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 }
@@ -118,7 +132,9 @@ abstract class _$$LocationImplCopyWith<$Res>
       String typeOfLocation,
       double latitude,
       double longitude,
-      String? review});
+      String? review,
+      String backGroundImgUrl,
+      List<String> imgDetailsUrl});
 }
 
 /// @nodoc
@@ -139,6 +155,8 @@ class __$$LocationImplCopyWithImpl<$Res>
     Object? latitude = null,
     Object? longitude = null,
     Object? review = freezed,
+    Object? backGroundImgUrl = null,
+    Object? imgDetailsUrl = null,
   }) {
     return _then(_$LocationImpl(
       id: null == id
@@ -169,6 +187,14 @@ class __$$LocationImplCopyWithImpl<$Res>
           ? _value.review
           : review // ignore: cast_nullable_to_non_nullable
               as String?,
+      backGroundImgUrl: null == backGroundImgUrl
+          ? _value.backGroundImgUrl
+          : backGroundImgUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      imgDetailsUrl: null == imgDetailsUrl
+          ? _value._imgDetailsUrl
+          : imgDetailsUrl // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -183,7 +209,10 @@ class _$LocationImpl with DiagnosticableTreeMixin implements _Location {
       required this.typeOfLocation,
       required this.latitude,
       required this.longitude,
-      required this.review});
+      required this.review,
+      required this.backGroundImgUrl,
+      required final List<String> imgDetailsUrl})
+      : _imgDetailsUrl = imgDetailsUrl;
 
   factory _$LocationImpl.fromJson(Map<String, dynamic> json) =>
       _$$LocationImplFromJson(json);
@@ -202,10 +231,19 @@ class _$LocationImpl with DiagnosticableTreeMixin implements _Location {
   final double longitude;
   @override
   final String? review;
+  @override
+  final String backGroundImgUrl;
+  final List<String> _imgDetailsUrl;
+  @override
+  List<String> get imgDetailsUrl {
+    if (_imgDetailsUrl is EqualUnmodifiableListView) return _imgDetailsUrl;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_imgDetailsUrl);
+  }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Location(id: $id, description: $description, locationName: $locationName, typeOfLocation: $typeOfLocation, latitude: $latitude, longitude: $longitude, review: $review)';
+    return 'Location(id: $id, description: $description, locationName: $locationName, typeOfLocation: $typeOfLocation, latitude: $latitude, longitude: $longitude, review: $review, backGroundImgUrl: $backGroundImgUrl, imgDetailsUrl: $imgDetailsUrl)';
   }
 
   @override
@@ -219,7 +257,9 @@ class _$LocationImpl with DiagnosticableTreeMixin implements _Location {
       ..add(DiagnosticsProperty('typeOfLocation', typeOfLocation))
       ..add(DiagnosticsProperty('latitude', latitude))
       ..add(DiagnosticsProperty('longitude', longitude))
-      ..add(DiagnosticsProperty('review', review));
+      ..add(DiagnosticsProperty('review', review))
+      ..add(DiagnosticsProperty('backGroundImgUrl', backGroundImgUrl))
+      ..add(DiagnosticsProperty('imgDetailsUrl', imgDetailsUrl));
   }
 
   @override
@@ -238,13 +278,26 @@ class _$LocationImpl with DiagnosticableTreeMixin implements _Location {
                 other.latitude == latitude) &&
             (identical(other.longitude, longitude) ||
                 other.longitude == longitude) &&
-            (identical(other.review, review) || other.review == review));
+            (identical(other.review, review) || other.review == review) &&
+            (identical(other.backGroundImgUrl, backGroundImgUrl) ||
+                other.backGroundImgUrl == backGroundImgUrl) &&
+            const DeepCollectionEquality()
+                .equals(other._imgDetailsUrl, _imgDetailsUrl));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, description, locationName,
-      typeOfLocation, latitude, longitude, review);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      description,
+      locationName,
+      typeOfLocation,
+      latitude,
+      longitude,
+      review,
+      backGroundImgUrl,
+      const DeepCollectionEquality().hash(_imgDetailsUrl));
 
   @JsonKey(ignore: true)
   @override
@@ -268,7 +321,9 @@ abstract class _Location implements Location {
       required final String typeOfLocation,
       required final double latitude,
       required final double longitude,
-      required final String? review}) = _$LocationImpl;
+      required final String? review,
+      required final String backGroundImgUrl,
+      required final List<String> imgDetailsUrl}) = _$LocationImpl;
 
   factory _Location.fromJson(Map<String, dynamic> json) =
       _$LocationImpl.fromJson;
@@ -287,6 +342,10 @@ abstract class _Location implements Location {
   double get longitude;
   @override
   String? get review;
+  @override
+  String get backGroundImgUrl;
+  @override
+  List<String> get imgDetailsUrl;
   @override
   @JsonKey(ignore: true)
   _$$LocationImplCopyWith<_$LocationImpl> get copyWith =>

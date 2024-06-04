@@ -25,13 +25,13 @@ class NavBar extends StatelessWidget {
                 onTap: () => onTap(0),
               ),
               navItem(
-                'assets/icons/ticket.svg',
+                'assets/icons/medal.svg',
                 pageIndex == 1,
                 onTap: () => onTap(1),
               ),
               const SizedBox(width: 80),
               navItem(
-                'assets/icons/gift.svg',
+                'assets/icons/develop.svg',
                 pageIndex == 2,
                 onTap: () => onTap(2),
               ),

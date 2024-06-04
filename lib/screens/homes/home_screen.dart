@@ -1,4 +1,4 @@
-import 'package:ecots_frontend/components/home/achivement.dart';
+import 'package:ecots_frontend/components/home/achivement_item.dart';
 import 'package:ecots_frontend/components/home/donation_item.dart';
 import 'package:ecots_frontend/components/home/material_item.dart';
 import 'package:ecots_frontend/components/home/nearby_item.dart';
@@ -138,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Achivement(
+                          AchivementItem(
                               image: 'assets/images/giftbox.png',
                               title: 'POINTS',
                               value: pointController.currentPoint.value!.point
@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10))),
                           ),
-                          Achivement(
+                          AchivementItem(
                               image: 'assets/images/O2.png',
                               title: 'SAVE O2',
                               value:
@@ -164,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10))),
                           ),
-                          const Achivement(
+                          const AchivementItem(
                               image: 'assets/images/recycle.png',
                               title: 'RECYCLED',
                               value: '23'),
@@ -209,7 +209,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text('Nearby bin station', style: kLableTextBlackW600),
+                    Text('Recycling point', style: kLableTextBlackW600),
                     InkWell(
                       onTap: () {
                         Get.to(() => const MapScreen());
@@ -265,9 +265,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ));
                               },
                               child: NearbyItem(
-                                  image: 'assets/images/image2.png',
-                                  address: location.locationName,
-                                  time: location.description),
+                                location: location,
+                              ),
                             );
                           },
                         ),

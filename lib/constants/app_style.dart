@@ -31,8 +31,14 @@ final kLableTextStyleTilteGreen = GoogleFonts.montserrat(
     textStyle: const TextStyle(
         color: AppColors.green, fontWeight: FontWeight.w700, fontSize: 18.0));
 
+final kLableTextStyleTilte22Green = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+        color: AppColors.green, fontWeight: FontWeight.w700, fontSize: 22.0));
+
 final kLableTilteBlack = GoogleFonts.montserrat(
     textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18.0));
+final kLableTilte16Black = GoogleFonts.montserrat(
+    textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16.0));
 
 final kLableTextStyleSize26Green = GoogleFonts.montserrat(
     textStyle: const TextStyle(
@@ -45,6 +51,12 @@ final kLableTextStyleMiniumGrey = GoogleFonts.montserrat(
 final kLableTextStyle18Grey = GoogleFonts.montserrat(
     textStyle: const TextStyle(
         color: AppColors.stack, fontWeight: FontWeight.w500, fontSize: 18.0));
+
+final kQuestionTextStyle = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+        color: AppColors.questions,
+        fontWeight: FontWeight.w700,
+        fontSize: 20.0));
 
 final kLableBoldWhite = GoogleFonts.montserrat(
     textStyle: const TextStyle(
@@ -63,6 +75,13 @@ final kLableW800White = GoogleFonts.montserrat(
 final kLableTextBlackW600 = GoogleFonts.montserrat(
     textStyle: const TextStyle(
   fontSize: 20,
+  fontWeight: FontWeight.w600,
+));
+
+final kLableTextWhiteW600 = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+  fontSize: 20,
+  color: AppColors.white,
   fontWeight: FontWeight.w600,
 ));
 
