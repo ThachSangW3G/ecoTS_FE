@@ -1,6 +1,9 @@
 import 'dart:typed_data';
 
+import 'package:ecots_frontend/components/maps/detail_point_bottomsheet.dart';
+import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:ecots_frontend/controllers/location_controller.dart';
+import 'package:ecots_frontend/models/locations/location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -18,12 +21,23 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   final LocationController locationController = Get.put(LocationController());
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  void _addMarker(LatLng point) {
+  void _addMarker(Location location) {
+    final point = LatLng(location.latitude, location.longitude);
+
     final marker = Marker(
       point: point,
-      child: Container(
-        child: Image.asset('assets/images/marker.png'),
+      child: InkWell(
+        onTap: () {
+          _scaffoldKey.currentState!
+              .showBottomSheet((_) => DetailPointBottomSheet(
+                    location: location,
+                  ));
+        },
+        child: Container(
+          child: Image.asset('assets/images/marker.png'),
+        ),
       ),
     );
     _markers.add(marker);
@@ -34,9 +48,7 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> loadMap() async {
     if (locationController.locationList.value != null) {
       locationController.locationList.value!.forEach((element) {
-        final point = LatLng(element.latitude, element.longitude);
-
-        _addMarker(point);
+        _addMarker(element);
       });
     }
   }
@@ -61,7 +73,13 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Map')),
+      key: _scaffoldKey,
+      appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            'Recyling point',
+            style: kLableTextStyleTilte22Green,
+          )),
       body: FlutterMap(
         mapController: mapController,
         options: MapOptions(

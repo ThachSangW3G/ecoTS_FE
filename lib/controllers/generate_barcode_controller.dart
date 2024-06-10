@@ -20,7 +20,7 @@ class GenerateBarcodeController extends GetxController {
     final email = userController.currentUser.value!.email!;
 
     final uri = Uri.parse(
-        '$_baseURL/generate/generate-barcode?username=$username&email=$email');
+        '$_baseURL/generate/generate-qrcode?username=$username&email=$email');
 
     final headers = {'Content-Type': 'application/json'};
 

@@ -32,6 +32,12 @@ class LocationController extends GetxController {
           final latitude = element['latitude'];
           final longitude = element['longitude'];
           final review = element['review'];
+          final backGroundImgUrl = element['backGroundImgUrl'];
+
+          List<String> imgDetailsUrl = [];
+          element['imgDetailsUrl'].forEach((image) {
+            imgDetailsUrl.add(image.toString());
+          });
 
           final location = Location(
               id: id,
@@ -40,7 +46,9 @@ class LocationController extends GetxController {
               typeOfLocation: typeOfLocation,
               latitude: latitude,
               longitude: longitude,
-              review: review);
+              review: review,
+              backGroundImgUrl: backGroundImgUrl,
+              imgDetailsUrl: imgDetailsUrl);
 
           responseLocations.add(location);
         });

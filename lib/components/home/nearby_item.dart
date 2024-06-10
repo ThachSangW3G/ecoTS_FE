@@ -3,16 +3,15 @@ import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:ecots_frontend/models/locations/location.dart';
 
 class NearbyItem extends StatefulWidget {
-  final String image;
-  final String address;
-  final String time;
-  const NearbyItem(
-      {super.key,
-      required this.image,
-      required this.address,
-      required this.time});
+  final Location location;
+
+  const NearbyItem({
+    super.key,
+    required this.location,
+  });
 
   @override
   State<NearbyItem> createState() => _NearbyItemState();
@@ -31,11 +30,14 @@ class _NearbyItemState extends State<NearbyItem> {
       child: Row(
         children: [
           Container(
-            height: 100,
+            height: 120,
             width: 120,
-            decoration: BoxDecoration(
+            child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(15)),
-                image: DecorationImage(image: AssetImage(widget.image))),
+                child: Image.network(
+                  widget.location.backGroundImgUrl,
+                  fit: BoxFit.cover,
+                )),
           ),
           const SizedBox(
             width: 10,
@@ -48,7 +50,7 @@ class _NearbyItemState extends State<NearbyItem> {
                 children: [
                   Expanded(
                     child: Text(
-                      widget.address,
+                      widget.location.locationName,
                       maxLines: 2,
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.ellipsis,
@@ -60,7 +62,7 @@ class _NearbyItemState extends State<NearbyItem> {
               Row(
                 children: [
                   Expanded(
-                    child: Text('${widget.time}',
+                    child: Text(widget.location.typeOfLocation,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: kLableTextBlackW300Size14),

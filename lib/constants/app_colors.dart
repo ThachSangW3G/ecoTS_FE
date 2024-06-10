@@ -10,4 +10,10 @@ class AppColors {
   static const Color shamrock = Color(0xff2DCC70);
   static const Color concrete = Color(0xfff2f2f2);
   static const Color whisper = Color(0xffF4F5F9);
+  static const Color backgroundProgress = Color.fromARGB(255, 196, 235, 219);
+  static const Color progress1 = Color.fromARGB(255, 138, 238, 88);
+  static const Color progress2 = Color.fromARGB(255, 31, 201, 130);
+  static const Color questions = Color(0xFF191D63);
+  static const Color anwserGreen = Color(0xFF45C486);
+  static const Color anwserRed = Color(0xFFED6B6B);
 }

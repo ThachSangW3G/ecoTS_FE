@@ -3,6 +3,8 @@ import 'package:ecots_frontend/components/login_signup/button_icon.dart';
 import 'package:ecots_frontend/constants/app_border.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/controllers/achivement_controller.dart';
+import 'package:ecots_frontend/controllers/achivemetn_level_controller.dart';
 import 'package:ecots_frontend/controllers/donation_controller.dart';
 import 'package:ecots_frontend/controllers/generate_barcode_controller.dart';
 import 'package:ecots_frontend/controllers/location_controller.dart';
@@ -44,6 +46,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   LocationController locationController = Get.put(LocationController());
   PointController pointController = Get.put(PointController());
+  AchivementController achivementController = Get.put(AchivementController());
+  AchivementLevelController achivementLevelController =
+      Get.put(AchivementLevelController());
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
@@ -70,6 +75,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
       await pointController.getPointByToken();
       await wasteController.getAllMaterials();
+      await achivementController.getAllAchivement();
+      await achivementLevelController
+          .getAllAchivementResultProgress(userController.currentUser.value!.id);
 
       Get.to(() => const BottomNavigation());
     } else {

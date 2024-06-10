@@ -1,10 +1,10 @@
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/models/nav_model.dart';
-import 'package:ecots_frontend/screens/bottom_nav/account_screen.dart';
-import 'package:ecots_frontend/screens/bottom_nav/gift_screen.dart';
-import 'package:ecots_frontend/screens/bottom_nav/home_screen.dart';
+import 'package:ecots_frontend/screens/accounts/account_screen.dart';
+import 'package:ecots_frontend/screens/minigames/minigame_screen.dart';
+import 'package:ecots_frontend/screens/homes/home_screen.dart';
 import 'package:ecots_frontend/screens/bottom_nav/nav_bar.dart';
-import 'package:ecots_frontend/screens/bottom_nav/ticket_screen.dart';
+import 'package:ecots_frontend/screens/achivements/achivement_screen.dart';
 import 'package:ecots_frontend/screens/cameras/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -36,11 +36,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
         navKey: homeNavKey,
       ),
       NavModel(
-        page: const TicketScreen(),
+        page: const AchivementScreen(),
         navKey: ticketKey,
       ),
       NavModel(
-        page: const GiftScreen(),
+        page: const MiniGameScreen(),
         navKey: giftKey,
       ),
       NavModel(
