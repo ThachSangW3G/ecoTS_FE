@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DonationController extends GetxController {
-  final String _baseURL = 'https://ecots-be.onrender.com';
+  final String _baseURL = 'https://ecotsbe-production.up.railway.app';
 
   var donationList = Rx<List<Donation>?>(null);
 

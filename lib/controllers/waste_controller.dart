@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import '../models/wastes/waste.dart';
 
 class WasteController extends GetxController {
-  final String _baseURL = 'https://ecots-be.onrender.com';
+  final String _baseURL = 'https://ecotsbe-production.up.railway.app';
 
   var materialList = Rx<List<Waste>?>(null);
 

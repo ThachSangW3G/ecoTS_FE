@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart'; // Secure storage
 
 class AuthController extends GetxController {
   final String _baseURL =
-      'https://ecots-be.onrender.com'; // Replace with your actual URL
+      'https://ecotsbe-production.up.railway.app'; // Replace with your actual URL
   //final _storage = FlutterSecureStorage(); // Secure storage instance
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
