@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
 class UserController extends GetxController {
-  final String _baseURL = 'https://ecots-be.onrender.com';
+  final String _baseURL = 'https://ecotsbe-production.up.railway.app';
 
   var currentUser = Rx<User?>(null);
 

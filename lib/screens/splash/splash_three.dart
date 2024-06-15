@@ -79,7 +79,7 @@ class _SplashThreeState extends State<SplashThree> {
                         textAlign: TextAlign.center,
                         style: kLableTextStyleBigGreen),
                     Text(
-                        'Dengan mendaur ulang, kamu turut serta melestarikan bumi dan kesejahteraan masyarakat',
+                        'Find places to exchange waste in your area and create a community that says no to waste.',
                         textAlign: TextAlign.center,
                         style: kLableTextStyleMediumGreen),
                     Row(

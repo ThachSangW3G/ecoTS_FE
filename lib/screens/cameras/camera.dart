@@ -132,7 +132,7 @@ class _CameraScreenState extends State<CameraScreen> {
         centerTitle: true,
         title: Text(
           'Waste Classification',
-          style: kLableTextStyleLogoScreen,
+          style: kLableTextStyleTilteGreen,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

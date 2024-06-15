@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class GenerateBarcodeController extends GetxController {
-  final String _baseURL = 'https://ecots-be.onrender.com';
+  final String _baseURL = 'https://ecotsbe-production.up.railway.app';
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   var barCode = Rx<Uint8List?>(null);

@@ -80,7 +80,7 @@ class _SplashOneState extends State<SplashOne> {
                         textAlign: TextAlign.center,
                         style: kLableTextStyleBigGreen),
                     Text(
-                        'Menjual sampah, sampahmu pada tempat tertentu dan dapatkan hadiahe',
+                        'By recycling, you contribute to protecting the Earth and improving the quality of life for all humanity.',
                         textAlign: TextAlign.center,
                         style: kLableTextStyleMediumGreen),
                     InkWell(
