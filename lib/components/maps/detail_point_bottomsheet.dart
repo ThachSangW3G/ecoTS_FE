@@ -22,9 +22,9 @@ class DetailPointBottomSheet extends StatelessWidget {
                 style: kLableTextBlackW600,
               ),
               Gap(3),
-              Text(
-                  'KTX Khu B, ĐHQC Tp. HCM, Tp. HCMdddddddddddddd sfdgtttttttttsds sfdre',
-                  style: kLableTextBlackSize16),
+              // Text(
+              //     'KTX Khu B, ĐHQC Tp. HCM, Tp. HCMdddddddddddddd sfdgtttttttttsds sfdre',
+              //     style: kLableTextBlackSize16),
               Gap(3),
               Text(location.description, style: kLableTextBlackSize16),
               Gap(8),

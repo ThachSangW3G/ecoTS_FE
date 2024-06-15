@@ -1,13 +1,18 @@
 import 'dart:io';
 
+import 'package:camera/camera.dart';
 import 'package:ecots_frontend/components/donation/button_donation.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/controllers/camera_controller.dart';
+import 'package:ecots_frontend/controllers/user_controller.dart';
 import 'package:ecots_frontend/controllers/waste_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:ecots_frontend/models/wastes/waste.dart';
+
+import '../../components/donation/button_green.dart';
 
 class ValidatingScreen extends StatefulWidget {
   final File file;
@@ -20,8 +25,33 @@ class ValidatingScreen extends StatefulWidget {
 
 class _ValidatingScreenState extends State<ValidatingScreen> {
   WasteController wasteController = Get.put(WasteController());
+  CameraControl cameraController = Get.put(CameraControl());
+  UserController userController = Get.put(UserController());
+
+  TextEditingController description = TextEditingController();
 
   Waste? waste;
+  bool isLoadingResponse = false;
+
+  Future<void> handleResponse() async {
+    setState(() {
+      isLoadingResponse = true;
+    });
+    try {
+      final response = await cameraController.sendRespond(
+          userController.currentUser.value!.id, description.text, widget.file);
+      if (response) {
+        Navigator.pop(context);
+        Get.snackbar('Success', 'Successful response');
+      }
+
+      print(response);
+    } catch (e) {}
+
+    setState(() {
+      isLoadingResponse = false;
+    });
+  }
 
   @override
   void initState() {
@@ -38,14 +68,14 @@ class _ValidatingScreenState extends State<ValidatingScreen> {
         centerTitle: true,
         title: Text(
           'Validating',
-          style: kLableTextStyleLogoScreen,
+          style: kLableTextStyleTilteGreen,
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Gap(5),
+            const Gap(5),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -62,7 +92,7 @@ class _ValidatingScreenState extends State<ValidatingScreen> {
                 ),
               ],
             ),
-            Gap(20),
+            const Gap(20),
             Container(
               width: MediaQuery.of(context).size.width - 30,
               padding: const EdgeInsets.all(20),
@@ -76,7 +106,7 @@ class _ValidatingScreenState extends State<ValidatingScreen> {
                   Column(
                     children: [
                       Text('Material', style: kLableTilteBlack),
-                      Gap(10),
+                      const Gap(10),
                       Text(waste != null ? waste!.name : widget.waste,
                           style: kLableTextStyleMiniumGrey),
                     ],
@@ -84,7 +114,7 @@ class _ValidatingScreenState extends State<ValidatingScreen> {
                   Column(
                     children: [
                       Text('Points', style: kLableTilteBlack),
-                      Gap(10),
+                      const Gap(10),
                       Text(
                           waste != null
                               ? waste!.pointsPerKg.toString()
@@ -95,7 +125,7 @@ class _ValidatingScreenState extends State<ValidatingScreen> {
                   Column(
                     children: [
                       Text('Save CO2', style: kLableTilteBlack),
-                      Gap(10),
+                      const Gap(10),
                       Text(
                           waste != null
                               ? waste!.co2SavedPerKg.toString()
@@ -106,18 +136,60 @@ class _ValidatingScreenState extends State<ValidatingScreen> {
                 ],
               ),
             ),
-            Gap(30),
+            const Gap(30),
             Padding(
               padding: const EdgeInsets.all(20),
-              child: ButtonDonation(
-                  title: 'Continue',
-                  onClick: () {
-                    Get.back();
-                  }),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ButtonGreen(
+                      title: 'Continue',
+                      onClick: () {
+                        Get.back();
+                      }),
+                  ButtonGreen(
+                      title: 'Response',
+                      onClick: () {
+                        openDialog();
+                      }),
+                ],
+              ),
             )
           ],
         ),
       ),
     );
   }
+
+  Future openDialog() => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: Text(
+              'Response detect',
+              style: kLableTextBlackW600,
+            ),
+            content: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: TextField(
+                controller: description,
+                maxLines: 10,
+                minLines: 1,
+                style: kLableTextBlackSize16,
+                decoration:
+                    const InputDecoration(hintText: 'Enter your response here'),
+              ),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('CANCEL')),
+              TextButton(
+                  onPressed: handleResponse,
+                  child: isLoadingResponse
+                      ? const CircularProgressIndicator()
+                      : const Text('SUBMIT'))
+            ],
+          ));
 }

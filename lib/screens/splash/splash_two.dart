@@ -79,8 +79,7 @@ class _SplashTwoState extends State<SplashTwo> {
                     Text('Good become greater',
                         textAlign: TextAlign.center,
                         style: kLableTextStyleBigGreen),
-                    Text(
-                        'Dengan mendaur ulang, kamu turut serta melestarikan bumi dan kesejahteraan masyarakat',
+                    Text('Easily sort waste quickly.',
                         textAlign: TextAlign.center,
                         style: kLableTextStyleMediumGreen),
                     Row(
