@@ -1,19 +1,27 @@
-import 'package:ecots_frontend/components/minigames/answer_card.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/screens/minigames/api_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ResultGame extends StatefulWidget {
-  const ResultGame({super.key});
+class ResultGame extends StatelessWidget {
+  final int correctAnswers;
+  final int totalQuestions;
+  final int topicId;
 
-  @override
-  State<ResultGame> createState() => _ResultGameState();
-}
+  const ResultGame({
+    super.key,
+    required this.correctAnswers,
+    required this.totalQuestions,
+    required this.topicId,
+  });
 
-class _ResultGameState extends State<ResultGame> {
+  Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('tokenAccess');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,9 +37,10 @@ class _ResultGameState extends State<ResultGame> {
               children: [
                 Container(
                   height: 200,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage('assets/images/result.png')),
+                      image: AssetImage('assets/images/result.png'),
+                    ),
                   ),
                 ),
                 Text('Result of the game', style: kQuestionTextStyle),
@@ -50,7 +59,9 @@ class _ResultGameState extends State<ResultGame> {
                         height: 60,
                         width: 60,
                         decoration: const BoxDecoration(
-                            color: AppColors.white, shape: BoxShape.circle),
+                          color: AppColors.white,
+                          shape: BoxShape.circle,
+                        ),
                         child: const Center(
                           child: Icon(Icons.money, color: AppColors.green),
                         ),
@@ -63,7 +74,7 @@ class _ResultGameState extends State<ResultGame> {
                         ),
                       ),
                       Text(
-                        '100',
+                        '${correctAnswers * 20}', // Example calculation for points
                         style: kLableTextBlackW600,
                       ),
                     ],
@@ -84,7 +95,9 @@ class _ResultGameState extends State<ResultGame> {
                         height: 60,
                         width: 60,
                         decoration: const BoxDecoration(
-                            color: AppColors.white, shape: BoxShape.circle),
+                          color: AppColors.white,
+                          shape: BoxShape.circle,
+                        ),
                         child: const Center(
                           child: Icon(Icons.check, color: AppColors.green),
                         ),
@@ -97,34 +110,58 @@ class _ResultGameState extends State<ResultGame> {
                         ),
                       ),
                       Text(
-                        '5',
+                        '$correctAnswers/$totalQuestions',
                         style: kLableTextBlackW600,
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 80,
-                ),
+                const SizedBox(height: 80),
               ],
             ),
             Positioned(
               bottom: 10,
-              child: Container(
-                width: MediaQuery.of(context).size.width - 20,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                decoration: const BoxDecoration(
+              child: InkWell(
+                onTap: () async {
+                  try {
+                    String? token = await _getToken();
+                    if (token != null) {
+                      int userId = await ApiService().getUserIdFromToken(token);
+                      double progress = (correctAnswers / totalQuestions) * 100;
+                      await ApiService().completeQuizAddPoints(
+                          userId,
+                          correctAnswers *
+                              20); // Example calculation for points
+                      await ApiService()
+                          .updateUserProgress(userId, topicId, progress);
+                      // Navigate back or show a confirmation message
+                      Navigator.pop(context);
+                    } else {
+                      // Handle missing token
+                      print('Token not found');
+                    }
+                  } catch (e) {
+                    // Handle error
+                    print('Failed to update points and progress: $e');
+                  }
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width - 20,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  decoration: const BoxDecoration(
                     color: AppColors.green,
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                child: Center(
-                  child: Text(
-                    'Okay',
-                    style: kLableBoldWhite,
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Okay',
+                      style: kLableBoldWhite,
+                    ),
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

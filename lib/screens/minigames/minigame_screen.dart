@@ -1,12 +1,13 @@
 import 'package:ecots_frontend/components/minigames/quizhorizoncard.dart';
-import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/screens/minigames/api_service.dart';
 import 'package:ecots_frontend/screens/minigames/detailgame.dart';
 import 'package:ecots_frontend/screens/minigames/quiz_topic.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:ecots_frontend/screens/minigames/api_service.dart'; // Import chính xác
+import 'package:get/get_core/src/get_main.dart';
 
 class MiniGameScreen extends StatefulWidget {
   const MiniGameScreen({super.key});
@@ -63,7 +64,7 @@ class _MiniGameScreenState extends State<MiniGameScreen> {
                         return QuizHorizonCard(
                           quizTopic: quizTopic,
                           onTap: () {
-                            Get.to(() => DetailGame(quizTopic: quizTopic));
+                            Get.to(() => DetailGame(quizTopicId: quizTopic.id));
                           },
                         );
                       },

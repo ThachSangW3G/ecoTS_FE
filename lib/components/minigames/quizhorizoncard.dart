@@ -1,11 +1,13 @@
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/screens/minigames/api_service.dart';
+import 'package:ecots_frontend/screens/minigames/quiz_topic.dart';
 import 'package:ecots_frontend/screens/minigames/user_progress.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:ecots_frontend/screens/minigames/quiz_topic.dart';
-import 'package:ecots_frontend/screens/minigames/api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class QuizHorizonCard extends StatefulWidget {
   final QuizTopic quizTopic;
@@ -19,13 +21,31 @@ class QuizHorizonCard extends StatefulWidget {
 }
 
 class _QuizHorizonCardState extends State<QuizHorizonCard> {
-  late Future<UserProgress> futureUserProgress;
+  late Stream<UserProgress> userProgressStream;
+  late ApiService apiService;
+  Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('tokenAccess');
+  }
 
   @override
   void initState() {
     super.initState();
-    futureUserProgress = ApiService().fetchUserProgress(
-        1, widget.quizTopic.id); // Thay 1 bằng userId của bạn
+    apiService = ApiService();
+    _initializeUserProgressStream();
+  }
+
+  void _initializeUserProgressStream() async {
+    try {
+      String? token = await _getToken(); // Thay thế bằng token của bạn
+      int userId = await apiService.getUserIdFromToken(token!);
+      setState(() {
+        userProgressStream =
+            apiService.fetchUserProgressStream(userId, widget.quizTopic.id);
+      });
+    } catch (error) {
+      print('Failed to fetch user ID: $error');
+    }
   }
 
   @override
@@ -74,8 +94,8 @@ class _QuizHorizonCardState extends State<QuizHorizonCard> {
               ),
             ),
             const Gap(10),
-            FutureBuilder<UserProgress>(
-              future: futureUserProgress,
+            StreamBuilder<UserProgress>(
+              stream: userProgressStream,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
