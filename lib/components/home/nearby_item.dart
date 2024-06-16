@@ -1,16 +1,17 @@
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:ecots_frontend/models/locations/location.dart';
 
 class NearbyItem extends StatefulWidget {
-  final String image;
-  final String address;
-  final String time;
-  const NearbyItem(
-      {super.key,
-      required this.image,
-      required this.address,
-      required this.time});
+  final Location location;
+
+  const NearbyItem({
+    super.key,
+    required this.location,
+  });
 
   @override
   State<NearbyItem> createState() => _NearbyItemState();
@@ -21,6 +22,7 @@ class _NearbyItemState extends State<NearbyItem> {
   Widget build(BuildContext context) {
     return Container(
       height: 130,
+      margin: const EdgeInsets.symmetric(vertical: 5),
       padding: const EdgeInsets.all(10),
       decoration: const BoxDecoration(
           color: AppColors.concrete,
@@ -28,29 +30,45 @@ class _NearbyItemState extends State<NearbyItem> {
       child: Row(
         children: [
           Container(
-            height: 100,
+            height: 120,
             width: 120,
-            decoration: BoxDecoration(
+            child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(15)),
-                image: DecorationImage(image: AssetImage(widget.image))),
+                child: Image.network(
+                  widget.location.backGroundImgUrl,
+                  fit: BoxFit.cover,
+                )),
           ),
           const SizedBox(
             width: 10,
           ),
           Expanded(
               child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
-                widget.address,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: kLableTextBlackW600Size16,
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      widget.location.locationName,
+                      maxLines: 2,
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.ellipsis,
+                      style: kLableTextBlackW600Size16,
+                    ),
+                  ),
+                ],
               ),
-              Text('Thời gian hoạt động: ${widget.time}',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: kLableTextBlackW300Size14),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(widget.location.typeOfLocation,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: kLableTextBlackW300Size14),
+                  ),
+                ],
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [

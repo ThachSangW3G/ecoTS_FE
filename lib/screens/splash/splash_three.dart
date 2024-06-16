@@ -4,6 +4,7 @@ import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:ecots_frontend/screens/splash/welcome.dart';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
@@ -29,7 +30,7 @@ class _SplashThreeState extends State<SplashThree> {
             top: 0,
             child: Container(
               height: 590,
-              width: 400,
+              width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                   image: DecorationImage(
                       fit: BoxFit.fill,
@@ -40,7 +41,7 @@ class _SplashThreeState extends State<SplashThree> {
             bottom: 0,
             child: Container(
               height: 400,
-              width: 400,
+              width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                   image: DecorationImage(
                       fit: BoxFit.fill,
@@ -78,15 +79,15 @@ class _SplashThreeState extends State<SplashThree> {
                         textAlign: TextAlign.center,
                         style: kLableTextStyleBigGreen),
                     Text(
-                        'Dengan mendaur ulang, kamu turut serta melestarikan bumi dan kesejahteraan masyarakat',
+                        'Find places to exchange waste in your area and create a community that says no to waste.',
                         textAlign: TextAlign.center,
                         style: kLableTextStyleMediumGreen),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        GestureDetector(
+                        InkWell(
                           onTap: () {
-                            Navigator.pop(context);
+                            Get.back();
                           },
                           child: Container(
                             width: 140,
@@ -113,13 +114,16 @@ class _SplashThreeState extends State<SplashThree> {
                             ),
                           ),
                         ),
-                        GestureDetector(
+                        InkWell(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                PageTransition(
-                                    child: const Welcome(),
-                                    type: PageTransitionType.rightToLeft));
+                            // Navigator.push(
+                            //     context,
+                            //     PageTransition(
+                            //         child: const Welcome(),
+                            //         type: PageTransitionType.rightToLeft));
+
+                            Get.to(const Welcome(),
+                                transition: Transition.rightToLeft);
                           },
                           child: Container(
                             width: 140,

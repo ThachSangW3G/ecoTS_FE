@@ -1,10 +1,14 @@
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ButtonGreen extends StatefulWidget {
   final String title;
-  const ButtonGreen({super.key, required this.title});
+
+  final bool? isLoading;
+
+  const ButtonGreen({super.key, required this.title, this.isLoading});
 
   @override
   State<ButtonGreen> createState() => _ButtonGreenState();
@@ -20,14 +24,22 @@ class _ButtonGreenState extends State<ButtonGreen> {
           color: AppColors.green,
           borderRadius: BorderRadius.all(Radius.circular(15))),
       child: Center(
-        child: Text(
-          widget.title,
-          style: GoogleFonts.montserrat(
-              textStyle: const TextStyle(
+        child: widget.isLoading != null && widget.isLoading == true
+            ? const SizedBox(
+                height: 30,
+                width: 30,
+                child: CircularProgressIndicator(
                   color: AppColors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600)),
-        ),
+                ),
+              )
+            : Text(
+                widget.title,
+                style: GoogleFonts.montserrat(
+                    textStyle: const TextStyle(
+                        color: AppColors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600)),
+              ),
       ),
     );
   }

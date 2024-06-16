@@ -3,13 +3,24 @@ import 'package:ecots_frontend/components/login_signup/button_icon.dart';
 import 'package:ecots_frontend/constants/app_border.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/controllers/achivement_controller.dart';
+import 'package:ecots_frontend/controllers/achivemetn_level_controller.dart';
+import 'package:ecots_frontend/controllers/donation_controller.dart';
+import 'package:ecots_frontend/controllers/generate_barcode_controller.dart';
+import 'package:ecots_frontend/controllers/location_controller.dart';
+import 'package:ecots_frontend/controllers/waste_controller.dart';
+import 'package:ecots_frontend/controllers/point_controller.dart';
+import 'package:ecots_frontend/controllers/user_controller.dart';
 import 'package:ecots_frontend/screens/bottom_nav/bottom_nav.dart';
 import 'package:ecots_frontend/screens/login_signup/forgot_password_screen.dart';
+import 'package:ecots_frontend/screens/login_signup/signup_screen.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:ecots_frontend/controllers/sign_in_controller.dart';
+import 'package:ecots_frontend/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -24,31 +35,69 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isChecked = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _loginController = SignInController();
+
+  AuthController authController = Get.put(AuthController());
+  UserController userController = Get.put(UserController());
+  DonationController donationController = Get.put(DonationController());
+  GenerateBarcodeController generateBarcodeController =
+      Get.put(GenerateBarcodeController());
+
+  WasteController wasteController = Get.put(WasteController());
+
+  LocationController locationController = Get.put(LocationController());
+  PointController pointController = Get.put(PointController());
+  AchivementController achivementController = Get.put(AchivementController());
+  AchivementLevelController achivementLevelController =
+      Get.put(AchivementLevelController());
+
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  bool _isLoading = false;
+
   Future<void> _login() async {
     final email = _emailController.text;
     final password = _passwordController.text;
 
-    final success = await _loginController.login(email, password);
+    setState(() {
+      _isLoading = true;
+    });
+
+    final success = await authController.login(email, password);
     if (success) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (_) => const BottomNavigation()));
+      final prefs = await _prefs;
+
+      final accessToken = prefs.getString('tokenAccess');
+
+      await userController.getUserByToken(accessToken!);
+      await generateBarcodeController.genenerateBarcode();
+      await donationController.getAllDonations();
+      await locationController.getAllLocations();
+
+      await pointController.getPointByToken();
+      await wasteController.getAllMaterials();
+      await achivementController.getAllAchivement();
+      await achivementLevelController
+          .getAllAchivementResultProgress(userController.currentUser.value!.id);
+
+      Get.to(() => const BottomNavigation());
     } else {
-      // Đăng nhập thất bại, hiển thị thông báo cho người dùng
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Login Failed'),
-          content: Text('Invalid username or password.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
-            ),
-          ],
+      // Đăng nhập thất bại, hiển thị thông báo cho người dùn
+      final snackdemo = SnackBar(
+        content: Text(
+          'Đăng nhập không thành công!',
+          style: kLableW800White,
         ),
+        backgroundColor: Colors.red,
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(5),
       );
+      ScaffoldMessenger.of(context).showSnackBar(snackdemo);
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -83,6 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 20,
               ),
               TextFormField(
+                style: kLableTextBlackMinium,
                 controller: _emailController,
                 decoration: InputDecoration(
                     contentPadding: borderRadiusTextField,
@@ -165,7 +215,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               GestureDetector(
                 onTap: _login,
-                child: const ButtonGreen(
+                child: ButtonGreen(
+                  isLoading: _isLoading,
                   title: 'Login',
                 ),
               ),
@@ -184,13 +235,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     width: 5,
                   ),
-                  Text(
-                    'Sign up',
-                    style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
-                            color: AppColors.slamon,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16)),
+                  InkWell(
+                    onTap: () {
+                      Get.off(() => const SignupScreen());
+                    },
+                    child: Text(
+                      'Sign up',
+                      style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                              color: AppColors.slamon,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16)),
+                    ),
                   )
                 ],
               ),

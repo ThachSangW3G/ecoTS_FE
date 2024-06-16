@@ -1,16 +1,21 @@
 import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:flutter/material.dart';
 
-class Achivement extends StatefulWidget {
+class AchivementItem extends StatefulWidget {
   final String title;
   final String value;
-  const Achivement({super.key, required this.title, required this.value});
+  final String image;
+  const AchivementItem(
+      {super.key,
+      required this.title,
+      required this.value,
+      required this.image});
 
   @override
-  State<Achivement> createState() => _AchivementState();
+  State<AchivementItem> createState() => _AchivementItemState();
 }
 
-class _AchivementState extends State<Achivement> {
+class _AchivementItemState extends State<AchivementItem> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -24,6 +29,12 @@ class _AchivementState extends State<Achivement> {
             decoration: const ShapeDecoration(
               color: Colors.white,
               shape: OvalBorder(),
+            ),
+            child: Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                  image: DecorationImage(image: AssetImage(widget.image))),
             ),
           ),
           Text(widget.value, style: kLableBoldWhite),

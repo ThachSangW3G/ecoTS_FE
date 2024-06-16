@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -30,7 +31,7 @@ class _SplashTwoState extends State<SplashTwo> {
             top: 0,
             child: Container(
               height: 590,
-              width: 400,
+              width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                   image: DecorationImage(
                       fit: BoxFit.fill,
@@ -41,7 +42,7 @@ class _SplashTwoState extends State<SplashTwo> {
             bottom: 0,
             child: Container(
               height: 400,
-              width: 400,
+              width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                   image: DecorationImage(
                       fit: BoxFit.fill,
@@ -78,16 +79,15 @@ class _SplashTwoState extends State<SplashTwo> {
                     Text('Good become greater',
                         textAlign: TextAlign.center,
                         style: kLableTextStyleBigGreen),
-                    Text(
-                        'Dengan mendaur ulang, kamu turut serta melestarikan bumi dan kesejahteraan masyarakat',
+                    Text('Easily sort waste quickly.',
                         textAlign: TextAlign.center,
                         style: kLableTextStyleMediumGreen),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        GestureDetector(
+                        InkWell(
                           onTap: () {
-                            Navigator.pop(context);
+                            Get.back();
                           },
                           child: Container(
                             width: 140,
@@ -114,13 +114,16 @@ class _SplashTwoState extends State<SplashTwo> {
                             ),
                           ),
                         ),
-                        GestureDetector(
+                        InkWell(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                PageTransition(
-                                    child: const SplashThree(),
-                                    type: PageTransitionType.rightToLeft));
+                            // Navigator.push(
+                            //     context,
+                            //     PageTransition(
+                            //         child: const SplashThree(),
+                            //         type: PageTransitionType.rightToLeft));
+
+                            Get.to(const SplashThree(),
+                                transition: Transition.rightToLeft);
                           },
                           child: Container(
                             width: 140,

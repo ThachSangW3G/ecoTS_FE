@@ -4,6 +4,7 @@ import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:ecots_frontend/screens/splash/splash_one.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class LoadLogo extends StatefulWidget {
   const LoadLogo({super.key});
@@ -17,8 +18,9 @@ class _LoadLogoState extends State<LoadLogo> {
   void initState() {
     super.initState();
     Timer(const Duration(seconds: 3), () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const SplashOne()));
+      // Navigator.push(
+      //     context, MaterialPageRoute(builder: (context) => const SplashOne()));
+      Get.to(const SplashOne());
     });
   }
 

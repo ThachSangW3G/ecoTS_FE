@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -30,7 +31,7 @@ class _SplashOneState extends State<SplashOne> {
             top: 0,
             child: Container(
               height: 590,
-              width: 400,
+              width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                   image: DecorationImage(
                       fit: BoxFit.fill,
@@ -41,7 +42,7 @@ class _SplashOneState extends State<SplashOne> {
             bottom: 0,
             child: Container(
               height: 400,
-              width: 400,
+              width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                   image: DecorationImage(
                       fit: BoxFit.fill,
@@ -79,16 +80,19 @@ class _SplashOneState extends State<SplashOne> {
                         textAlign: TextAlign.center,
                         style: kLableTextStyleBigGreen),
                     Text(
-                        'Menjual sampah, sampahmu pada tempat tertentu dan dapatkan hadiahe',
+                        'By recycling, you contribute to protecting the Earth and improving the quality of life for all humanity.',
                         textAlign: TextAlign.center,
                         style: kLableTextStyleMediumGreen),
-                    GestureDetector(
+                    InkWell(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                child: const SplashTwo(),
-                                type: PageTransitionType.rightToLeft));
+                        // Navigator.push(
+                        //     context,
+                        //     PageTransition(
+                        //         child: const SplashTwo(),
+                        //         type: PageTransitionType.rightToLeft));
+
+                        Get.to(const SplashTwo(),
+                            transition: Transition.rightToLeft);
                       },
                       child: Container(
                         width: 200,
