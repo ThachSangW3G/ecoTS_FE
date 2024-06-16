@@ -10,6 +10,7 @@ import 'package:ecots_frontend/controllers/point_controller.dart';
 import 'package:ecots_frontend/controllers/user_controller.dart';
 import 'package:ecots_frontend/screens/donation/detail_donate.dart';
 import 'package:ecots_frontend/screens/donation/donation_screen.dart';
+import 'package:ecots_frontend/screens/get_points/history_point.dart';
 import 'package:ecots_frontend/screens/get_points/scanbarcode_srceen.dart';
 import 'package:ecots_frontend/screens/maps/map.dart';
 import 'package:ecots_frontend/screens/notifications/notification_screen.dart';
@@ -193,8 +194,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: 'assets/icons/verified.svg', title: 'Tích điểm'),
                     const MaterialItem(
                         icon: 'assets/icons/gamepad.svg', title: 'Học & chơi'),
-                    const MaterialItem(
-                        icon: 'assets/icons/history.svg', title: 'Lịch sử'),
+                    InkWell(
+                      onTap: () {
+                        Get.to(() => const HistoryPoint());
+                      },
+                      child: const MaterialItem(
+                          icon: 'assets/icons/history.svg', title: 'Lịch sử'),
+                    ),
                   ],
                 ),
                 const SizedBox(

@@ -1,3 +1,4 @@
+import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/controllers/camera_controller.dart';
 import 'package:ecots_frontend/screens/splash/load_logo.dart';
 import 'package:ecots_frontend/screens/staff/home_screen_staff.dart';
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.green),
         useMaterial3: true,
       ),
       home: const LoadLogo(),
