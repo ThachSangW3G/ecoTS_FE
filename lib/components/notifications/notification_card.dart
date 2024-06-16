@@ -1,11 +1,14 @@
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/models/notifications/notification_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 
 class NotificationCard extends StatelessWidget {
-  const NotificationCard({super.key});
+  final NotificationModel notificationModel;
+  const NotificationCard({super.key, required this.notificationModel});
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +28,22 @@ class NotificationCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'New notification',
+                  notificationModel.title,
                   style: kLableTextBlackW600Size16,
                 ),
                 Text(
-                  'Description Description Description sfu Description Description',
+                  notificationModel.description,
                   style: kLableTextGreyItalic,
-                )
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                        DateFormat('yyyy-MM-dd')
+                            .format(notificationModel.createdAt),
+                        style: kLableTextItalic),
+                  ],
+                ),
               ],
             ),
           )
