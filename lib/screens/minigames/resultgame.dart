@@ -1,6 +1,7 @@
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:ecots_frontend/screens/minigames/api_service.dart';
+import 'package:ecots_frontend/screens/minigames/user_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +21,25 @@ class ResultGame extends StatelessWidget {
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('tokenAccess');
+  }
+
+  Future<void> _handleQuizCompletion() async {
+    String? token = await _getToken();
+    if (token != null) {
+      int userId = await ApiService().getUserIdFromToken(token);
+      double progress = (correctAnswers / totalQuestions) * 100;
+      await ApiService().updateUserProgress(userId, topicId, progress);
+      if (progress >= 100) {
+        UserProgress userProgress =
+            await ApiService().getUserProgress(userId, topicId);
+        if (userProgress.reachMax && userProgress.collection) {
+          await ApiService().completeQuizAddPoints(userId, correctAnswers * 5);
+        }
+      }
+    } else {
+      // Handle missing token
+      print('Token not found');
+    }
   }
 
   @override
@@ -74,7 +94,7 @@ class ResultGame extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${correctAnswers * 20}', // Example calculation for points
+                        '${correctAnswers * 5}', // Each correct answer is worth 5 points
                         style: kLableTextBlackW600,
                       ),
                     ],
@@ -123,27 +143,8 @@ class ResultGame extends StatelessWidget {
               bottom: 10,
               child: InkWell(
                 onTap: () async {
-                  try {
-                    String? token = await _getToken();
-                    if (token != null) {
-                      int userId = await ApiService().getUserIdFromToken(token);
-                      double progress = (correctAnswers / totalQuestions) * 100;
-                      await ApiService().completeQuizAddPoints(
-                          userId,
-                          correctAnswers *
-                              20); // Example calculation for points
-                      await ApiService()
-                          .updateUserProgress(userId, topicId, progress);
-                      // Navigate back or show a confirmation message
-                      Navigator.pop(context);
-                    } else {
-                      // Handle missing token
-                      print('Token not found');
-                    }
-                  } catch (e) {
-                    // Handle error
-                    print('Failed to update points and progress: $e');
-                  }
+                  await _handleQuizCompletion();
+                  Navigator.pop(context);
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width - 20,

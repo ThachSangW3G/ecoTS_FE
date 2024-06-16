@@ -8,17 +8,21 @@ import 'package:http/http.dart' as http;
 class ApiService {
   static const String baseUrl = 'http://192.168.2.10:7050';
 
-  Future<List<QuizTopic>> fetchQuizTopics() async {
-    final response =
-        await http.get(Uri.parse('$baseUrl/api/quiz-topics/get-all'));
+  Stream<List<QuizTopic>> fetchQuizTopics() async* {
+    while (true) {
+      final response =
+          await http.get(Uri.parse('$baseUrl/api/quiz-topics/get-all'));
 
-    if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-      return jsonResponse.map((topic) => QuizTopic.fromJson(topic)).toList();
-    } else {
-      print('Failed to load quiz topics: ${response.statusCode}');
-      print('Response body: ${response.body}');
-      throw Exception('Failed to load quiz topics');
+      if (response.statusCode == 200) {
+        List jsonResponse = json.decode(response.body);
+        yield jsonResponse.map((topic) => QuizTopic.fromJson(topic)).toList();
+      } else {
+        print('Failed to load quiz topics: ${response.statusCode}');
+        print('Response body: ${response.body}');
+        throw Exception('Failed to load quiz topics');
+      }
+
+      await Future.delayed(Duration(minutes: 1)); // Refresh topics every minute
     }
   }
 
@@ -40,15 +44,20 @@ class ApiService {
     }
   }
 
-  Future<List<QuizQuestion>> fetchQuizQuestions(int topicId) async {
-    final response = await http.get(Uri.parse(
-        '$baseUrl/api/quiz-questions/get-all-question-by-topic?id=$topicId'));
-    if (response.statusCode == 200) {
-      return (json.decode(response.body) as List)
-          .map((data) => QuizQuestion.fromJson(data))
-          .toList();
-    } else {
-      throw Exception('Failed to load quiz questions');
+  Stream<List<QuizQuestion>> fetchQuizQuestions(int topicId) async* {
+    while (true) {
+      final response = await http.get(Uri.parse(
+          '$baseUrl/api/quiz-questions/get-all-question-by-topic?id=$topicId'));
+      if (response.statusCode == 200) {
+        yield (json.decode(response.body) as List)
+            .map((data) => QuizQuestion.fromJson(data))
+            .toList();
+      } else {
+        throw Exception('Failed to load quiz questions');
+      }
+
+      await Future.delayed(
+          Duration(minutes: 1)); // Refresh questions every minute
     }
   }
 
@@ -94,6 +103,21 @@ class ApiService {
 
     if (response.statusCode != 200) {
       throw Exception('Failed to update progress');
+    }
+  }
+
+  Future<UserProgress> getUserProgress(int userId, int topicId) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/api/user-progress/user/$userId/topic/$topicId'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return UserProgress.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to fetch user progress');
     }
   }
 }

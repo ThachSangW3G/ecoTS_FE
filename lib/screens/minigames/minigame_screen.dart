@@ -17,12 +17,12 @@ class MiniGameScreen extends StatefulWidget {
 }
 
 class _MiniGameScreenState extends State<MiniGameScreen> {
-  late Future<List<QuizTopic>> futureQuizTopics;
+  late Stream<List<QuizTopic>> quizTopicsStream;
 
   @override
   void initState() {
     super.initState();
-    futureQuizTopics = ApiService().fetchQuizTopics();
+    quizTopicsStream = ApiService().fetchQuizTopics();
   }
 
   @override
@@ -45,8 +45,8 @@ class _MiniGameScreenState extends State<MiniGameScreen> {
                 'Available Games',
                 style: kLableTextStyleTilteGreen,
               ),
-              FutureBuilder<List<QuizTopic>>(
-                future: futureQuizTopics,
+              StreamBuilder<List<QuizTopic>>(
+                stream: quizTopicsStream,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());

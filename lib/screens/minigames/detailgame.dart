@@ -14,12 +14,12 @@ class DetailGame extends StatefulWidget {
 }
 
 class _DetailGameState extends State<DetailGame> {
-  late Future<List<QuizQuestion>> futureQuizQuestions;
+  late Stream<List<QuizQuestion>> quizQuestionsStream;
 
   @override
   void initState() {
     super.initState();
-    futureQuizQuestions = ApiService().fetchQuizQuestions(widget.quizTopicId);
+    quizQuestionsStream = ApiService().fetchQuizQuestions(widget.quizTopicId);
   }
 
   @override
@@ -30,8 +30,8 @@ class _DetailGameState extends State<DetailGame> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: FutureBuilder<List<QuizQuestion>>(
-          future: futureQuizQuestions,
+        child: StreamBuilder<List<QuizQuestion>>(
+          stream: quizQuestionsStream,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());

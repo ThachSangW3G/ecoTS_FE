@@ -45,6 +45,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
       {'answer': question.incorrectAnswer2, 'isCorrect': false},
     ];
     answers.shuffle(Random());
+    List<String> order = ['A', 'B', 'C'];
+    for (int i = 0; i < answers.length; i++) {
+      answers[i]['order'] = order[i];
+    }
   }
 
   void _selectAnswer(String answer) {
@@ -128,10 +132,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
             ),
             const Gap(20),
             ...answers.map((answer) => AnswerCard(
-                  isCorrect: answer['isCorrect'] && isAnswered,
+                  isCorrect: answer['isCorrect'],
                   isSelected: selectedAnswer == answer['answer'],
-                  order:
-                      'A', // You might want to update the order dynamically if needed
+                  isAnswered: isAnswered, // Pass this parameter
+                  order: answer['order'],
                   answer: answer['answer'],
                   onTap: !hasCheckedAnswer
                       ? () => _selectAnswer(answer['answer'])

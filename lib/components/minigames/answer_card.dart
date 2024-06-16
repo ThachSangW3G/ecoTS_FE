@@ -6,6 +6,7 @@ import 'package:gap/gap.dart';
 class AnswerCard extends StatelessWidget {
   final bool isCorrect;
   final bool isSelected;
+  final bool isAnswered;
   final String order;
   final String answer;
   final VoidCallback onTap;
@@ -14,6 +15,7 @@ class AnswerCard extends StatelessWidget {
     super.key,
     required this.isCorrect,
     required this.isSelected,
+    required this.isAnswered,
     required this.order,
     required this.answer,
     required this.onTap,
@@ -28,11 +30,13 @@ class AnswerCard extends StatelessWidget {
         height: 80,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: isSelected
+          color: isAnswered
               ? isCorrect
                   ? AppColors.anwserGreen
                   : AppColors.anwserRed
-              : AppColors.gray,
+              : isSelected
+                  ? AppColors.chooseAnswer
+                  : AppColors.gray,
           borderRadius: BorderRadius.circular(10),
         ),
         padding: const EdgeInsets.all(10),
@@ -46,7 +50,7 @@ class AnswerCard extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: Center(
-                child: isSelected
+                child: isAnswered
                     ? isCorrect
                         ? const Icon(
                             Icons.check,
@@ -60,9 +64,11 @@ class AnswerCard extends StatelessWidget {
               ),
             ),
             const Gap(10),
-            Text(
-              answer,
-              style: isSelected ? kLableTextWhiteW600 : kLableTextBlackW600,
+            Expanded(
+              child: Text(
+                answer,
+                style: kLableTextBlackW600,
+              ),
             ),
           ],
         ),
