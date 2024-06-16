@@ -1,12 +1,12 @@
 import 'package:ecots_frontend/components/minigames/quizhorizoncard.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
-import 'package:ecots_frontend/screens/minigames/api_service';
 import 'package:ecots_frontend/screens/minigames/detailgame.dart';
 import 'package:ecots_frontend/screens/minigames/quiz_topic.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:ecots_frontend/screens/minigames/api_service.dart'; // Import chính xác
 
 class MiniGameScreen extends StatefulWidget {
   const MiniGameScreen({super.key});
