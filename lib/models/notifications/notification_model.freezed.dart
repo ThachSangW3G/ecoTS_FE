@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'notification.dart';
+part of 'notification_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -21,9 +21,8 @@ NotificationModel _$NotificationModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$NotificationModel {
   int get id => throw _privateConstructorUsedError;
-  double get points => throw _privateConstructorUsedError;
-  String get exchangePointLocation => throw _privateConstructorUsedError;
-  int get userId => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,12 +37,7 @@ abstract class $NotificationModelCopyWith<$Res> {
           NotificationModel value, $Res Function(NotificationModel) then) =
       _$NotificationModelCopyWithImpl<$Res, NotificationModel>;
   @useResult
-  $Res call(
-      {int id,
-      double points,
-      String exchangePointLocation,
-      int userId,
-      DateTime createdAt});
+  $Res call({int id, String title, String description, DateTime createdAt});
 }
 
 /// @nodoc
@@ -60,9 +54,8 @@ class _$NotificationModelCopyWithImpl<$Res, $Val extends NotificationModel>
   @override
   $Res call({
     Object? id = null,
-    Object? points = null,
-    Object? exchangePointLocation = null,
-    Object? userId = null,
+    Object? title = null,
+    Object? description = null,
     Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
@@ -70,18 +63,14 @@ class _$NotificationModelCopyWithImpl<$Res, $Val extends NotificationModel>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      points: null == points
-          ? _value.points
-          : points // ignore: cast_nullable_to_non_nullable
-              as double,
-      exchangePointLocation: null == exchangePointLocation
-          ? _value.exchangePointLocation
-          : exchangePointLocation // ignore: cast_nullable_to_non_nullable
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as int,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -98,12 +87,7 @@ abstract class _$$NotificationModelImplCopyWith<$Res>
       __$$NotificationModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int id,
-      double points,
-      String exchangePointLocation,
-      int userId,
-      DateTime createdAt});
+  $Res call({int id, String title, String description, DateTime createdAt});
 }
 
 /// @nodoc
@@ -118,9 +102,8 @@ class __$$NotificationModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? points = null,
-    Object? exchangePointLocation = null,
-    Object? userId = null,
+    Object? title = null,
+    Object? description = null,
     Object? createdAt = null,
   }) {
     return _then(_$NotificationModelImpl(
@@ -128,18 +111,14 @@ class __$$NotificationModelImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      points: null == points
-          ? _value.points
-          : points // ignore: cast_nullable_to_non_nullable
-              as double,
-      exchangePointLocation: null == exchangePointLocation
-          ? _value.exchangePointLocation
-          : exchangePointLocation // ignore: cast_nullable_to_non_nullable
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as int,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -155,9 +134,8 @@ class _$NotificationModelImpl
     implements _NotificationModel {
   const _$NotificationModelImpl(
       {required this.id,
-      required this.points,
-      required this.exchangePointLocation,
-      required this.userId,
+      required this.title,
+      required this.description,
       required this.createdAt});
 
   factory _$NotificationModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -166,17 +144,15 @@ class _$NotificationModelImpl
   @override
   final int id;
   @override
-  final double points;
+  final String title;
   @override
-  final String exchangePointLocation;
-  @override
-  final int userId;
+  final String description;
   @override
   final DateTime createdAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'NotificationModel(id: $id, points: $points, exchangePointLocation: $exchangePointLocation, userId: $userId, createdAt: $createdAt)';
+    return 'NotificationModel(id: $id, title: $title, description: $description, createdAt: $createdAt)';
   }
 
   @override
@@ -185,9 +161,8 @@ class _$NotificationModelImpl
     properties
       ..add(DiagnosticsProperty('type', 'NotificationModel'))
       ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('points', points))
-      ..add(DiagnosticsProperty('exchangePointLocation', exchangePointLocation))
-      ..add(DiagnosticsProperty('userId', userId))
+      ..add(DiagnosticsProperty('title', title))
+      ..add(DiagnosticsProperty('description', description))
       ..add(DiagnosticsProperty('createdAt', createdAt));
   }
 
@@ -197,18 +172,17 @@ class _$NotificationModelImpl
         (other.runtimeType == runtimeType &&
             other is _$NotificationModelImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.points, points) || other.points == points) &&
-            (identical(other.exchangePointLocation, exchangePointLocation) ||
-                other.exchangePointLocation == exchangePointLocation) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, points, exchangePointLocation, userId, createdAt);
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, description, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -228,9 +202,8 @@ class _$NotificationModelImpl
 abstract class _NotificationModel implements NotificationModel {
   const factory _NotificationModel(
       {required final int id,
-      required final double points,
-      required final String exchangePointLocation,
-      required final int userId,
+      required final String title,
+      required final String description,
       required final DateTime createdAt}) = _$NotificationModelImpl;
 
   factory _NotificationModel.fromJson(Map<String, dynamic> json) =
@@ -239,11 +212,9 @@ abstract class _NotificationModel implements NotificationModel {
   @override
   int get id;
   @override
-  double get points;
+  String get title;
   @override
-  String get exchangePointLocation;
-  @override
-  int get userId;
+  String get description;
   @override
   DateTime get createdAt;
   @override

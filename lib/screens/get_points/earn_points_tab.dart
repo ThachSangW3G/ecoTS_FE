@@ -27,7 +27,7 @@ class _EarnPointsState extends State<EarnPointsTab> {
   void _startPolling() {
     _timer = Timer.periodic(Duration(seconds: 5), (timer) {
       notificationController
-          .getAllNotification(userController.currentUser.value!.id);
+          .getAllreceivedPoint(userController.currentUser.value!.id);
     });
   }
 
@@ -43,17 +43,17 @@ class _EarnPointsState extends State<EarnPointsTab> {
     return Container(
         child: Column(
       children: [
-        Obx(() => notificationController.notificationList.value != null &&
-                notificationController.notificationList.value!.isNotEmpty
+        Obx(() => notificationController.receivedPointList.value != null &&
+                notificationController.receivedPointList.value!.isNotEmpty
             ? ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount:
-                    notificationController.notificationList.value!.length,
+                    notificationController.receivedPointList.value!.length,
                 itemBuilder: (context, index) {
-                  final notification =
-                      notificationController.notificationList.value![index];
-                  return EarnPointCard(notification: notification);
+                  final receivedPoint =
+                      notificationController.receivedPointList.value![index];
+                  return EarnPointCard(receivedPointModel: receivedPoint);
                 },
               )
             : const SizedBox())

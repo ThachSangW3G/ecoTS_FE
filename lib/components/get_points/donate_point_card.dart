@@ -1,15 +1,15 @@
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
-import 'package:ecots_frontend/models/notifications/received_point_model.dart';
+import 'package:ecots_frontend/models/notifications/donate_point_model.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 
-class EarnPointCard extends StatelessWidget {
-  final ReceivedPointModel receivedPointModel;
-  const EarnPointCard({super.key, required this.receivedPointModel});
+class DonatePointCard extends StatelessWidget {
+  final DonatePointModel donatePointModel;
+  const DonatePointCard({super.key, required this.donatePointModel});
 
   @override
   Widget build(BuildContext context) {
@@ -34,18 +34,17 @@ class EarnPointCard extends StatelessWidget {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                Text('Nhận điểm', style: kLableTextBlackW600Size16),
-                Text(
-                    'Đổi tại cơ sở: ${receivedPointModel.exchangePointLocation}',
+                Text('Quyên góp điểm', style: kLableTextBlackW600Size16),
+                Text('Chiến dịch: ${donatePointModel.donationLocation}',
                     style: kLableTextItalic),
-                Text('Số điểm: ${receivedPointModel.points}',
+                Text('Số điểm: ${donatePointModel.points}',
                     style: kLableTextItalic),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
                         DateFormat('yyyy-MM-dd')
-                            .format(receivedPointModel.createdAt),
+                            .format(donatePointModel.createdAt),
                         style: kLableTextItalic),
                   ],
                 ),
