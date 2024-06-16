@@ -106,6 +106,13 @@ final kLableTextGreyItalic = GoogleFonts.montserrat(
         fontWeight: FontWeight.w400,
         fontStyle: FontStyle.italic));
 
+final kLableTextItalic = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+        fontSize: 14,
+        color: Color.fromARGB(255, 53, 50, 50),
+        fontWeight: FontWeight.w400,
+        fontStyle: FontStyle.italic));
+
 final kLableTextBlackW600Size16 = GoogleFonts.montserrat(
     textStyle: const TextStyle(
   fontSize: 16,

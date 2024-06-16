@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:ecots_frontend/components/home/achivement_item.dart';
 import 'package:ecots_frontend/components/home/donation_item.dart';
 import 'package:ecots_frontend/components/home/material_item.dart';
@@ -38,11 +41,24 @@ class _HomeScreenState extends State<HomeScreen> {
   LocationController locationController = Get.put(LocationController());
 
   String fullName = '';
+  late Timer _timer;
+
+  void _startPolling() {
+    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
+      pointController.getPointByToken();
+    });
+  }
+
+  double roundToDecimals(double value, int places) {
+    final double mod = pow(10, places).toDouble();
+    return ((value * mod).round().toDouble() / mod);
+  }
 
   @override
   void initState() {
     super.initState();
     _loadFullName();
+    _startPolling();
   }
 
   _loadFullName() async {
@@ -137,8 +153,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           AchivementItem(
                               image: 'assets/images/giftbox.png',
                               title: 'POINTS',
-                              value: pointController.currentPoint.value!.point
-                                  .toString()),
+                              value:
+                                  '${roundToDecimals(pointController.currentPoint.value!.point, 2)}'),
                           Container(
                             height: 100,
                             width: 4,
@@ -151,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               image: 'assets/images/O2.png',
                               title: 'SAVE O2',
                               value:
-                                  '${pointController.currentPoint.value!.saveCo2}KG'),
+                                  '${roundToDecimals(pointController.currentPoint.value!.saveCo2, 2)}KG'),
                           Container(
                             height: 100,
                             width: 4,

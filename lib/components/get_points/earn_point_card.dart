@@ -1,10 +1,14 @@
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/models/notifications/notification.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 
 class EarnPointCard extends StatelessWidget {
-  const EarnPointCard({super.key});
+  final NotificationModel notification;
+  const EarnPointCard({super.key, required this.notification});
 
   @override
   Widget build(BuildContext context) {
@@ -22,18 +26,24 @@ class EarnPointCard extends StatelessWidget {
             width: 60,
             decoration:
                 BoxDecoration(shape: BoxShape.circle, color: Color(0xffEBFFD7)),
+            child: Center(child: SvgPicture.asset('assets/icons/box.svg')),
           ),
           Gap(10),
           Expanded(
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                Text("EcoPoints", style: kLableTextBlackW600Size16),
-                Text("EcoPoints", style: kLableTextGreyItalic),
+                Text('Nhận điểm', style: kLableTextBlackW600Size16),
+                Text('Đổi tại cơ sở: ${notification.exchangePointLocation}',
+                    style: kLableTextItalic),
+                Text('Số điểm: ${notification.points}',
+                    style: kLableTextItalic),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text("EcoPoints", style: kLableTextGreyItalic),
+                    Text(
+                        DateFormat('yyyy-MM-dd').format(notification.createdAt),
+                        style: kLableTextItalic),
                   ],
                 ),
               ]))
