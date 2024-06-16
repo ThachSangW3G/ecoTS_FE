@@ -12,6 +12,7 @@ import 'package:ecots_frontend/screens/donation/detail_donate.dart';
 import 'package:ecots_frontend/screens/donation/donation_screen.dart';
 import 'package:ecots_frontend/screens/get_points/scanbarcode_srceen.dart';
 import 'package:ecots_frontend/screens/maps/map.dart';
+import 'package:ecots_frontend/screens/notifications/notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
@@ -112,13 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         InkWell(
                             onTap: () async {
-                              // final token =
-                              //     (await _prefs).getString('tokenAccess');
-                              // print(token);
-
-                              //await donationController.getAllDonations();
-
-                              await pointController.getPointByToken();
+                              Get.to(() => const NotificationScreen());
                             },
                             child: SvgPicture.asset('assets/icons/bell.svg')),
                       ],
