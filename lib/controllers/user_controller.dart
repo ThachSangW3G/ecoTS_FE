@@ -1,9 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:ecots_frontend/models/user.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -99,8 +98,6 @@ class UserController extends GetxController {
     final uri = Uri.parse('$_baseURL/user/upload-new-avatar?token=$token');
 
     //final requestBody = {'avatarFile': base64Encode(await file.readAsBytes())};
-
-    final headers = {'Content-Type': 'application/json'};
 
     try {
       // final response =

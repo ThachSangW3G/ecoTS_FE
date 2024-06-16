@@ -1,7 +1,7 @@
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+
 import 'package:gap/gap.dart';
 
 class AchivementCard extends StatefulWidget {

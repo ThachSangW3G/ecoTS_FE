@@ -1,12 +1,11 @@
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../components/accounts/title_switch.dart';
-import '../../components/login_signup/button_green.dart';
 
 class NotificationSetting extends StatefulWidget {
   const NotificationSetting({super.key});

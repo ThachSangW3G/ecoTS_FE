@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:camera/camera.dart';
-import 'package:ecots_frontend/components/donation/button_donation.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:ecots_frontend/controllers/camera_controller.dart';
