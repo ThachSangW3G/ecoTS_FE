@@ -1,6 +1,6 @@
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
-import 'package:ecots_frontend/screens/donation/detail_donate.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

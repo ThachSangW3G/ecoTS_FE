@@ -3,14 +3,11 @@ import 'dart:convert';
 import 'package:ecots_frontend/models/locations/location.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LocationController extends GetxController {
   final String _baseURL = 'https://ecotsbe-production.up.railway.app';
 
   var locationList = Rx<List<Location>?>(null);
-
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Future<void> getAllLocations() async {
     final uri = Uri.parse('$_baseURL/location/get-all');

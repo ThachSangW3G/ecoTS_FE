@@ -8,7 +8,7 @@ part of 'point.dart';
 
 _$PointImpl _$$PointImplFromJson(Map<String, dynamic> json) => _$PointImpl(
       id: (json['id'] as num).toInt(),
-      point: (json['point'] as num).toInt(),
+      point: (json['point'] as num).toDouble(),
       saveCo2: (json['saveCo2'] as num).toDouble(),
       totalTrashCollect: (json['totalTrashCollect'] as num).toInt(),
     );

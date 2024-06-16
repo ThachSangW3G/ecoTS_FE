@@ -1,4 +1,3 @@
-import 'package:ecots_frontend/models/achivements/achivement.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 

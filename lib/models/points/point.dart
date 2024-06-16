@@ -8,7 +8,7 @@ part 'point.g.dart';
 class Point with _$Point {
   const factory Point(
       {required int id,
-      required int point,
+      required double point,
       required double saveCo2,
       required int totalTrashCollect}) = _Point;
 

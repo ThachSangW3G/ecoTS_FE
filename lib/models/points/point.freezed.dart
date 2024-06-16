@@ -21,7 +21,7 @@ Point _$PointFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Point {
   int get id => throw _privateConstructorUsedError;
-  int get point => throw _privateConstructorUsedError;
+  double get point => throw _privateConstructorUsedError;
   double get saveCo2 => throw _privateConstructorUsedError;
   int get totalTrashCollect => throw _privateConstructorUsedError;
 
@@ -35,7 +35,7 @@ abstract class $PointCopyWith<$Res> {
   factory $PointCopyWith(Point value, $Res Function(Point) then) =
       _$PointCopyWithImpl<$Res, Point>;
   @useResult
-  $Res call({int id, int point, double saveCo2, int totalTrashCollect});
+  $Res call({int id, double point, double saveCo2, int totalTrashCollect});
 }
 
 /// @nodoc
@@ -64,7 +64,7 @@ class _$PointCopyWithImpl<$Res, $Val extends Point>
       point: null == point
           ? _value.point
           : point // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       saveCo2: null == saveCo2
           ? _value.saveCo2
           : saveCo2 // ignore: cast_nullable_to_non_nullable
@@ -84,7 +84,7 @@ abstract class _$$PointImplCopyWith<$Res> implements $PointCopyWith<$Res> {
       __$$PointImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, int point, double saveCo2, int totalTrashCollect});
+  $Res call({int id, double point, double saveCo2, int totalTrashCollect});
 }
 
 /// @nodoc
@@ -111,7 +111,7 @@ class __$$PointImplCopyWithImpl<$Res>
       point: null == point
           ? _value.point
           : point // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       saveCo2: null == saveCo2
           ? _value.saveCo2
           : saveCo2 // ignore: cast_nullable_to_non_nullable
@@ -139,7 +139,7 @@ class _$PointImpl with DiagnosticableTreeMixin implements _Point {
   @override
   final int id;
   @override
-  final int point;
+  final double point;
   @override
   final double saveCo2;
   @override
@@ -195,7 +195,7 @@ class _$PointImpl with DiagnosticableTreeMixin implements _Point {
 abstract class _Point implements Point {
   const factory _Point(
       {required final int id,
-      required final int point,
+      required final double point,
       required final double saveCo2,
       required final int totalTrashCollect}) = _$PointImpl;
 
@@ -204,7 +204,7 @@ abstract class _Point implements Point {
   @override
   int get id;
   @override
-  int get point;
+  double get point;
   @override
   double get saveCo2;
   @override

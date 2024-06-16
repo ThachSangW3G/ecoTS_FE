@@ -1,7 +1,9 @@
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/screens/staff/exchange_trash_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QrScannerScreen extends StatefulWidget {
@@ -28,6 +30,14 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
 
           final Uint8List? image = capture.image;
           print(barcodes.first.rawValue);
+
+          if (barcodes.first.rawValue != null) {
+            final value = barcodes.first.rawValue!.split(':');
+            Get.to(() => ExchangeTrashScreen(
+                  username: value[0],
+                  email: value[1],
+                ));
+          }
         },
       ),
     );

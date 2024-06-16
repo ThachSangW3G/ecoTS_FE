@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:ecots_frontend/components/home/achivement_item.dart';
 import 'package:ecots_frontend/components/home/donation_item.dart';
 import 'package:ecots_frontend/components/home/material_item.dart';
@@ -10,8 +13,10 @@ import 'package:ecots_frontend/controllers/point_controller.dart';
 import 'package:ecots_frontend/controllers/user_controller.dart';
 import 'package:ecots_frontend/screens/donation/detail_donate.dart';
 import 'package:ecots_frontend/screens/donation/donation_screen.dart';
+import 'package:ecots_frontend/screens/get_points/history_point.dart';
 import 'package:ecots_frontend/screens/get_points/scanbarcode_srceen.dart';
 import 'package:ecots_frontend/screens/maps/map.dart';
+import 'package:ecots_frontend/screens/notifications/notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
@@ -36,11 +41,24 @@ class _HomeScreenState extends State<HomeScreen> {
   LocationController locationController = Get.put(LocationController());
 
   String fullName = '';
+  late Timer _timer;
+
+  void _startPolling() {
+    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
+      pointController.getPointByToken();
+    });
+  }
+
+  double roundToDecimals(double value, int places) {
+    final double mod = pow(10, places).toDouble();
+    return ((value * mod).round().toDouble() / mod);
+  }
 
   @override
   void initState() {
     super.initState();
     _loadFullName();
+    _startPolling();
   }
 
   _loadFullName() async {
@@ -112,13 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         InkWell(
                             onTap: () async {
-                              // final token =
-                              //     (await _prefs).getString('tokenAccess');
-                              // print(token);
-
-                              //await donationController.getAllDonations();
-
-                              await pointController.getPointByToken();
+                              Get.to(() => const NotificationScreen());
                             },
                             child: SvgPicture.asset('assets/icons/bell.svg')),
                       ],
@@ -141,8 +153,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           AchivementItem(
                               image: 'assets/images/giftbox.png',
                               title: 'POINTS',
-                              value: pointController.currentPoint.value!.point
-                                  .toString()),
+                              value:
+                                  '${roundToDecimals(pointController.currentPoint.value!.point, 2)}'),
                           Container(
                             height: 100,
                             width: 4,
@@ -155,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               image: 'assets/images/O2.png',
                               title: 'SAVE O2',
                               value:
-                                  '${pointController.currentPoint.value!.saveCo2}KG'),
+                                  '${roundToDecimals(pointController.currentPoint.value!.saveCo2, 2)}KG'),
                           Container(
                             height: 100,
                             width: 4,
@@ -198,8 +210,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: 'assets/icons/verified.svg', title: 'Tích điểm'),
                     const MaterialItem(
                         icon: 'assets/icons/gamepad.svg', title: 'Học & chơi'),
-                    const MaterialItem(
-                        icon: 'assets/icons/history.svg', title: 'Lịch sử'),
+                    InkWell(
+                      onTap: () {
+                        Get.to(() => const HistoryPoint());
+                      },
+                      child: const MaterialItem(
+                          icon: 'assets/icons/history.svg', title: 'Lịch sử'),
+                    ),
                   ],
                 ),
                 const SizedBox(

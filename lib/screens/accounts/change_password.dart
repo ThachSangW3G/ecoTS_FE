@@ -2,12 +2,11 @@ import 'package:ecots_frontend/components/login_signup/button_green.dart';
 import 'package:ecots_frontend/constants/app_border.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
-import 'package:ecots_frontend/controllers/auth_controller.dart';
+
 import 'package:ecots_frontend/controllers/user_controller.dart';
-import 'package:ecots_frontend/screens/login_signup/successful_screen.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 

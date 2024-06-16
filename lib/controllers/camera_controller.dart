@@ -12,10 +12,6 @@ class CameraControl extends GetxController {
 
   Future<String?> getWasteClassification(File file) async {
     final uri = Uri.parse("$_baseURL/detect/predict");
-    final headers = {
-      'accept': 'application/json',
-      'Content-Type': 'multipart/form-data',
-    };
 
     print(uri);
     try {
@@ -56,7 +52,7 @@ class CameraControl extends GetxController {
   Future<bool> sendRespond(int userId, String description, File file) async {
     final uri = Uri.parse(
         '$_baseURL/detect-response/send-response?userId=${userId}&description=${description}');
-    final headers = {'Content-Type': 'application/json'};
+
     try {
       var request = http.MultipartRequest('POST', uri);
       var multipartFile = await http.MultipartFile.fromPath(

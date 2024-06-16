@@ -1,19 +1,17 @@
-import 'dart:io';
-
 import 'package:ecots_frontend/components/home/tile.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:ecots_frontend/controllers/point_controller.dart';
 import 'package:ecots_frontend/controllers/user_controller.dart';
-import 'package:ecots_frontend/models/user.dart';
+
 import 'package:ecots_frontend/screens/accounts/about_me.dart';
 import 'package:ecots_frontend/screens/accounts/change_password.dart';
 import 'package:ecots_frontend/screens/accounts/notification_setting.dart';
-import 'package:ecots_frontend/screens/login_signup/login_screen.dart';
+
 import 'package:ecots_frontend/screens/splash/welcome.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';

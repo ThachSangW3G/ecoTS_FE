@@ -4,12 +4,9 @@ import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:ecots_frontend/controllers/achivement_controller.dart';
 import 'package:ecots_frontend/controllers/achivemetn_level_controller.dart';
 import 'package:ecots_frontend/controllers/user_controller.dart';
-import 'package:ecots_frontend/models/achivement_levels/achivement_level.dart';
-import 'package:ecots_frontend/models/achivement_results/achivement_result.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
+
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
