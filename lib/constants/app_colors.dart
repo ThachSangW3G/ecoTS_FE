@@ -16,5 +16,5 @@ class AppColors {
   static const Color questions = Color(0xFF191D63);
   static const Color anwserGreen = Color(0xFF45C486);
   static const Color anwserRed = Color(0xFFED6B6B);
-  static const Color chooseAnswer = Color(0x1E90FF);
+  static const Color chooseAnswer = Color.fromARGB(255, 137, 150, 162);
 }
