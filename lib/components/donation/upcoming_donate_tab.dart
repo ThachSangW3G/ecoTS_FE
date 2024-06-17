@@ -4,6 +4,7 @@ import 'package:ecots_frontend/components/donation/donation_item_detail.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:ecots_frontend/controllers/donation_controller.dart';
+import 'package:ecots_frontend/models/donations/donation.dart';
 import 'package:ecots_frontend/screens/donation/detail_donate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,20 +20,45 @@ class UpcomingDonateTab extends StatefulWidget {
 
 class _UpcomingDonateTabState extends State<UpcomingDonateTab> {
   DonationController donationController = Get.put(DonationController());
+  TextEditingController searchController = TextEditingController();
 
   late Timer _timer;
 
   void _startPolling() {
-    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
-      donationController.getUpcomingDonations();
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      donationController
+          .getUpcomingDonations(); // Call getOngoingDonations here
     });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _startPolling();
+    searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    setState(() {});
+  }
+
+  List<Donation> get filterDonations {
+    if (searchController.text.isEmpty) {
+      return donationController.upcomingDonationList.value!;
+    } else {
+      return donationController.upcomingDonationList.value!
+          .where((donation) => donation.title
+              .toLowerCase()
+              .contains(searchController.text.toLowerCase()))
+          .toList();
+    }
   }
 
   @override
@@ -47,18 +73,21 @@ class _UpcomingDonateTabState extends State<UpcomingDonateTab> {
               height: 50,
               padding: const EdgeInsets.only(right: 20),
               decoration: const BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
+                color: AppColors.white,
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
               child: TextFormField(
+                controller: searchController,
                 cursorColor: AppColors.green,
                 decoration: InputDecoration(
-                    hintText: 'Search donation',
-                    hintStyle: kLableTextStyleMiniumGrey,
-                    border: InputBorder.none,
-                    prefixIcon: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: SvgPicture.asset('assets/icons/search.svg'),
-                    )),
+                  hintText: 'Search donation',
+                  hintStyle: kLableTextStyleMiniumGrey,
+                  border: InputBorder.none,
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: SvgPicture.asset('assets/icons/search.svg'),
+                  ),
+                ),
               ),
             ),
           ),
@@ -67,27 +96,22 @@ class _UpcomingDonateTabState extends State<UpcomingDonateTab> {
           ),
           Expanded(
             child: Obx(
-              () => donationController.upcomingDonationList.value != null &&
-                      donationController.upcomingDonationList.value!.isNotEmpty
-                  ? Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: donationController
-                            .upcomingDonationList.value!.length,
-                        itemBuilder: (context, index) {
-                          final donation = donationController
-                              .upcomingDonationList.value![index];
-
-                          return DonationItemDetail(
-                            donation: donation,
-                            onTap: () {
-                              Get.to(
-                                  () => DetailDonate(donationId: donation.id));
-                            },
-                          );
-                        },
-                      ),
+              () => filterDonations.isNotEmpty
+                  ? ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      shrinkWrap: true,
+                      itemCount: filterDonations.length,
+                      itemBuilder: (context, index) {
+                        final donation = filterDonations[index];
+                        return DonationItemDetail(
+                          donation: donation,
+                          onTap: () {
+                            Get.to(
+                              () => DetailDonate(donationId: donation.id),
+                            );
+                          },
+                        );
+                      },
                     )
                   : const SizedBox(),
             ),
