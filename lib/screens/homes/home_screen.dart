@@ -17,6 +17,7 @@ import 'package:ecots_frontend/screens/get_points/history_point.dart';
 import 'package:ecots_frontend/screens/get_points/scanbarcode_srceen.dart';
 import 'package:ecots_frontend/screens/maps/map.dart';
 import 'package:ecots_frontend/screens/notifications/notification_screen.dart';
+import 'package:ecots_frontend/screens/recycles/recycling_point_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
@@ -231,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Text('Recycling point', style: kLableTextBlackW600),
                     InkWell(
                       onTap: () {
-                        Get.to(() => const MapScreen());
+                        Get.to(() => const RecyclingPointScreen());
                       },
                       child: Text(
                         'See all',
@@ -243,27 +244,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                // const NearbyItem(
-                //     image: 'assets/images/image2.png',
-                //     address:
-                //         'Trường THCS Bạch Đằng, Long Sơn, Bà Rịa - Vũng Tàu',
-                //     time: 'T2 - T6 9:00 - 17:00'),
-                // const SizedBox(
-                //   height: 10,
-                // ),
-                // const NearbyItem(
-                //     image: 'assets/images/image2.png',
-                //     address:
-                //         'Trường THCS Bạch Đằng, Long Sơn, Bà Rịa - Vũng Tàu',
-                //     time: 'T2 - T6 9:00 - 17:00'),
-                // const SizedBox(
-                //   height: 10,
-                // ),
-                // const NearbyItem(
-                //     image: 'assets/images/image2.png',
-                //     address:
-                //         'Trường THCS Bạch Đằng, Long Sơn, Bà Rịa - Vũng Tàu',
-                //     time: 'T2 - T6 9:00 - 17:00'),
 
                 Obx(() => locationController.locationList.value != null &&
                         locationController.locationList.value!.isNotEmpty
