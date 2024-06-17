@@ -36,23 +36,25 @@ class _DonationPointTabState extends State<DonationPointTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Column(
-      children: [
-        Obx(() => notificationController.donatePointList.value != null &&
-                notificationController.donatePointList.value!.isNotEmpty
-            ? ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: notificationController.donatePointList.value!.length,
-                itemBuilder: (context, index) {
-                  final receivedPoint =
-                      notificationController.donatePointList.value![index];
-                  return DonatePointCard(donatePointModel: receivedPoint);
-                },
-              )
-            : const SizedBox())
-      ],
-    ));
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Obx(() => notificationController.donatePointList.value != null &&
+                  notificationController.donatePointList.value!.isNotEmpty
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount:
+                      notificationController.donatePointList.value!.length,
+                  itemBuilder: (context, index) {
+                    final receivedPoint =
+                        notificationController.donatePointList.value![index];
+                    return DonatePointCard(donatePointModel: receivedPoint);
+                  },
+                )
+              : const SizedBox())
+        ],
+      ),
+    );
   }
 }
