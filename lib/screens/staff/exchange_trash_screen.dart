@@ -3,7 +3,10 @@ import 'package:ecots_frontend/components/login_signup/button_green.dart';
 import 'package:ecots_frontend/constants/app_border.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/controllers/point_controller.dart';
+import 'package:ecots_frontend/controllers/user_controller.dart';
 import 'package:ecots_frontend/controllers/waste_controller.dart';
+import 'package:ecots_frontend/screens/staff/successful_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -22,6 +25,8 @@ class _ExchangeTrashScreenState extends State<ExchangeTrashScreen> {
   List<TextEditingController> controllers = [];
 
   WasteController wasteController = Get.put(WasteController());
+  PointController pointController = Get.put(PointController());
+  UserController userController = Get.put(UserController());
 
   double total = 0.0;
   bool isLoading = false;
@@ -38,6 +43,27 @@ class _ExchangeTrashScreenState extends State<ExchangeTrashScreen> {
     // TODO: implement initState
     super.initState();
     handleMaterial();
+  }
+
+  Future<void> handleExchangeTrash() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    final success = await pointController.exchangeTrashForm(
+        widget.username,
+        widget.email,
+        userController.currentUser.value!.id,
+        controllers,
+        wasteController.materialList.value!);
+
+    if (success) {
+      Get.to(() => const SuccessfulScreen());
+    }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   void calculateTotalPoint() {
@@ -63,11 +89,11 @@ class _ExchangeTrashScreenState extends State<ExchangeTrashScreen> {
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Stack(
-            children: [
-              SingleChildScrollView(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -108,7 +134,7 @@ class _ExchangeTrashScreenState extends State<ExchangeTrashScreen> {
                             },
                           )
                         : const SizedBox()),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Row(
@@ -121,12 +147,15 @@ class _ExchangeTrashScreenState extends State<ExchangeTrashScreen> {
                   ],
                 ),
               ),
-              Positioned(
-                bottom: 10,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
+            ),
+            Positioned(
+              bottom: 10,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Center(
+                  child: InkWell(
+                    onTap: handleExchangeTrash,
+                    child: Container(
                       width: MediaQuery.of(context).size.width - 50,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 10),
@@ -148,11 +177,11 @@ class _ExchangeTrashScreenState extends State<ExchangeTrashScreen> {
                               ),
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
