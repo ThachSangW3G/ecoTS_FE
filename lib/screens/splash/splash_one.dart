@@ -19,6 +19,12 @@ class SplashOne extends StatefulWidget {
 
 class _SplashOneState extends State<SplashOne> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -91,7 +97,7 @@ class _SplashOneState extends State<SplashOne> {
                         //         child: const SplashTwo(),
                         //         type: PageTransitionType.rightToLeft));
 
-                        Get.to(const SplashTwo(),
+                        Get.to(() => const SplashTwo(),
                             transition: Transition.rightToLeft);
                       },
                       child: Container(

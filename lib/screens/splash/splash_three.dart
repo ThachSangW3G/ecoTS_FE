@@ -122,7 +122,7 @@ class _SplashThreeState extends State<SplashThree> {
                             //         child: const Welcome(),
                             //         type: PageTransitionType.rightToLeft));
 
-                            Get.to(const Welcome(),
+                            Get.to(() => const Welcome(),
                                 transition: Transition.rightToLeft);
                           },
                           child: Container(

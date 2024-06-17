@@ -116,13 +116,7 @@ class _SplashTwoState extends State<SplashTwo> {
                         ),
                         InkWell(
                           onTap: () {
-                            // Navigator.push(
-                            //     context,
-                            //     PageTransition(
-                            //         child: const SplashThree(),
-                            //         type: PageTransitionType.rightToLeft));
-
-                            Get.to(const SplashThree(),
+                            Get.to(() => const SplashThree(),
                                 transition: Transition.rightToLeft);
                           },
                           child: Container(

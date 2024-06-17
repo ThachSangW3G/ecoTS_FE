@@ -16,6 +16,7 @@ import 'package:ecots_frontend/screens/donation/donation_screen.dart';
 import 'package:ecots_frontend/screens/get_points/history_point.dart';
 import 'package:ecots_frontend/screens/get_points/scanbarcode_srceen.dart';
 import 'package:ecots_frontend/screens/maps/map.dart';
+import 'package:ecots_frontend/screens/minigames/minigame_screen.dart';
 import 'package:ecots_frontend/screens/notifications/notification_screen.dart';
 import 'package:ecots_frontend/screens/recycles/recycling_point_screen.dart';
 import 'package:flutter/material.dart';
@@ -207,18 +208,30 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                       child: const MaterialItem(
                           icon: 'assets/icons/plus-circle.svg',
-                          title: 'Nhận điểm'),
+                          title: 'Receive point'),
                     ),
-                    const MaterialItem(
-                        icon: 'assets/icons/verified.svg', title: 'Tích điểm'),
-                    const MaterialItem(
-                        icon: 'assets/icons/gamepad.svg', title: 'Học & chơi'),
                     InkWell(
                       onTap: () {
                         Get.to(() => const HistoryPoint());
                       },
                       child: const MaterialItem(
-                          icon: 'assets/icons/history.svg', title: 'Lịch sử'),
+                          icon: 'assets/icons/verified.svg',
+                          title: 'Get point'),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Get.to(() => const MiniGameScreen());
+                      },
+                      child: const MaterialItem(
+                          icon: 'assets/icons/gamepad.svg',
+                          title: 'Play & quiz'),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Get.to(() => const HistoryPoint());
+                      },
+                      child: const MaterialItem(
+                          icon: 'assets/icons/history.svg', title: 'History'),
                     ),
                   ],
                 ),
@@ -244,7 +257,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-
                 Obx(() => locationController.locationList.value != null &&
                         locationController.locationList.value!.isNotEmpty
                     ? SizedBox(
@@ -271,7 +283,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       )
                     : const SizedBox()),
-
                 const SizedBox(
                   height: 20,
                 ),
@@ -297,7 +308,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-
                 Obx(
                   () => donationController.donationList.value != null &&
                           donationController.donationList.value!.isNotEmpty
@@ -326,31 +336,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                       : const SizedBox(),
                 )
-
-                // const DonationItem(
-                //     image: 'assets/images/image1.png',
-                //     title: 'Use public transportation shi shi shi shi shi',
-                //     content:
-                //         'Leave your car behind and take a greener route, walking, biking or '),
-                // const SizedBox(
-                //   height: 10,
-                // ),
-                // const DonationItem(
-                //     image: 'assets/images/image1.png',
-                //     title: 'Use public transportation shi shi shi shi shi',
-                //     content:
-                //         'Leave your car behind and take a greener route, walking, biking or '),
-                // const SizedBox(
-                //   height: 10,
-                // ),
-                // const DonationItem(
-                //     image: 'assets/images/image1.png',
-                //     title: 'Use public transportation shi shi shi shi shi',
-                //     content:
-                //         'Leave your car behind and take a greener route, walking, biking or '),
-                // const SizedBox(
-                //   height: 10,
-                // ),
               ],
             ),
           ),

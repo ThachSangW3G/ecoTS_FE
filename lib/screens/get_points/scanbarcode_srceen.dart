@@ -66,7 +66,7 @@ class _ScanBarcodeScreenState extends State<ScanBarcodeScreen> {
               SizedBox(height: 20),
               SizedBox(height: 20),
               Text(
-                'Đưa nhân viên mã này để có thêm điểm ngay!',
+                'Give this QR code to the staff to exchange for rewards points immediately!',
                 style: kLableTextStyleMiniumGrey,
               ),
               SizedBox(height: 20),

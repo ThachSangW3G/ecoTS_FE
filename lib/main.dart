@@ -1,5 +1,6 @@
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/controllers/camera_controller.dart';
+import 'package:ecots_frontend/screens/homes/home_screen.dart';
 import 'package:ecots_frontend/screens/splash/load_logo.dart';
 import 'package:ecots_frontend/screens/staff/exchange_trash_screen.dart';
 import 'package:ecots_frontend/screens/staff/home_screen_staff.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:camera/camera.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
