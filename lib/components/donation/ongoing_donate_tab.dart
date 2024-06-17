@@ -10,21 +10,21 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-class UpcomingDonateTab extends StatefulWidget {
-  const UpcomingDonateTab({super.key});
+class OngoingDonateTab extends StatefulWidget {
+  const OngoingDonateTab({super.key});
 
   @override
-  State<UpcomingDonateTab> createState() => _UpcomingDonateTabState();
+  State<OngoingDonateTab> createState() => _OngoingDonateTabState();
 }
 
-class _UpcomingDonateTabState extends State<UpcomingDonateTab> {
+class _OngoingDonateTabState extends State<OngoingDonateTab> {
   DonationController donationController = Get.put(DonationController());
 
   late Timer _timer;
 
   void _startPolling() {
-    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
-      donationController.getUpcomingDonations();
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      donationController.getOngoingDonations();
     });
   }
 
@@ -67,17 +67,17 @@ class _UpcomingDonateTabState extends State<UpcomingDonateTab> {
           ),
           Expanded(
             child: Obx(
-              () => donationController.upcomingDonationList.value != null &&
-                      donationController.upcomingDonationList.value!.isNotEmpty
+              () => donationController.ongoingDonationList.value != null &&
+                      donationController.ongoingDonationList.value!.isNotEmpty
                   ? Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: ListView.builder(
                         shrinkWrap: true,
                         itemCount: donationController
-                            .upcomingDonationList.value!.length,
+                            .ongoingDonationList.value!.length,
                         itemBuilder: (context, index) {
                           final donation = donationController
-                              .upcomingDonationList.value![index];
+                              .ongoingDonationList.value![index];
 
                           return DonationItemDetail(
                             donation: donation,

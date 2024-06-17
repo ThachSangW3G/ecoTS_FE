@@ -1,4 +1,6 @@
 import 'package:ecots_frontend/components/donation/donation_item_detail.dart';
+import 'package:ecots_frontend/components/donation/ended_donate_tab.dart';
+import 'package:ecots_frontend/components/donation/ongoing_donate_tab.dart';
 import 'package:ecots_frontend/components/donation/upcoming_donate_tab.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
@@ -80,10 +82,10 @@ class _DonationScreenState extends State<DonationScreen>
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: [
+              children: const [
                 UpcomingDonateTab(),
-                UpcomingDonateTab(),
-                UpcomingDonateTab()
+                OngoingDonateTab(),
+                EndedDonateTab()
               ],
             ),
           ),
