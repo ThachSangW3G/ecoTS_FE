@@ -10,8 +10,8 @@ class CameraControl extends GetxController {
   var cameras = Rx<List<CameraDescription>?>(null);
   final String _baseURL = 'https://ecotsbe-production.up.railway.app';
 
-  Future<String?> getWasteClassification(File file) async {
-    final uri = Uri.parse("$_baseURL/detect/predict");
+  Future<String?> getWasteClassification(int userId, File file) async {
+    final uri = Uri.parse("$_baseURL/detect/predict?userId=$userId");
 
     print(uri);
     try {
