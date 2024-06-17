@@ -3,6 +3,7 @@ import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/screens/login_signup/login_screen.dart';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -48,8 +49,7 @@ class _SuccessfulScreenState extends State<SuccessfulScreen> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (_) => const LoginScreen()));
+                Get.to(() => const LoginScreen());
               },
               child: const ButtonGreen(
                 title: 'Back to login',

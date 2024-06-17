@@ -4,6 +4,7 @@ import 'package:ecots_frontend/screens/login_signup/login_screen.dart';
 import 'package:ecots_frontend/screens/login_signup/signup_screen.dart';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -76,10 +77,7 @@ class _WelcomeState extends State<Welcome> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const LoginScreen()));
+                            Get.to(() => const LoginScreen());
                           },
                           child: Container(
                             width: 300,
@@ -105,11 +103,7 @@ class _WelcomeState extends State<Welcome> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const SignupScreen()));
+                            Get.to(() => const SignupScreen());
                           },
                           child: Container(
                             width: 300,
