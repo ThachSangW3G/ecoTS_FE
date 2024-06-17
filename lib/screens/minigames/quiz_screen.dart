@@ -134,7 +134,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
             ...answers.map((answer) => AnswerCard(
                   isCorrect: answer['isCorrect'],
                   isSelected: selectedAnswer == answer['answer'],
-                  isAnswered: isAnswered, // Pass this parameter
+                  isAnswered: isAnswered &&
+                      (selectedAnswer == answer['answer'] ||
+                          answer['isCorrect']), // Pass this parameter
                   order: answer['order'],
                   answer: answer['answer'],
                   onTap: !hasCheckedAnswer
