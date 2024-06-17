@@ -27,12 +27,14 @@ class WasteController extends GetxController {
           final name = element['name'];
           final pointsPerKg = element['pointsPerKg'];
           final co2SavedPerKg = element['co2SavedPerKg'];
+          final type = element['type'];
 
           final material = Waste(
               id: id,
               name: name,
               pointsPerKg: pointsPerKg,
-              co2SavedPerKg: co2SavedPerKg);
+              co2SavedPerKg: co2SavedPerKg,
+              type: type);
 
           responseMaterials.add(material);
         });

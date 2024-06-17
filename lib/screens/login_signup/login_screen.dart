@@ -14,6 +14,7 @@ import 'package:ecots_frontend/controllers/user_controller.dart';
 import 'package:ecots_frontend/screens/bottom_nav/bottom_nav.dart';
 import 'package:ecots_frontend/screens/login_signup/forgot_password_screen.dart';
 import 'package:ecots_frontend/screens/login_signup/signup_screen.dart';
+import 'package:ecots_frontend/screens/staff/home_screen_staff.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ecots_frontend/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
@@ -66,20 +67,29 @@ class _LoginScreenState extends State<LoginScreen> {
     if (success) {
       final prefs = await _prefs;
 
-      final accessToken = prefs.getString('tokenAccess');
+      final role = prefs.getString('role');
 
-      await userController.getUserByToken(accessToken!);
-      await generateBarcodeController.genenerateBarcode();
-      await donationController.getAllDonations();
-      await locationController.getAllLocations();
+      if (role != null && role == 'CUSTOMER') {
+        final accessToken = prefs.getString('tokenAccess');
 
-      await pointController.getPointByToken();
-      await wasteController.getAllMaterials();
-      await achivementController.getAllAchivement();
-      await achivementLevelController
-          .getAllAchivementResultProgress(userController.currentUser.value!.id);
+        await userController.getUserByToken(accessToken!);
+        await generateBarcodeController.genenerateBarcode();
+        await donationController.getAllDonations();
+        await locationController.getAllLocations();
 
-      Get.to(() => const BottomNavigation());
+        await pointController.getPointByToken();
+        await wasteController.getAllMaterials();
+        await achivementController.getAllAchivement();
+        await achivementLevelController.getAllAchivementResultProgress(
+            userController.currentUser.value!.id);
+
+        Get.to(() => const BottomNavigation());
+      } else if (role != null && role == 'EMPLOYEE') {
+        final accessToken = prefs.getString('tokenAccess');
+        await userController.getUserByToken(accessToken!);
+
+        Get.to(() => const HomeScreenStaff());
+      }
     } else {
       // Đăng nhập thất bại, hiển thị thông báo cho người dùn
       final snackdemo = SnackBar(

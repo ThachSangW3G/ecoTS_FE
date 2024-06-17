@@ -24,6 +24,7 @@ mixin _$Waste {
   String get name => throw _privateConstructorUsedError;
   double get pointsPerKg => throw _privateConstructorUsedError;
   double get co2SavedPerKg => throw _privateConstructorUsedError;
+  String get type => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +36,12 @@ abstract class $WasteCopyWith<$Res> {
   factory $WasteCopyWith(Waste value, $Res Function(Waste) then) =
       _$WasteCopyWithImpl<$Res, Waste>;
   @useResult
-  $Res call({int id, String name, double pointsPerKg, double co2SavedPerKg});
+  $Res call(
+      {int id,
+      String name,
+      double pointsPerKg,
+      double co2SavedPerKg,
+      String type});
 }
 
 /// @nodoc
@@ -55,6 +61,7 @@ class _$WasteCopyWithImpl<$Res, $Val extends Waste>
     Object? name = null,
     Object? pointsPerKg = null,
     Object? co2SavedPerKg = null,
+    Object? type = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -73,6 +80,10 @@ class _$WasteCopyWithImpl<$Res, $Val extends Waste>
           ? _value.co2SavedPerKg
           : co2SavedPerKg // ignore: cast_nullable_to_non_nullable
               as double,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -84,7 +95,12 @@ abstract class _$$WasteImplCopyWith<$Res> implements $WasteCopyWith<$Res> {
       __$$WasteImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String name, double pointsPerKg, double co2SavedPerKg});
+  $Res call(
+      {int id,
+      String name,
+      double pointsPerKg,
+      double co2SavedPerKg,
+      String type});
 }
 
 /// @nodoc
@@ -102,6 +118,7 @@ class __$$WasteImplCopyWithImpl<$Res>
     Object? name = null,
     Object? pointsPerKg = null,
     Object? co2SavedPerKg = null,
+    Object? type = null,
   }) {
     return _then(_$WasteImpl(
       id: null == id
@@ -120,6 +137,10 @@ class __$$WasteImplCopyWithImpl<$Res>
           ? _value.co2SavedPerKg
           : co2SavedPerKg // ignore: cast_nullable_to_non_nullable
               as double,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -131,7 +152,8 @@ class _$WasteImpl with DiagnosticableTreeMixin implements _Waste {
       {required this.id,
       required this.name,
       required this.pointsPerKg,
-      required this.co2SavedPerKg});
+      required this.co2SavedPerKg,
+      required this.type});
 
   factory _$WasteImpl.fromJson(Map<String, dynamic> json) =>
       _$$WasteImplFromJson(json);
@@ -144,10 +166,12 @@ class _$WasteImpl with DiagnosticableTreeMixin implements _Waste {
   final double pointsPerKg;
   @override
   final double co2SavedPerKg;
+  @override
+  final String type;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Waste(id: $id, name: $name, pointsPerKg: $pointsPerKg, co2SavedPerKg: $co2SavedPerKg)';
+    return 'Waste(id: $id, name: $name, pointsPerKg: $pointsPerKg, co2SavedPerKg: $co2SavedPerKg, type: $type)';
   }
 
   @override
@@ -158,7 +182,8 @@ class _$WasteImpl with DiagnosticableTreeMixin implements _Waste {
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('pointsPerKg', pointsPerKg))
-      ..add(DiagnosticsProperty('co2SavedPerKg', co2SavedPerKg));
+      ..add(DiagnosticsProperty('co2SavedPerKg', co2SavedPerKg))
+      ..add(DiagnosticsProperty('type', type));
   }
 
   @override
@@ -171,13 +196,14 @@ class _$WasteImpl with DiagnosticableTreeMixin implements _Waste {
             (identical(other.pointsPerKg, pointsPerKg) ||
                 other.pointsPerKg == pointsPerKg) &&
             (identical(other.co2SavedPerKg, co2SavedPerKg) ||
-                other.co2SavedPerKg == co2SavedPerKg));
+                other.co2SavedPerKg == co2SavedPerKg) &&
+            (identical(other.type, type) || other.type == type));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, name, pointsPerKg, co2SavedPerKg);
+      Object.hash(runtimeType, id, name, pointsPerKg, co2SavedPerKg, type);
 
   @JsonKey(ignore: true)
   @override
@@ -198,7 +224,8 @@ abstract class _Waste implements Waste {
       {required final int id,
       required final String name,
       required final double pointsPerKg,
-      required final double co2SavedPerKg}) = _$WasteImpl;
+      required final double co2SavedPerKg,
+      required final String type}) = _$WasteImpl;
 
   factory _Waste.fromJson(Map<String, dynamic> json) = _$WasteImpl.fromJson;
 
@@ -210,6 +237,8 @@ abstract class _Waste implements Waste {
   double get pointsPerKg;
   @override
   double get co2SavedPerKg;
+  @override
+  String get type;
   @override
   @JsonKey(ignore: true)
   _$$WasteImplCopyWith<_$WasteImpl> get copyWith =>
