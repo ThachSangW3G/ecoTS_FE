@@ -42,10 +42,10 @@ class DonationController extends GetxController {
 
           final totalDonations = element['totalDonations'];
 
-          final startDate = DateTime(element['startDate'][0],
-              element['startDate'][1], element['startDate'][2]);
-          final endDate = DateTime(element['endDate'][0], element['endDate'][1],
-              element['endDate'][2]);
+          final startDate =
+              DateTime.fromMillisecondsSinceEpoch(element['startDate']);
+          final endDate =
+              DateTime.fromMillisecondsSinceEpoch(element['endDate']);
 
           final donation = Donation(
             id: id,
