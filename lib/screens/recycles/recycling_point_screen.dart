@@ -2,9 +2,10 @@ import 'package:ecots_frontend/components/home/nearby_item.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:ecots_frontend/controllers/location_controller.dart';
+import 'package:ecots_frontend/models/locations/location.dart';
 import 'package:ecots_frontend/screens/maps/map.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
@@ -18,6 +19,38 @@ class RecyclingPointScreen extends StatefulWidget {
 
 class _RecyclingPointScreenState extends State<RecyclingPointScreen> {
   LocationController locationController = Get.put(LocationController());
+  TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Add listener to search controller
+    searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    // Call setState to rebuild the widget with the filtered list
+    setState(() {});
+  }
+
+  List<Location> get filteredLocations {
+    if (searchController.text.isEmpty) {
+      return locationController.locationList.value!;
+    } else {
+      return locationController.locationList.value!
+          .where((location) => location.locationName
+              .toLowerCase()
+              .contains(searchController.text.toLowerCase()))
+          .toList();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +74,7 @@ class _RecyclingPointScreenState extends State<RecyclingPointScreen> {
                     color: AppColors.white,
                     borderRadius: BorderRadius.all(Radius.circular(20))),
                 child: TextFormField(
+                  controller: searchController,
                   cursorColor: AppColors.green,
                   decoration: InputDecoration(
                       hintText: 'Search donation',
@@ -53,15 +87,13 @@ class _RecyclingPointScreenState extends State<RecyclingPointScreen> {
                 ),
               ),
               const Gap(10),
-              Obx(() => locationController.locationList.value != null &&
-                      locationController.locationList.value!.isNotEmpty
+              Obx(() => filteredLocations.isNotEmpty
                   ? ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: locationController.locationList.value!.length,
+                      itemCount: filteredLocations.length,
                       itemBuilder: (context, index) {
-                        final location =
-                            locationController.locationList.value![index];
+                        final location = filteredLocations[index];
                         return InkWell(
                           onTap: () {
                             Get.to(() => MapScreen(
