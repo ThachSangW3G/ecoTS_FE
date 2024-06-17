@@ -77,10 +77,10 @@ class ApiService {
     }
   }
 
-  Future<void> completeQuizAddPoints(int userId, double points) async {
+  Future<void> completeQuizAddPoints(int userId) async {
     final response = await http.put(
       Uri.parse(
-          '$baseUrl/point/complete-quiz-add-points?userId=$userId&points=$points'),
+          '$baseUrl/point/complete-quiz-add-points?userId=$userId&points=25'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

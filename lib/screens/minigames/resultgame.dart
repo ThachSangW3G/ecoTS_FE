@@ -1,10 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:ecots_frontend/screens/minigames/api_service.dart';
 import 'package:ecots_frontend/screens/minigames/user_progress.dart';
-import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ResultGame extends StatelessWidget {
   final int correctAnswers;
@@ -33,7 +33,7 @@ class ResultGame extends StatelessWidget {
         UserProgress userProgress =
             await ApiService().getUserProgress(userId, topicId);
         if (userProgress.reachMax && userProgress.collection) {
-          await ApiService().completeQuizAddPoints(userId, correctAnswers * 5);
+          await ApiService().completeQuizAddPoints(userId);
         }
       }
     } else {
@@ -94,7 +94,7 @@ class ResultGame extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${correctAnswers * 5}', // Each correct answer is worth 5 points
+                        '25', // Mặc định 25 điểm
                         style: kLableTextBlackW600,
                       ),
                     ],
