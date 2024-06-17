@@ -1,6 +1,7 @@
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:ecots_frontend/controllers/generate_barcode_controller.dart';
+import 'package:ecots_frontend/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,8 @@ class ScanBarcodeScreen extends StatefulWidget {
 class _ScanBarcodeScreenState extends State<ScanBarcodeScreen> {
   GenerateBarcodeController generateBarcodeController =
       Get.put(GenerateBarcodeController());
+
+  UserController userController = Get.put(UserController());
 
   Future<void> loadBarCode() async {
     await generateBarcodeController.genenerateBarcode();
@@ -52,28 +55,15 @@ class _ScanBarcodeScreenState extends State<ScanBarcodeScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'Thạch Sang',
+                userController.currentUser.value!.fullName!,
                 style: kLableTilteBlack,
               ),
               SizedBox(height: 10),
               Text(
-                'thachsang@gmail.com',
+                userController.currentUser.value!.email!,
                 style: kLableTextStyleMiniumGrey,
               ),
               SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Điểm của bạn: ',
-                    style: kLableTextBlackW600Size16,
-                  ),
-                  Text(
-                    '1000',
-                    style: kLableTextStyleTilteGreen,
-                  )
-                ],
-              ),
               SizedBox(height: 20),
               Text(
                 'Đưa nhân viên mã này để có thêm điểm ngay!',

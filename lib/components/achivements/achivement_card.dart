@@ -10,13 +10,14 @@ class AchivementCard extends StatelessWidget {
   final double currentValue;
   final bool isCompleted;
 
-  const AchivementCard(
-      {super.key,
-      required this.title,
-      required this.image,
-      required this.maxValue,
-      required this.currentValue,
-      required this.isCompleted});
+  const AchivementCard({
+    super.key,
+    required this.title,
+    required this.image,
+    required this.maxValue,
+    required this.currentValue,
+    required this.isCompleted,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +67,7 @@ class AchivementCard extends StatelessWidget {
                           gradient: const LinearGradient(
                             colors: [
                               AppColors.progress1,
-                              AppColors.progress2,
+                              Color.fromRGBO(31, 201, 130, 1),
                             ],
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
