@@ -40,11 +40,6 @@ class _MiniGameScreenState extends State<MiniGameScreen> {
             children: [
               Text('What would you like to play today?',
                   style: kLableTextStyleTilteGreen),
-              const Gap(10),
-              Text(
-                'Available Games',
-                style: kLableTextStyleTilteGreen,
-              ),
               StreamBuilder<List<QuizTopic>>(
                 stream: quizTopicsStream,
                 builder: (context, snapshot) {
