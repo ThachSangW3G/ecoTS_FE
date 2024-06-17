@@ -9,6 +9,9 @@ class DonationController extends GetxController {
   final String _baseURL = 'https://ecotsbe-production.up.railway.app';
 
   var donationList = Rx<List<Donation>?>(null);
+  var upcomingDonationList = Rx<List<Donation>?>(null);
+  var ongoingDonationList = Rx<List<Donation>?>(null);
+  var endedDonationList = Rx<List<Donation>?>(null);
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
@@ -143,6 +146,165 @@ class DonationController extends GetxController {
     } catch (e) {
       print(e);
       return null;
+    }
+  }
+
+  Future<void> getOngoingDonations() async {
+    final uri = Uri.parse('$_baseURL/donate/ongoing');
+    final headers = {'Content-Type': 'application/json'};
+
+    try {
+      final response = await http.get(uri, headers: headers);
+
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(utf8.decode(response.bodyBytes)) as List;
+
+        List<Donation> responseListDonation = [];
+        jsonData.forEach((element) {
+          final id = element['id'];
+          final title = element['title'];
+          final description = element['description'];
+          List<String> sponsorImages = [];
+          element['sponsorImages'].forEach((image) {
+            sponsorImages.add(image.toString());
+          });
+
+          List<String> coverImageUrl = [];
+          element['coverImageUrl'].forEach((image) {
+            coverImageUrl.add(image.toString());
+          });
+
+          final totalDonations = element['totalDonations'];
+
+          final startDate =
+              DateTime.fromMillisecondsSinceEpoch(element['startDate']);
+          final endDate =
+              DateTime.fromMillisecondsSinceEpoch(element['endDate']);
+
+          final donation = Donation(
+            id: id,
+            title: title,
+            description: description,
+            sponsorImages: sponsorImages,
+            coverImageUrl: coverImageUrl,
+            totalDonations: totalDonations,
+            startDate: startDate,
+            endDate: endDate,
+          );
+
+          responseListDonation.add(donation);
+        });
+
+        ongoingDonationList.value = responseListDonation;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> getUpcomingDonations() async {
+    final uri = Uri.parse('$_baseURL/donate/upcoming');
+    final headers = {'Content-Type': 'application/json'};
+
+    try {
+      final response = await http.get(uri, headers: headers);
+
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(utf8.decode(response.bodyBytes)) as List;
+
+        List<Donation> responseListDonation = [];
+        jsonData.forEach((element) {
+          final id = element['id'];
+          final title = element['title'];
+          final description = element['description'];
+          List<String> sponsorImages = [];
+          element['sponsorImages'].forEach((image) {
+            sponsorImages.add(image.toString());
+          });
+
+          List<String> coverImageUrl = [];
+          element['coverImageUrl'].forEach((image) {
+            coverImageUrl.add(image.toString());
+          });
+
+          final totalDonations = element['totalDonations'];
+
+          final startDate =
+              DateTime.fromMillisecondsSinceEpoch(element['startDate']);
+          final endDate =
+              DateTime.fromMillisecondsSinceEpoch(element['endDate']);
+
+          final donation = Donation(
+            id: id,
+            title: title,
+            description: description,
+            sponsorImages: sponsorImages,
+            coverImageUrl: coverImageUrl,
+            totalDonations: totalDonations,
+            startDate: startDate,
+            endDate: endDate,
+          );
+
+          responseListDonation.add(donation);
+        });
+
+        upcomingDonationList.value = responseListDonation;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> getEndedDonations() async {
+    final uri = Uri.parse('$_baseURL/donate/ended');
+    final headers = {'Content-Type': 'application/json'};
+
+    try {
+      final response = await http.get(uri, headers: headers);
+
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(utf8.decode(response.bodyBytes)) as List;
+
+        List<Donation> responseListDonation = [];
+        jsonData.forEach((element) {
+          final id = element['id'];
+          final title = element['title'];
+          final description = element['description'];
+          List<String> sponsorImages = [];
+          element['sponsorImages'].forEach((image) {
+            sponsorImages.add(image.toString());
+          });
+
+          List<String> coverImageUrl = [];
+          element['coverImageUrl'].forEach((image) {
+            coverImageUrl.add(image.toString());
+          });
+
+          final totalDonations = element['totalDonations'];
+
+          final startDate =
+              DateTime.fromMillisecondsSinceEpoch(element['startDate']);
+          final endDate =
+              DateTime.fromMillisecondsSinceEpoch(element['endDate']);
+
+          final donation = Donation(
+            id: id,
+            title: title,
+            description: description,
+            sponsorImages: sponsorImages,
+            coverImageUrl: coverImageUrl,
+            totalDonations: totalDonations,
+            startDate: startDate,
+            endDate: endDate,
+          );
+
+          responseListDonation.add(donation);
+        });
+
+        endedDonationList.value = responseListDonation;
+      }
+    } catch (e) {
+      print(e);
     }
   }
 }
