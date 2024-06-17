@@ -6,7 +6,7 @@ import 'package:ecots_frontend/screens/minigames/user_progress.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const String baseUrl = 'http://192.168.2.10:7050';
+  static const String baseUrl = 'https://ecotsbe-production.up.railway.app/';
 
   Stream<List<QuizTopic>> fetchQuizTopics() async* {
     while (true) {
