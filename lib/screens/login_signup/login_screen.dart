@@ -79,9 +79,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
         await pointController.getPointByToken();
         await wasteController.getAllMaterials();
-        await achivementController.getAllAchivement();
-        await achivementLevelController.getAllAchivementResultProgress(
-            userController.currentUser.value!.id);
+        await achivementController.fetchAchievements();
+        await achivementLevelController
+            .fetchAchievementResults(userController.currentUser.value!.id);
 
         Get.to(() => const BottomNavigation());
       } else if (role != null && role == 'EMPLOYEE') {

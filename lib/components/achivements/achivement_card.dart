@@ -1,15 +1,15 @@
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:flutter/material.dart';
-
 import 'package:gap/gap.dart';
 
-class AchivementCard extends StatefulWidget {
+class AchivementCard extends StatelessWidget {
   final String title;
   final String image;
   final double maxValue;
   final double currentValue;
   final bool isCompleted;
+
   const AchivementCard(
       {super.key,
       required this.title,
@@ -19,11 +19,6 @@ class AchivementCard extends StatefulWidget {
       required this.isCompleted});
 
   @override
-  State<AchivementCard> createState() => _AchivementCardState();
-}
-
-class _AchivementCardState extends State<AchivementCard> {
-  @override
   Widget build(BuildContext context) {
     return Row(
       children: [
@@ -31,7 +26,7 @@ class _AchivementCardState extends State<AchivementCard> {
           height: 80,
           width: 60,
           child: Image.network(
-            widget.image,
+            image,
             fit: BoxFit.contain,
           ),
         ),
@@ -41,14 +36,17 @@ class _AchivementCardState extends State<AchivementCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.title,
-                style: kLableTilte16Black,
+                title,
+                style: kLableTilte16Black.copyWith(
+                  color: AppColors.green,
+                  fontSize: 14, // giảm kích thước chữ
+                ),
               ),
               Gap(5),
               LayoutBuilder(builder: (context, constraints) {
                 final double maxWidth = constraints.maxWidth;
                 final double progressWidth =
-                    maxWidth * (widget.currentValue / widget.maxValue);
+                    maxWidth * (currentValue / maxValue);
                 return Container(
                   child: Stack(
                     children: [
@@ -56,54 +54,57 @@ class _AchivementCardState extends State<AchivementCard> {
                         height: 20,
                         width: maxWidth,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: AppColors.backgroundProgress),
+                          borderRadius: BorderRadius.circular(10),
+                          color: AppColors.backgroundProgress,
+                        ),
                       ),
                       Container(
                         height: 20,
                         width: progressWidth,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: const LinearGradient(
-                              colors: [
-                                AppColors.progress1,
-                                AppColors.progress2
-                              ],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ),
-                            color: AppColors.backgroundProgress),
+                          borderRadius: BorderRadius.circular(10),
+                          gradient: const LinearGradient(
+                            colors: [
+                              AppColors.progress1,
+                              AppColors.progress2,
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                          ),
+                          color: AppColors.backgroundProgress,
+                        ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '${widget.currentValue}/${widget.maxValue}',
+                            '${currentValue.toInt()}/${maxValue.toInt()}',
                             style: kLableButtonDunation,
-                          )
+                          ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 );
-              })
+              }),
             ],
           ),
         ),
         Gap(10),
         Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: widget.isCompleted
-                  ? AppColors.green
-                  : const Color.fromARGB(255, 127, 195, 142)),
+            borderRadius: BorderRadius.circular(20),
+            color: isCompleted
+                ? AppColors.green
+                : const Color.fromARGB(255, 127, 195, 142),
+          ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             child: Center(
               child: Text('GET', style: kLableButtonDunation),
             ),
           ),
-        )
+        ),
       ],
     );
   }

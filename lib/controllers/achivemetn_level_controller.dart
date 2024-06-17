@@ -1,18 +1,37 @@
+import 'dart:async';
 import 'dart:convert';
-
 import 'package:ecots_frontend/models/achivement_levels/achivement_level.dart';
 import 'package:ecots_frontend/models/achivement_results/achivement_result.dart';
-
 import 'package:ecots_frontend/models/achivements/achivement.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:rxdart/rxdart.dart';
 
 class AchivementLevelController extends GetxController {
   final String _baseURL = 'https://ecotsbe-production.up.railway.app';
 
-  var achivementResultList = Rx<List<AchivementResult>?>(null);
+  final _achivementResultSubject = BehaviorSubject<List<AchivementResult>>();
+  Stream<List<AchivementResult>> get achivementResultStream =>
+      _achivementResultSubject.stream;
 
-  Future<List<AchivementLevel>> getAchimentLevelByAchivementId(
+  @override
+  void onInit() {
+    super.onInit();
+    Timer.periodic(Duration(seconds: 5), (timer) {
+      if (userId != null) {
+        fetchAchievementResults(userId!);
+      }
+    });
+  }
+
+  int? userId;
+
+  Future<void> setUserId(int id) async {
+    userId = id;
+    await fetchAchievementResults(userId!);
+  }
+
+  Future<List<AchivementLevel>> getAchivementLevelsByAchievementId(
       Achivement achivement) async {
     final uri = Uri.parse(
         '$_baseURL/achievement/get-achievement-level-by-achievement-id?achievementId=${achivement.id}');
@@ -24,10 +43,7 @@ class AchivementLevelController extends GetxController {
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(utf8.decode(response.bodyBytes)) as List;
 
-        print(jsonData);
-
-        List<AchivementLevel> responseList = [];
-        jsonData.forEach((element) {
+        return jsonData.map((element) {
           final id = element['id'];
           final name = element['name'];
           final description = element['description'];
@@ -35,7 +51,7 @@ class AchivementLevelController extends GetxController {
           final iconUrl = element['iconUrl'];
           final maxIndex = element['maxIndex'];
 
-          final achivementLevel = AchivementLevel(
+          return AchivementLevel(
               id: id,
               name: name,
               description: description,
@@ -43,21 +59,16 @@ class AchivementLevelController extends GetxController {
               iconUrl: iconUrl,
               maxIndex: maxIndex,
               achivement: achivement);
-          responseList.add(achivementLevel);
-        });
-
-        return responseList;
+        }).toList();
       }
-
       return [];
     } catch (e) {
       print(e);
-
       return [];
     }
   }
 
-  Future<void> getAllAchivementResultProgress(int userId) async {
+  Future<void> fetchAchievementResults(int userId) async {
     final uri = Uri.parse(
         '$_baseURL/achievement/result/get-all-achievement-progress?userId=$userId');
 
@@ -68,10 +79,7 @@ class AchivementLevelController extends GetxController {
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(utf8.decode(response.bodyBytes)) as List;
 
-        print(jsonData);
-
-        List<AchivementResult> responseList = [];
-        jsonData.forEach((element) {
+        List<AchivementResult> responseList = jsonData.map((element) {
           final achievementLevelName = element['achievementLevelName'];
           final achievementLevelId = element['achievementLevelId'];
           final achievementId = element['achievementId'];
@@ -81,7 +89,7 @@ class AchivementLevelController extends GetxController {
           final imgUrl = element['imgUrl'];
           final iconUrl = element['iconUrl'];
 
-          final achivementResult = AchivementResult(
+          return AchivementResult(
               achievementLevelName: achievementLevelName,
               achievementLevelId: achievementLevelId,
               achievementId: achievementId,
@@ -90,17 +98,18 @@ class AchivementLevelController extends GetxController {
               progress: progress,
               imgUrl: imgUrl,
               iconUrl: iconUrl);
-          responseList.add(achivementResult);
-        });
+        }).toList();
 
-        achivementResultList.value = responseList;
-
-        print("----- Achivement Result List -----");
-        print(achivementResultList.value);
-        print("-----");
+        _achivementResultSubject.add(responseList);
       }
     } catch (e) {
       print(e);
     }
+  }
+
+  @override
+  void dispose() {
+    _achivementResultSubject.close();
+    super.dispose();
   }
 }
