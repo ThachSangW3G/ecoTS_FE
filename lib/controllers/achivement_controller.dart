@@ -1,15 +1,26 @@
+import 'dart:async';
 import 'dart:convert';
-
 import 'package:ecots_frontend/models/achivements/achivement.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:rxdart/rxdart.dart';
 
 class AchivementController extends GetxController {
   final String _baseURL = 'https://ecotsbe-production.up.railway.app';
 
-  var achivementList = Rx<List<Achivement>?>(null);
+  final _achivementSubject = BehaviorSubject<List<Achivement>>();
+  Stream<List<Achivement>> get achivementStream => _achivementSubject.stream;
 
-  Future<void> getAllAchivement() async {
+  @override
+  void onInit() {
+    super.onInit();
+    fetchAchievements();
+    Timer.periodic(Duration(seconds: 5), (timer) {
+      fetchAchievements();
+    });
+  }
+
+  Future<void> fetchAchievements() async {
     final uri = Uri.parse('$_baseURL/achievement');
     final headers = {'Content-Type': 'application/json'};
 
@@ -18,26 +29,22 @@ class AchivementController extends GetxController {
 
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(utf8.decode(response.bodyBytes)) as List;
-
-        print(jsonData);
-        List<Achivement> responseChivements = [];
-        jsonData.forEach((element) {
+        List<Achivement> responseAchievements = jsonData.map((element) {
           final id = element['id'];
           final type = element['type'];
+          return Achivement(id: id, type: type);
+        }).toList();
 
-          final achivement = Achivement(id: id, type: type);
-
-          responseChivements.add(achivement);
-        });
-
-        achivementList.value = responseChivements;
+        _achivementSubject.add(responseAchievements);
       }
-
-      print('-----Achivement List-----');
-      print(achivementList.value);
-      print('-----');
     } catch (e) {
       print(e);
     }
+  }
+
+  @override
+  void dispose() {
+    _achivementSubject.close();
+    super.dispose();
   }
 }
