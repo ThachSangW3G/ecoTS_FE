@@ -176,10 +176,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10))),
                           ),
-                          const AchivementItem(
+                          AchivementItem(
                               image: 'assets/images/recycle.png',
                               title: 'RECYCLED',
-                              value: '23'),
+                              value: pointController
+                                  .currentPoint.value!.totalTrashCollect
+                                  .toString()),
                         ],
                       ),
                     )),

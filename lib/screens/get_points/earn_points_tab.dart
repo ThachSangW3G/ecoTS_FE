@@ -40,24 +40,25 @@ class _EarnPointsState extends State<EarnPointsTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Column(
-      children: [
-        Obx(() => notificationController.receivedPointList.value != null &&
-                notificationController.receivedPointList.value!.isNotEmpty
-            ? ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount:
-                    notificationController.receivedPointList.value!.length,
-                itemBuilder: (context, index) {
-                  final receivedPoint =
-                      notificationController.receivedPointList.value![index];
-                  return EarnPointCard(receivedPointModel: receivedPoint);
-                },
-              )
-            : const SizedBox())
-      ],
-    ));
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Obx(() => notificationController.receivedPointList.value != null &&
+                  notificationController.receivedPointList.value!.isNotEmpty
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount:
+                      notificationController.receivedPointList.value!.length,
+                  itemBuilder: (context, index) {
+                    final receivedPoint =
+                        notificationController.receivedPointList.value![index];
+                    return EarnPointCard(receivedPointModel: receivedPoint);
+                  },
+                )
+              : const SizedBox())
+        ],
+      ),
+    );
   }
 }

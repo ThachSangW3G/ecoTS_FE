@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:ecots_frontend/components/home/tile.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
@@ -7,6 +9,7 @@ import 'package:ecots_frontend/controllers/user_controller.dart';
 import 'package:ecots_frontend/screens/accounts/about_me.dart';
 import 'package:ecots_frontend/screens/accounts/change_password.dart';
 import 'package:ecots_frontend/screens/accounts/notification_setting.dart';
+import 'package:ecots_frontend/screens/get_points/history_point.dart';
 
 import 'package:ecots_frontend/screens/splash/welcome.dart';
 
@@ -67,6 +70,11 @@ class _AccountScreenState extends State<AccountScreen> {
         ScaffoldMessenger.of(context).showSnackBar(snackdemo);
       }
     }
+  }
+
+  double roundToDecimals(double value, int places) {
+    final double mod = pow(10, places).toDouble();
+    return ((value * mod).round().toDouble() / mod);
   }
 
   @override
@@ -167,8 +175,8 @@ class _AccountScreenState extends State<AccountScreen> {
                             AchivementItem(
                                 image: 'assets/images/giftbox.png',
                                 title: 'POINTS',
-                                value: pointController.currentPoint.value!.point
-                                    .toString()),
+                                value:
+                                    '${roundToDecimals(pointController.currentPoint.value!.point, 2)}'),
                             Container(
                               height: 100,
                               width: 4,
@@ -181,7 +189,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 image: 'assets/images/O2.png',
                                 title: 'SAVE O2',
                                 value:
-                                    '${pointController.currentPoint.value!.saveCo2}KG'),
+                                    '${roundToDecimals(pointController.currentPoint.value!.saveCo2, 2)}KG'),
                             Container(
                               height: 100,
                               width: 4,
@@ -190,10 +198,12 @@ class _AccountScreenState extends State<AccountScreen> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10))),
                             ),
-                            const AchivementItem(
+                            AchivementItem(
                                 image: 'assets/images/recycle.png',
                                 title: 'RECYCLED',
-                                value: '23'),
+                                value: pointController
+                                    .currentPoint.value!.totalTrashCollect
+                                    .toString()),
                           ],
                         ),
                       )),
@@ -211,7 +221,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      Get.to(const ChangePassword());
+                      Get.to(() => const HistoryPoint());
                     },
                     child: const Tile(
                         icon: 'assets/icons/myhistory.svg',
@@ -232,14 +242,10 @@ class _AccountScreenState extends State<AccountScreen> {
                       Get.to(const ChangePassword());
                     },
                     child: const Tile(
-                        icon: 'assets/icons/notification.svg',
+                        icon: 'assets/icons/change_password.svg',
                         haveArrowRight: true,
                         title: 'Change password'),
                   ),
-                  const Tile(
-                      icon: 'assets/icons/notification.svg',
-                      haveArrowRight: true,
-                      title: 'Policy'),
                   const SizedBox(
                     height: 10,
                   ),
