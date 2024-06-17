@@ -48,8 +48,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.green),
         useMaterial3: true,
       ),
-      home: const ExchangeTrashScreen(
-          username: 'sang1234', email: 'thachsang2202@gmail.com'),
+      home: const LoadLogo(),
     );
   }
 }
