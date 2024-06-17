@@ -78,7 +78,6 @@ class _DonationScreenState extends State<DonationScreen>
               ],
             ),
           ),
-
           Expanded(
             child: TabBarView(
               controller: _tabController,
@@ -89,36 +88,6 @@ class _DonationScreenState extends State<DonationScreen>
               ],
             ),
           ),
-
-          // const DonationItemDetail(
-          //     image: 'assets/images/image4.png',
-          //     title: 'Xây trường vùng cao',
-          //     logo: 'assets/images/logo_mixi.png',
-          //     brand: 'Mixi Gaming'),
-          // const SizedBox(
-          //   height: 20,
-          // ),
-          // const DonationItemDetail(
-          //     image: 'assets/images/image3.png',
-          //     title: 'Tình nguyện hỗ trợ',
-          //     logo: 'assets/images/logo_unicef.png',
-          //     brand: 'Unicef'),
-          // const SizedBox(
-          //   height: 20,
-          // ),
-          // const DonationItemDetail(
-          //     image: 'assets/images/image5.png',
-          //     title: 'Nói không với rác thải',
-          //     logo: 'assets/images/logo_saigonxanh.png',
-          //     brand: 'SaigonXanh'),
-          // const SizedBox(
-          //   height: 20,
-          // ),
-          // const DonationItemDetail(
-          //     image: 'assets/images/image5.png',
-          //     title: 'Nói không với rác thải',
-          //     logo: 'assets/images/logo_saigonxanh.png',
-          //     brand: 'SaigonXanh'),
         ],
       ),
     );
