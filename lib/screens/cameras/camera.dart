@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
 import 'package:ecots_frontend/controllers/camera_controller.dart';
+import 'package:ecots_frontend/controllers/user_controller.dart';
 import 'package:ecots_frontend/screens/cameras/validating.dart';
 import 'package:external_path/external_path.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class _CameraScreenState extends State<CameraScreen> {
   late CameraController cameraController;
   late Future<void> cameraValue;
   final cameraControll = Get.put(CameraControl());
+  final userControler = Get.put(UserController());
   bool isFlashOn = false;
   bool isRearCamera = true;
 
@@ -87,7 +89,8 @@ class _CameraScreenState extends State<CameraScreen> {
 
     final file = await saveImage(image);
 
-    final result = await cameraControll.getWasteClassification(file);
+    final result = await cameraControll.getWasteClassification(
+        userControler.currentUser.value!.id, file);
 
     setState(() {
       isLoading = false;
