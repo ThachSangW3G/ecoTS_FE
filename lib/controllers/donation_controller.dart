@@ -121,12 +121,12 @@ class DonationController extends GetxController {
           coverImageUrl.add(image.toString());
         });
 
-        final totalDonations = jsonData['totalDonations'];
+        final startDate =
+            DateTime.fromMillisecondsSinceEpoch(jsonData['startDate']);
+        final endDate =
+            DateTime.fromMillisecondsSinceEpoch(jsonData['endDate']);
 
-        final startDate = DateTime(jsonData['startDate'][0],
-            jsonData['startDate'][1], jsonData['startDate'][2]);
-        final endDate = DateTime(jsonData['endDate'][0], jsonData['endDate'][1],
-            jsonData['endDate'][2]);
+        final totalDonations = jsonData['totalDonations'];
 
         final donation = Donation(
           id: id,
