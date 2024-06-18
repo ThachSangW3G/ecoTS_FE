@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class DetailDonate extends StatefulWidget {
   const DetailDonate({super.key, required this.donationId});
@@ -232,7 +233,41 @@ class _DetailDonateState extends State<DetailDonate> {
                 ],
               ),
               const SizedBox(
-                height: 20.0,
+                height: 10.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Start date',
+                        style: kLableTextStyleTilteGreen,
+                      ),
+                      Text(
+                        DateFormat('yyyy-MM-dd').format(donation!.startDate),
+                        style: kLableTextStyleMiniumGrey,
+                      )
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        'End date',
+                        style: kLableTextStyleTilteGreen,
+                      ),
+                      Text(
+                        DateFormat('yyyy-MM-dd').format(donation!.endDate),
+                        style: kLableTextStyleMiniumGrey,
+                      )
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 10.0,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -392,24 +427,6 @@ class _DetailDonateState extends State<DetailDonate> {
               ),
               const SizedBox(
                 height: 30,
-              ),
-              Row(
-                children: [
-                  Container(
-                    height: 50,
-                    width: 50,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage('assets/images/logo_mixi.png'))),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'MixiGaming',
-                    style: kLableTextBlackW600Size16,
-                  ),
-                ],
               ),
               const SizedBox(
                 height: 10,
