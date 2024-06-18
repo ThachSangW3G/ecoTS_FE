@@ -85,7 +85,11 @@ class _LoadLogoState extends State<LoadLogo> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    handleLocal();
+    Timer(const Duration(seconds: 3), () {
+      // Navigator.push(
+      //     context, MaterialPageRoute(builder: (context) => const SplashOne()));
+      Get.to(() => const SplashOne());
+    });
   }
 
   @override
