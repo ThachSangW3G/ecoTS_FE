@@ -1,11 +1,13 @@
 import 'package:ecots_frontend/constants/app_colors.dart';
 import 'package:ecots_frontend/constants/app_style.dart';
+import 'package:ecots_frontend/screens/splash/welcome.dart';
 import 'package:ecots_frontend/screens/staff/qr_scanner_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreenStaff extends StatefulWidget {
   const HomeScreenStaff({super.key});
@@ -15,6 +17,7 @@ class HomeScreenStaff extends StatefulWidget {
 }
 
 class _HomeScreenStaffState extends State<HomeScreenStaff> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,6 +71,19 @@ class _HomeScreenStaffState extends State<HomeScreenStaff> {
                       ],
                     ),
                   ),
+                  Expanded(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                          onTap: () async {
+                            final SharedPreferences prefs = await _prefs;
+                            prefs.clear();
+                            Get.offAll(() => const Welcome());
+                          },
+                          child: SvgPicture.asset('assets/icons/signout.svg')),
+                    ],
+                  ))
                 ],
               ),
               InkWell(
